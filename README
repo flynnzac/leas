@@ -6,7 +6,9 @@ Author: Zach Flynn <zlflynn@gmail.com>
 
 ---
 
-bal is an interactive command line personal accounting program to keep your books in order and to study past spending habits. It can be scripted and extended using Guile, a simple programming language (a Scheme dialect) from the GNU project (https://www.gnu.org/software/guile/).  The basic editing and transaction entry commands are built in, but the flexibility of having a full programming language to use to analyze your spending history enables the user to build custom reports (for example, a report of monthly spending on transactions with "coffee" in their description output to some CSV to be plotted in R).
+bal is an interactive and scriptable command line personal accounting program to keep your books in order and to study past spending habits. It can be scripted and extended using Guile, a simple programming language (a Scheme dialect) from the GNU project (https://www.gnu.org/software/guile/).  Scripts can be written, for example, to automatically add transactions on the first of the month or even to update stock balances by fetching the latest stock price from the internet, or to produce custom reports on past spending habits (for example, a report of monthly spending on transactions with "coffee" in their description output to some CSV to be plotted in R).
+
+---
 
 When the command "bal" is entered at the command prompt, you are greated by bal's prompt.  
 
@@ -47,6 +49,8 @@ The command has two options:
 
 -l file := file to load user-written Guile Scheme functions from
 
+-s := do not prompt to save on exit, for use in scripting
+
 If you specify any other text as an argument to bal, it will execute the text as if it were entered at the command prompt and then exit (prompting to save the result).
 
 ---
@@ -68,3 +72,6 @@ bal is Free Software, licensed under the terms of the GPL version 3.  You are fr
 ---
 
 To compile bal, type: make
+
+bal depends on libreadline, libcsv, libguile, and libgc.
+

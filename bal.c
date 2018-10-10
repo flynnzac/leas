@@ -4,18 +4,18 @@
 */
 
 /* 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+   This program is free software: you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   You should have received a copy of the GNU General Public License
+   along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 
@@ -46,10 +46,10 @@ typedef struct tsct tsct;
 
 enum account_type
   {
-    EXPENSE,
-    INCOME,
-    ASSET,
-    LIABILITY
+   EXPENSE,
+   INCOME,
+   ASSET,
+   LIABILITY
   };
 
 typedef enum account_type account_type;
@@ -115,6 +115,7 @@ struct book bal_book;
 SCM bal_cur_acct;
 int bal_prompton;
 SCM bal_cur_file;
+int bal_prompt_exit;
 
 /* utility functions */
 
@@ -1745,12 +1746,15 @@ bal_exit (int exit_code)
 {
   int c;
 
-  printf("Save file? (y/n) ");
-  c = getchar();
-
-  if (c=='y')
+  if (bal_prompt_exit)
     {
-      (void) bal_write (bal_cur_file);
+      printf("Save file? (y/n) ");
+      c = getchar();
+
+      if (c=='y')
+	{
+	  (void) bal_write (bal_cur_file);
+	}
     }
   delete_book (&bal_book);
   exit (exit_code);
@@ -1767,13 +1771,15 @@ main (int argc, char** argv)
   int i;
   int k;
 
+  bal_prompt_exit = 1;
+  
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func();
   bal_cur_acct = SCM_UNDEFINED;
 
   bal_cur_file = scm_from_locale_string ("_");
   
-  while ((k = getopt(argc, argv, "f:")) != -1)
+  while ((k = getopt(argc, argv, "f:l:s")) != -1)
     {
       switch (k)
         {
@@ -1783,6 +1789,9 @@ main (int argc, char** argv)
         case 'f':
           bal_cur_file = scm_from_locale_string (optarg);
           break;
+	case 's':
+	  bal_prompt_exit = 0;
+	  break;
         case '?':
           if (optopt=='l')
             {
