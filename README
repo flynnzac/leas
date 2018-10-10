@@ -1,5 +1,6 @@
 bal
 an extensible tool to keep personal accounts in order and to study past spending habits
+----
 
 bal is an interactive command line personal accounting program to keep your books in order and to study past spending habits. It can be scripted and extended using Guile, a simple programming language (a Scheme dialect) from the GNU project (https://www.gnu.org/software/guile/).  The basic editing and transaction entry commands are built in, but the flexibility of having a full programming language to use to analyze your spending history enables the user to build custom reports (for example, a report of monthly spending on transactions with "coffee" in their description output to some CSV to be plotted in R).
 
@@ -30,13 +31,19 @@ ca := display current account
 w := write out a saved bal file
 r := read in a saved bal file
 
+---
+
 At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example - display "hello, world" - is translated into the Scheme command - (display "hello, world") - and prints "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.  In fact, the above commands are just Scheme functions, mostly using the function "bal/call" to prompt for the options the program needs.
+
+---
 
 The command has two options:
 
 -f file := specify a file to load data from (specify it without the ".btar" extension; to load "zach.btar", type -f zach)
 
 -l file := file to load user-written Guile Scheme functions from
+
+---
 
 The source code is a single C file (bal.c) which has some Scheme in it as well.  It is about 1850 lines of code as of 2018-10-09.
 
@@ -47,3 +54,11 @@ bal/call has the following format:
 (bal/call "function name to call" (list (cons "Account" "account") (cons "File" "string") ...))
 
 Where the first option is the function name to call and the second is a list with pairs giving the command prompt to print to ask for input and the second argument specifies the type of argument.
+
+---
+
+bal is Free Software, licensed under the terms of the GPL version 3.  You are free to modify and redistribute the software so long as you allow others to do so as well.
+
+---
+
+To compile bal, type: make
