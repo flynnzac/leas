@@ -899,7 +899,6 @@ bal_call (SCM func, SCM options)
 
     }
 
-  printf("Command: %s\n", command);
   SCM ret = scm_c_catch (SCM_BOOL_T,
                          exec_string_safe,
                          command,
