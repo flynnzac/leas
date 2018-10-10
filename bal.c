@@ -215,7 +215,7 @@ SCM
 total_transactions (const account* acct)
 {
   int i;
-  double total = acct->ob;
+  double total = 0.0;
 
   for (i=0; i < acct->n_tsct; i++)
     {
@@ -1541,7 +1541,7 @@ bal_total_by_account_type ()
              (ret,
               scm_list_1
               (scm_cons(scm_from_locale_string("expense"),
-                        scm_product(scm_from_double(-1.0),tmp)))));
+                        tmp))));
           break;
         case INCOME:
           ret = scm_append
@@ -1565,7 +1565,7 @@ bal_total_by_account_type ()
              (ret,
               scm_list_1
               (scm_cons(scm_from_locale_string("liability"),
-                        scm_product(scm_from_double(-1.0),tmp)))));
+                        tmp))));
           break;
         }
           
@@ -1860,7 +1860,7 @@ bal_standard_func ()
                accts)
               (display
                (string-append
-                "Balance check: "
+                "balance check: "
                 (number->string (apply + (map cdr accts)))
                 "\n")))))
 
