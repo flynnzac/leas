@@ -1282,7 +1282,7 @@ bal_get_current_acct ()
 
 /* Get number of accounts */
 SCM
-bal_get_number_account ()
+bal_get_number_of_accounts ()
 {
   return scm_from_int(bal_book.n_account);
 }
@@ -1607,8 +1607,8 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/get-account", 1, 0, 0, &bal_get_account);
   scm_c_define_gsubr("bal/get-all-accounts", 0, 0, 0,
                      &bal_get_all_accounts);
-  scm_c_define_gsubr("bal/get-number-account", 0, 0, 0,
-                     &bal_get_number_account);
+  scm_c_define_gsubr("bal/get-number-of-accounts", 0, 0, 0,
+                     &bal_get_number_of_accounts);
   
   /* Total accounts */
   scm_c_define_gsubr("bal/total-account", 1, 0, 0, &bal_total_account);
@@ -1797,7 +1797,7 @@ bal_standard_func ()
 
            (define bal/prompt
             (lambda ()
-             (if (= (bal/get-number-account) 0)
+             (if (= (bal/get-number-of-accounts) 0)
                ":> "
                  (string-append
                   "("
