@@ -610,13 +610,18 @@ write_transactions (const char* file, account* acct)
   fclose(fp);
 }
 
-void
+int
 write_accounts (const char* file)
 {
   int i;
   FILE* fp;
 
   fp = fopen (file, "w");
+  if (fp==NULL)
+    {
+      printf("Could not open file to write accounts.\n");
+      return 1;
+    }
   for (i=0; i < bal_book.n_account; i++)
     {
       switch (bal_book.accounts[i].type)
@@ -640,41 +645,85 @@ write_accounts (const char* file)
               bal_book.accounts[i].curr);
     }
   fclose(fp);
+  return 0;
 }
 
-void
+int
 write_out (const char* base)
 {
   char* account_fn;
   char* tsct_fn;
-  char* dir_cmd;
   char* tar_cmd;
   char* rm_cmd;
+  char* dir_cmd;
+  char* tmp_dir;
+  char buffer[100];
   int i;
 
-  dir_cmd = malloc(sizeof(char)*(strlen(base)+strlen("mkdir ")+1));
+  FILE* fp;
+
+  fp = popen("mktemp -d", "r");
+
+  if (fp == NULL)
+    {
+      printf("Could not create temporary directory.\n");
+      return 1;
+    }
+
+  i = 0;
+  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
+    {
+      if (i==0)
+	{
+	  tmp_dir = malloc(sizeof(char)*101);
+	  strcpy(tmp_dir, buffer);
+	}
+      else
+	{
+	  tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
+	  strcat(tmp_dir, buffer);
+	}
+      i++;
+    }
+  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
+  pclose(fp);
+
+  dir_cmd = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("mkdir ")+3));
+
   strcpy(dir_cmd, "mkdir ");
+  strcat(dir_cmd, tmp_dir);
+  strcat(dir_cmd, "/");
   strcat(dir_cmd, base);
   system(dir_cmd);
-  free(dir_cmd);
 
-  account_fn = malloc(sizeof(char)*(strlen(base)+strlen("accounts.csv")+2));
-  strcpy(account_fn, base);
+  
+  account_fn = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("accounts.csv")+3));
+
+  strcpy(account_fn, tmp_dir);
+  strcat(account_fn, "/");
+  strcat(account_fn, base);
   strcat(account_fn, "/");
   strcat(account_fn, "accounts.csv");
-
-  write_accounts (account_fn);
+  i = write_accounts (account_fn);
   free(account_fn);
+  if (i != 0)
+    {
+      free(tmp_dir);
+      return i;
+    }
 
   for (i=0; i < bal_book.n_account; i++)
     {
       tsct_fn = malloc
         (sizeof(char)*(strlen(bal_book.accounts[i].name) +
                        strlen(base) +
+		       strlen(tmp_dir) + 
                        strlen("/.csv") +
-                       1));
+                       2));
 
-      strcpy(tsct_fn, base);
+      strcpy(tsct_fn, tmp_dir);
+      strcat(tsct_fn, "/");
+      strcat(tsct_fn, base);
       strcat(tsct_fn, "/");
       strcat(tsct_fn, bal_book.accounts[i].name);
       strcat(tsct_fn, ".csv");
@@ -683,20 +732,32 @@ write_out (const char* base)
       free(tsct_fn);
     }
 
-  tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+strlen(base)+strlen(".btar ")+strlen(base)+1));
+  tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+
+				 strlen(base)+
+				 strlen(".btar -C ")+
+				 strlen(tmp_dir)+
+				 strlen(base)+2));
   strcpy(tar_cmd, "tar caf ");
   strcat(tar_cmd, base);
-  strcat(tar_cmd, ".btar ");
+  strcat(tar_cmd, ".btar -C ");
+  strcat(tar_cmd, tmp_dir);
+  strcat(tar_cmd, " ");
   strcat(tar_cmd, base);
   system(tar_cmd);
   free(tar_cmd);
 
-  rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+strlen(base)+1));
+  rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+
+				strlen(tmp_dir)+
+				strlen(base)+2));
   strcpy(rm_cmd, "rm -R ");
+  strcat(rm_cmd, tmp_dir);
+  strcat(rm_cmd, "/");
   strcat(rm_cmd, base);
   system(rm_cmd);
   free(rm_cmd);
-  
+  free(tmp_dir);
+
+  return 0;
   
 }
 
@@ -1574,7 +1635,6 @@ register_guile_functions (void* data)
 void
 bal_standard_func ()
 {
-  scm_c_eval_string ("");
   scm_c_eval_string
     (QUOTE(
            (define bal/number-to-quick-list 10)
@@ -1621,21 +1681,23 @@ bal_standard_func ()
 
            (define print-tscts
             (lambda (k)
-             (map-in-order
-              (lambda (x)
-               (display
-                (string-append
-                 (number->string (list-ref x 2))
-                 "-"
-                 (number->string (list-ref x 3))
-                 "-"
-                 (number->string (list-ref x 4))
+	     (if (list? k)
+	       (map-in-order
+		(lambda (x)
+		 (display
+		  (string-append
+		   (number->string (list-ref x 2))
+		   "-"
+		   (number->string (list-ref x 3))
+		   "-"
+		   (number->string (list-ref x 4))
+		   " "
+		   (list-ref x 0)
                  " "
-                 (list-ref x 0)
-                 " "
-                 (number->string (list-ref x 1))
-                 "\n")))
-              k)))
+		   (number->string (list-ref x 1))
+		   "\n")))
+		k))))
+
 
 
 
