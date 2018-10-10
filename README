@@ -1,0 +1,21 @@
+bal
+an extensible tool to keep personal accounts in order and to study past spending habits
+
+bal is an interactive command line program that can be scripted and extended using Guile, a Scheme dialect from the GNU project.  The basic editing and transaction entry commands are built in, but the flexibility of having a full programming language to use to analyze your spending history enables the user to build custom reports (for example, a report of monthly spending on transactions with "coffee" in their description).
+
+When the command "bal" is entered at the command prompt, you are greated by bal's prompt.  At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example, display "hello, world", would translate into the Scheme command (display "hello, world") and print "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.
+
+The main commands to add/edit/delete/list transactions and accounts are:
+
+aa := add account
+at := add transaction to current account
+
+ea := rename account
+et := edit transaction
+
+da := delete account
+dt := delete transaction
+
+la := list accounts
+lt := list transactions in current account
+

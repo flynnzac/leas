@@ -1041,8 +1041,16 @@ bal_et (SCM at_pair)
   
   int k = scm_to_int (account);
   int j = scm_to_int (ts);
+  tsct* t;
 
-  tsct* t = &bal_book.accounts[k].tscts[j];
+  if (j < bal_book.accounts[k].n_tsct)
+    {
+      t = &bal_book.accounts[k].tscts[j];
+    }
+  else
+    {
+      return SCM_UNDEFINED;
+    }
     
   char* option1;
   char* option2;
