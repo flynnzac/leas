@@ -192,21 +192,22 @@ read_book_accounts_from_csv (struct book* book,
 }
 
 void
-read_all_transactions_into_book (struct book* book,
-                                 const char* tr_file)
+read_all_transactions_into_book (struct book* book)
+
 {
   FILE* fp;
   int i, error;
   struct csv_parser p;
   char buf[1024];
   size_t bytes_read;
-  char title[1024];
+  char* title;
 
 
   for (i=0; i < book->n_account; i++)
     {
-      strcpy(title, tr_file);
-      strcat(title, book->accounts[i].name);
+      title = malloc(sizeof(char)*(strlen(book->accounts[i].name)+
+                                   strlen(".csv")+1));
+      strcpy(title, book->accounts[i].name);
       strcat(title, ".csv");
       
       error = csv_init (&p,0);
@@ -237,8 +238,19 @@ read_all_transactions_into_book (struct book* book,
       csv_fini(&p, transaction_cb1, NULL, &book->accounts[i]);
       fclose(fp);
       csv_free(&p);
-      
+      free(title); 
     }
+}
+
+int
+read_in (const char* base)
+{
+  /* untar archive */
+
+  /* read in accounts */
+
+  /* read in transactions */
+  
 }
 
 

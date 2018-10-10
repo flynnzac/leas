@@ -410,7 +410,15 @@ bal_write (SCM file)
   char* file_c = scm_to_locale_string (file);
   write_out(file_c);
   free(file_c);
+  bal_cur_file = file;
   return SCM_UNDEFINED;
+}
+
+/* Get current file */
+SCM
+bal_get_current_file ()
+{
+  return bal_cur_file;
 }
 
 /* Register all functions */
@@ -430,9 +438,11 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/da", 1, 0, 0, &bal_da);
   scm_c_define_gsubr("bal/dt", 1, 0, 0, &bal_dt);
 
-  /* Get current account name */
+  /* Get global variables */
   scm_c_define_gsubr("bal/get-current-account", 0, 0, 0,
                      &bal_get_current_acct);
+  scm_c_define_gsubr("bal/get-current-file", 0, 0, 0,
+                     &bal_get_current_file);
 
   /* Get transactions */
   scm_c_define_gsubr("bal/get-transactions", 2, 0, 0,

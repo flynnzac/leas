@@ -25,6 +25,14 @@ SCM bal_cur_file;
 #include "bal_interface.h"
 #include "bal_scm.h"
 
+void
+bal_exit (int exit_code)
+{
+  (void) bal_write (bal_cur_file);
+  delete_book (&bal_book);
+  exit (exit_code);
+}
+
 
 int
 main (int argc, char** argv)
@@ -37,6 +45,8 @@ main (int argc, char** argv)
 
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func();
+
+  bal_cur_file = scm_from_locale_string ("_");
   
   while ((k = getopt(argc, argv, "f:")) != -1)
     {
@@ -71,15 +81,20 @@ main (int argc, char** argv)
         }
     }
 
-  for (i=optind; i < argc; i++)
+  if (optind < argc)
     {
-      ret = scm_c_catch (SCM_BOOL_T,
-                         exec_string_safe_history,
-                         argv[i],
-                         handle_error,
-                         argv[i],
-                         NULL,
-                         NULL);
+      for (i=optind; i < argc; i++)
+        {
+          ret = scm_c_catch (SCM_BOOL_T,
+                             exec_string_safe_history,
+                             argv[i],
+                             handle_error,
+                             argv[i],
+                             NULL,
+                             NULL);
+        }
+
+      bal_exit(0);
     }
 
 
@@ -100,8 +115,7 @@ main (int argc, char** argv)
       free(command);
     }
 
-  write_out("testbase");
-  delete_book(&bal_book);
+  bal_exit(0);
   return 0;
 }
 

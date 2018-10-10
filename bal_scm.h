@@ -150,6 +150,12 @@ bal_standard_func ()
             (lambda ()
              (display
               (string-append (bal/get-current-account) "\n"))))
+           
+           (define w
+            (lambda* (#:optional x)
+             (if x
+              (bal/write x)
+              (bal/write (bal/get-current-file)))))
            ));
       
 }

@@ -96,10 +96,10 @@ write_out (const char* base)
       free(tsct_fn);
     }
 
-  tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+strlen(base)+strlen(".tar ")+strlen(base)+1));
+  tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+strlen(base)+strlen(".baltar ")+strlen(base)+1));
   strcpy(tar_cmd, "tar caf ");
   strcat(tar_cmd, base);
-  strcat(tar_cmd, ".tar ");
+  strcat(tar_cmd, ".baltar ");
   strcat(tar_cmd, base);
   system(tar_cmd);
   free(tar_cmd);
