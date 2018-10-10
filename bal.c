@@ -1468,8 +1468,13 @@ bal_read (SCM file)
 {
   char* file_c = scm_to_locale_string (file);
   delete_book (&bal_book);
+  bal_book.n_account = 0;
   read_in (file_c);
   free(file_c);
+  if (bal_book.n_account > 0)
+    {
+      bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
+    }
   return SCM_UNDEFINED;
 }
 
@@ -1568,7 +1573,7 @@ bal_standard_func ()
                (cons "Description" "string")
                (cons "Day" "day")))))
 
-           (define lastn
+           (define ltn
             (lambda ()
              (let ((tscts (bal/call "bal/get-transactions"
                            (list

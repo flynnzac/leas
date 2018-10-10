@@ -17,5 +17,23 @@ da := delete account
 dt := delete transaction
 
 la := list accounts
-lt := list transactions in current account
+lt := list transactions in current account (the last bal/number-to-quick-list transactions; by default: 10)
+ltn := list transactions in current account, prompt for number to list
 
+bt := total accounts by type (income, expense, asset, liability)
+
+re := list transactions in current account matching a regular expression
+
+sa := set current account
+ca := display current account
+
+w := write out a saved bal file
+r := read in a saved bal file
+
+The command has two options:
+
+-f file := specify a file to load data from (specify it without the ".btar" extension; to load "zach.btar", type -f zach)
+
+-l file := file to load user-written Guile Scheme functions from
+
+The source code is a single C file (bal.c).  It is about 1850 lines of code as of 2018-10-09.
