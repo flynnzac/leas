@@ -39,7 +39,9 @@ r := read in a saved bal file
 
 ---
 
-At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example - display "hello, world" - is translated into the Scheme command - (display "hello, world") - and prints "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.  In fact, the above commands are just Scheme functions, mostly using the function "bal/call" to prompt for the options the program needs.
+At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example - display "hello, world" - is translated into the Scheme command - (display "hello, world") - and prints "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.
+
+In fact, the above commands are Scheme functions.  To see their source code, look at the function called "bal_standard_func()" in bal.c.  They are mostly wrappers around the functions that add transactions or accounts, for example, which prompt the user interactively for the arguments to the function using "bal/call" which is defined as bal_call in bal.c and which you may be interested in if writing an extension.  For scripting, using the non-interactive version of the functions is preferable.  The noninteractive versions of commands are usually "bal/XX" if "XX" is the interactive command.
 
 ---
 
