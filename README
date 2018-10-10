@@ -47,6 +47,8 @@ The command has two options:
 
 -l file := file to load user-written Guile Scheme functions from
 
+If you specify any other text as an argument to bal, it will execute the text as if it were entered at the command prompt and then exit (prompting to save the result).
+
 ---
 
 The source code is a single C file (bal.c) which has some Scheme in it as well.  It is about 1850 lines of code as of 2018-10-09.
