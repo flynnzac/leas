@@ -2,6 +2,10 @@ bal
 an extensible tool to keep personal accounts in order and to study past spending habits
 ----
 
+Author: Zach Flynn <zlflynn@gmail.com>
+
+---
+
 bal is an interactive command line personal accounting program to keep your books in order and to study past spending habits. It can be scripted and extended using Guile, a simple programming language (a Scheme dialect) from the GNU project (https://www.gnu.org/software/guile/).  The basic editing and transaction entry commands are built in, but the flexibility of having a full programming language to use to analyze your spending history enables the user to build custom reports (for example, a report of monthly spending on transactions with "coffee" in their description output to some CSV to be plotted in R).
 
 When the command "bal" is entered at the command prompt, you are greated by bal's prompt.  
