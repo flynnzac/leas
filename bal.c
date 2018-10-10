@@ -227,6 +227,43 @@ total_transactions (const account* acct)
   return scm_from_double(total);
 }
 
+char*
+create_tmp_dir ()
+{
+  int i;
+  char* tmp_dir;
+  char buffer[100];
+  FILE* fp;
+
+  fp = popen("mktemp -d", "r");
+
+  if (fp == NULL)
+    {
+      fprintf(stderr, "Could not create temporary directory.\n");
+      return NULL;
+    }
+
+  i = 0;
+  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
+    {
+      if (i==0)
+	{
+	  tmp_dir = malloc(sizeof(char)*101);
+	  strcpy(tmp_dir, buffer);
+	}
+      else
+	{
+	  tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
+	  strcat(tmp_dir, buffer);
+	}
+      i++;
+    }
+  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
+  pclose(fp);
+
+  return tmp_dir;
+}
+
 /* selection functions */
 
 char*
@@ -490,7 +527,8 @@ read_book_accounts_from_csv (struct book* book,
 
 void
 read_all_transactions_into_book (struct book* book,
-                                 const char* base)
+                                 const char* base,
+				 const char* tmp_dir)
 
 {
   FILE* fp;
@@ -504,11 +542,14 @@ read_all_transactions_into_book (struct book* book,
   for (i=0; i < book->n_account; i++)
     {
       name = malloc(sizeof(char)*(strlen(base) +
+				  strlen(tmp_dir) +
 				  strlen("/") +
 				  strlen(book->accounts[i].name)+
-				  strlen(".csv")+1));
+				  strlen(".csv")+2));
 
-      strcpy(name, base);
+      strcpy(name, tmp_dir);
+      strcat(name, "/");
+      strcat(name, base);
       strcat(name, "/");
       strcat(name, book->accounts[i].name);
       strcat(name, ".csv");
@@ -557,19 +598,36 @@ read_in (const char* base)
   char* untar_cmd;
   char* account_file;
   char* rm_cmd;
+  char* tmp_dir;
+
+  /* create tmp dir */
+  tmp_dir = create_tmp_dir();
+  if (tmp_dir==NULL)
+    return 1;
 
   /* untar archive */
-  untar_cmd = malloc (sizeof(char)*(strlen("tar xaf ")+strlen(base)+strlen(".btar")+1));
-  strcpy (untar_cmd, "tar xaf ");
-  strcat (untar_cmd, base);
-  strcat (untar_cmd, ".btar");
-  system (untar_cmd);
-  free (untar_cmd);
+  untar_cmd = malloc(sizeof(char)*(strlen("tar xaf ")+
+				   strlen(base)+
+				    strlen(".btar -C ")+
+				    strlen(tmp_dir)+1));
+  strcpy(untar_cmd, "tar xaf ");
+  strcat(untar_cmd, base);
+  strcat(untar_cmd, ".btar");
+  strcat(untar_cmd, " -C ");
+  strcat(untar_cmd, tmp_dir);
+	  
+  system(untar_cmd);
+  free(untar_cmd);
 
   /* read in accounts */
-  account_file = malloc (sizeof(char)*(strlen(base) + strlen("/accounts.csv")+1));
-  strcpy (account_file, base);
-  strcat (account_file, "/accounts.csv");
+  account_file = malloc(sizeof(char)*(strlen(base) +
+				      strlen(tmp_dir) +
+				      strlen("/accounts.csv")+
+				      2));
+  strcpy(account_file, tmp_dir);
+  strcat(account_file, "/");
+  strcat(account_file, base);
+  strcat(account_file, "/accounts.csv");
 
   read_book_accounts_from_csv (&bal_book, account_file);
   free(account_file);
@@ -577,14 +635,22 @@ read_in (const char* base)
   /* read in transactions */
 
   read_all_transactions_into_book (&bal_book,
-                                   base);
+                                   base,
+				   tmp_dir);
 
   /* clean up */
-  rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") + strlen(base)+1));
+  rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
+				strlen(tmp_dir) + 
+				strlen(base)+
+				2));
   strcpy(rm_cmd, "rm -R ");
+  strcat(rm_cmd, tmp_dir);
+  strcat(rm_cmd, "/");
   strcat(rm_cmd, base);
   system(rm_cmd);
   free(rm_cmd);
+
+  free(tmp_dir);
   
   /* return success */
   return 0;
@@ -661,36 +727,13 @@ write_out (const char* base)
   char* rm_cmd;
   char* dir_cmd;
   char* tmp_dir;
-  char buffer[100];
+
   int i;
 
-  FILE* fp;
-
-  fp = popen("mktemp -d", "r");
-
-  if (fp == NULL)
-    {
-      printf("Could not create temporary directory.\n");
-      return 1;
-    }
-
-  i = 0;
-  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
-    {
-      if (i==0)
-	{
-	  tmp_dir = malloc(sizeof(char)*101);
-	  strcpy(tmp_dir, buffer);
-	}
-      else
-	{
-	  tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
-	  strcat(tmp_dir, buffer);
-	}
-      i++;
-    }
-  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
-  pclose(fp);
+  tmp_dir = create_tmp_dir();
+  if (tmp_dir==NULL)
+    return 1;
+  
 
   dir_cmd = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("mkdir ")+3));
 
