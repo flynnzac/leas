@@ -47,11 +47,11 @@ The command has two options:
 
 -f file := specify a file to load data from (specify it without the ".btar" extension; to load "zach.btar", type -f zach)
 
--l file := file to load user-written Guile Scheme functions from
+-l file := load user-written Guile Scheme functions from file
 
 -s := do not prompt to save on exit, for use in scripting
 
-If you specify any other text as an argument to bal, it will execute the text as if it were entered at the command prompt and then exit (prompting to save the result).
+If you specify any other text as an argument to bal, it will execute the text as if it were entered at the command prompt and then exit (prompting to save the result unless -s is given).
 
 ---
 
