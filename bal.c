@@ -504,9 +504,9 @@ read_all_transactions_into_book (struct book* book,
   for (i=0; i < book->n_account; i++)
     {
       name = malloc(sizeof(char)*(strlen(base) +
-                                   strlen("/") +
-                                   strlen(book->accounts[i].name)+
-                                   strlen(".csv")+1));
+				  strlen("/") +
+				  strlen(book->accounts[i].name)+
+				  strlen(".csv")+1));
 
       strcpy(name, base);
       strcat(name, "/");
@@ -1697,7 +1697,7 @@ bal_standard_func ()
 		   (number->string (list-ref x 4))
 		   " "
 		   (list-ref x 0)
-                 " "
+		   " "
 		   (number->string (list-ref x 1))
 		   "\n")))
 		k))))
