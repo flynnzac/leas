@@ -59,9 +59,11 @@ The saved file is a tar archive with a number of CSV files, describing the accou
 
 ---
 
-The source code is a single C file (bal.c) which has some Scheme in it as well.  It is about 1850 lines of code as of 2018-10-09.
+The source code is a single C file (bal.c) which has some Scheme in it as well.  It is about 1700 lines of code as of 2018-10-10.
 
-If you find yourself wanting to write an extension that has a similar feel to the main editing commands, see the function "bal_standard_functions ()" in the C source code and the "bal_call" C function/the "bal/call" Scheme function.
+If you find yourself wanting to write an extension that has a similar feel to the main editing commands, see the function "bal_standard_functions ()" in the C source code and the "bal_call" C function/the "bal/call" Scheme function to get started.
+
+The prompt is whatever is returned by the evaluating the Scheme expression "(bal/prompt)" so redefining this function can customize your prompt to show additional information.  By default, the prompt indicates what the current account is, see the definition of bal/prompt in "bal_standard_functions()" in bal.c.
 
 bal/call has the following format:
 
