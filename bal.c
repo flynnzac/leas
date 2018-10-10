@@ -498,20 +498,20 @@ read_all_transactions_into_book (struct book* book,
   struct csv_parser p;
   char buf[1024];
   size_t bytes_read;
-  char* title;
+  char* name;
 
 
   for (i=0; i < book->n_account; i++)
     {
-      title = malloc(sizeof(char)*(strlen(base) +
+      name = malloc(sizeof(char)*(strlen(base) +
                                    strlen("/") +
                                    strlen(book->accounts[i].name)+
                                    strlen(".csv")+1));
 
-      strcpy(title, base);
-      strcat(title, "/");
-      strcat(title, book->accounts[i].name);
-      strcat(title, ".csv");
+      strcpy(name, base);
+      strcat(name, "/");
+      strcat(name, book->accounts[i].name);
+      strcat(name, ".csv");
       
       error = csv_init (&p,0);
       if (error != 0)
@@ -520,8 +520,13 @@ read_all_transactions_into_book (struct book* book,
           exit(1);
         }
 
-      fp = fopen(title, "rb");
-      if (!fp) exit(1);
+      fp = fopen(name, "rb");
+      free(name);
+      if (fp==NULL)
+	{
+	  fprintf(stderr, "Data not found for account: %s\n", book->accounts[i].name);
+	  continue;
+	}
 
       book->accounts[i].n_pos = 0;
       book->accounts[i].n_tsct = 0;
@@ -541,7 +546,6 @@ read_all_transactions_into_book (struct book* book,
       csv_fini(&p, transaction_cb1, NULL, &book->accounts[i]);
       fclose(fp);
       csv_free(&p);
-      free(title); 
     }
 }
 
