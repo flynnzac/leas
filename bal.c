@@ -45,10 +45,10 @@ typedef struct tsct tsct;
 
 enum account_type
   {
-   EXPENSE,
-   INCOME,
-   ASSET,
-   LIABILITY
+    EXPENSE,
+    INCOME,
+    ASSET,
+    LIABILITY
   };
 
 typedef enum account_type account_type;
@@ -246,15 +246,15 @@ create_tmp_dir ()
   while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
     {
       if (i==0)
-	{
-	  tmp_dir = malloc(sizeof(char)*101);
-	  strcpy(tmp_dir, buffer);
-	}
+        {
+          tmp_dir = malloc(sizeof(char)*101);
+          strcpy(tmp_dir, buffer);
+        }
       else
-	{
-	  tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
-	  strcat(tmp_dir, buffer);
-	}
+        {
+          tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
+          strcat(tmp_dir, buffer);
+        }
       i++;
     }
   tmp_dir[strcspn(tmp_dir, "\n")] = 0;
@@ -527,7 +527,7 @@ read_book_accounts_from_csv (struct book* book,
 void
 read_all_transactions_into_book (struct book* book,
                                  const char* base,
-				 const char* tmp_dir)
+                                 const char* tmp_dir)
 
 {
   FILE* fp;
@@ -541,10 +541,10 @@ read_all_transactions_into_book (struct book* book,
   for (i=0; i < book->n_account; i++)
     {
       name = malloc(sizeof(char)*(strlen(base) +
-				  strlen(tmp_dir) +
-				  strlen("/") +
-				  strlen(book->accounts[i].name)+
-				  strlen(".csv")+2));
+                                  strlen(tmp_dir) +
+                                  strlen("/") +
+                                  strlen(book->accounts[i].name)+
+                                  strlen(".csv")+2));
 
       strcpy(name, tmp_dir);
       strcat(name, "/");
@@ -563,10 +563,10 @@ read_all_transactions_into_book (struct book* book,
       fp = fopen(name, "rb");
       free(name);
       if (fp==NULL)
-	{
-	  fprintf(stderr, "Data not found for account: %s\n", book->accounts[i].name);
-	  continue;
-	}
+        {
+          fprintf(stderr, "Data not found for account: %s\n", book->accounts[i].name);
+          continue;
+        }
 
       book->accounts[i].n_pos = 0;
       book->accounts[i].n_tsct = 0;
@@ -606,9 +606,9 @@ read_in (const char* base)
 
   /* untar archive */
   untar_cmd = malloc(sizeof(char)*(strlen("tar xaf ")+
-				   strlen(base)+
-				    strlen(".btar -C ")+
-				    strlen(tmp_dir)+1));
+                                   strlen(base)+
+                                   strlen(".btar -C ")+
+                                   strlen(tmp_dir)+1));
   strcpy(untar_cmd, "tar xaf ");
   strcat(untar_cmd, base);
   strcat(untar_cmd, ".btar");
@@ -620,9 +620,9 @@ read_in (const char* base)
 
   /* read in accounts */
   account_file = malloc(sizeof(char)*(strlen(base) +
-				      strlen(tmp_dir) +
-				      strlen("/accounts.csv")+
-				      2));
+                                      strlen(tmp_dir) +
+                                      strlen("/accounts.csv")+
+                                      2));
   strcpy(account_file, tmp_dir);
   strcat(account_file, "/");
   strcat(account_file, base);
@@ -635,13 +635,13 @@ read_in (const char* base)
 
   read_all_transactions_into_book (&bal_book,
                                    base,
-				   tmp_dir);
+                                   tmp_dir);
 
   /* clean up */
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
-				strlen(tmp_dir) + 
-				strlen(base)+
-				2));
+                                strlen(tmp_dir) + 
+                                strlen(base)+
+                                2));
   strcpy(rm_cmd, "rm -R ");
   strcat(rm_cmd, tmp_dir);
   strcat(rm_cmd, "/");
@@ -763,7 +763,7 @@ write_out (const char* base)
       tsct_fn = malloc
         (sizeof(char)*(strlen(bal_book.accounts[i].name) +
                        strlen(base) +
-		       strlen(tmp_dir) + 
+                       strlen(tmp_dir) + 
                        strlen("/.csv") +
                        2));
 
@@ -779,10 +779,10 @@ write_out (const char* base)
     }
 
   tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+
-				 strlen(base)+
-				 strlen(".btar -C ")+
-				 strlen(tmp_dir)+
-				 strlen(base)+2));
+                                 strlen(base)+
+                                 strlen(".btar -C ")+
+                                 strlen(tmp_dir)+
+                                 strlen(base)+2));
   strcpy(tar_cmd, "tar caf ");
   strcat(tar_cmd, base);
   strcat(tar_cmd, ".btar -C ");
@@ -793,8 +793,8 @@ write_out (const char* base)
   free(tar_cmd);
 
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+
-				strlen(tmp_dir)+
-				strlen(base)+2));
+                                strlen(tmp_dir)+
+                                strlen(base)+2));
   strcpy(rm_cmd, "rm -R ");
   strcat(rm_cmd, tmp_dir);
   strcat(rm_cmd, "/");
@@ -967,7 +967,9 @@ bal_call (SCM func, SCM options)
           opt = malloc(sizeof(char)*(((k % 10) + 1) + 1 +
                                      ((j % 10) + 1) + 1));
 
-          sprintf(opt, "(cons %d %d)", j, k);
+          sprintf(opt, "(cons %d %d)", k, j);
+
+          printf("%s\n", opt);
           
           command = realloc(command,
                             (strlen(command)+
@@ -1456,6 +1458,27 @@ bal_get_all_accounts ()
 }
 
 
+/* Get opening balances */
+SCM
+bal_opening_balances ()
+{
+  SCM ret = SCM_EOL;
+  int i;
+
+  for (i=0; i < bal_book.n_account; i++)
+    {
+      ret = scm_append
+        (scm_list_2
+         (ret,
+          scm_list_1
+          (scm_cons
+           (scm_from_locale_string(bal_book.accounts[i].name),
+            scm_from_double(bal_book.accounts[i].ob)))));
+    }
+
+  return ret;
+}
+
 /* Get total of an account by name */
 
 SCM
@@ -1513,32 +1536,61 @@ bal_total_by_account_type ()
       switch (j)
         {
         case EXPENSE:
-          ret = scm_append(scm_list_2(ret,
-                                      scm_list_1
-                                      (scm_cons(scm_from_locale_string("expense"),
-                                                tmp))));
+          ret = scm_append
+            (scm_list_2
+             (ret,
+              scm_list_1
+              (scm_cons(scm_from_locale_string("expense"),
+                        scm_product(scm_from_double(-1.0),tmp)))));
           break;
         case INCOME:
-          ret = scm_append(scm_list_2(ret,
-                                      scm_list_1
-                                      (scm_cons(scm_from_locale_string("income"),
-                                                tmp))));
+          ret = scm_append
+            (scm_list_2
+             (ret,
+              scm_list_1
+              (scm_cons(scm_from_locale_string("income"),
+                        tmp))));
           break;
         case ASSET:
-          ret = scm_append(scm_list_2(ret,
-                                      scm_list_1
-                                      (scm_cons(scm_from_locale_string("asset"),
-                                                tmp))));
+          ret = scm_append
+            (scm_list_2
+             (ret,
+              scm_list_1
+              (scm_cons(scm_from_locale_string("asset"),
+                        tmp))));
           break;
         case LIABILITY:
-          ret = scm_append(scm_list_2(ret,
-                                      scm_list_1
-                                      (scm_cons(scm_from_locale_string("liability"),
-                                                tmp))));
+          ret = scm_append
+            (scm_list_2
+             (ret,
+              scm_list_1
+              (scm_cons(scm_from_locale_string("liability"),
+                        scm_product(scm_from_double(-1.0),tmp)))));
           break;
         }
           
     }
+
+  tmp = scm_from_double(0.0);
+  for (i=0; i < bal_book.n_account; i++)
+    {
+      if (bal_book.accounts[i].type == INCOME ||
+          bal_book.accounts[i].type == ASSET)
+        {
+          tmp = scm_difference(tmp,
+                               scm_from_double(bal_book.accounts[i].ob));
+        }
+      else
+        {
+          tmp = scm_sum(tmp,
+                        scm_from_double(bal_book.accounts[i].ob));
+        }
+    }
+  
+  ret = scm_append
+    (scm_list_2
+     (ret, scm_list_1(scm_cons(scm_from_locale_string("balances"),
+                               tmp))));
   
   return ret;
 }
@@ -1666,7 +1718,10 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/set-account", 1, 0, 0, &bal_set_account);
   scm_c_define_gsubr("bal/write", 1, 0, 0, &bal_write);
   scm_c_define_gsubr("bal/read", 1, 0, 0, &bal_read);
-  
+
+  /* get opening balances for accounts */
+  scm_c_define_gsubr("bal/opening-balances", 0, 0, 0,
+                     &bal_opening_balances);
 
   /* generic method to create interactive commands */
   scm_c_define_gsubr("bal/call", 2, 0, 0, &bal_call);
@@ -1727,22 +1782,22 @@ bal_standard_func ()
 
            (define print-tscts
             (lambda (k)
-	     (if (list? k)
-	       (map-in-order
-		(lambda (x)
-		 (display
-		  (string-append
-		   (number->string (list-ref x 2))
-		   "-"
-		   (number->string (list-ref x 3))
-		   "-"
-		   (number->string (list-ref x 4))
-		   " "
-		   (list-ref x 0)
-		   " "
-		   (number->string (list-ref x 1))
-		   "\n")))
-		k))))
+             (if (list? k)
+               (map-in-order
+                (lambda (x)
+                 (display
+                  (string-append
+                   (number->string (list-ref x 2))
+                   "-"
+                   (number->string (list-ref x 3))
+                   "-"
+                   (number->string (list-ref x 4))
+                   " "
+                   (list-ref x 0)
+                   " "
+                   (number->string (list-ref x 1))
+                   "\n")))
+                k))))
 
 
 
@@ -1802,7 +1857,12 @@ bal_standard_func ()
                   " "
                   (number->string (cdr x))
                   "\n")))
-               accts))))
+               accts)
+              (display
+               (string-append
+                "Balance check: "
+                (number->string (apply + (map cdr accts)))
+                "\n")))))
 
 
            (define re
@@ -1860,9 +1920,9 @@ bal_exit (int exit_code)
       c = getchar();
 
       if (c=='y')
-	{
-	  (void) bal_write (bal_cur_file);
-	}
+        {
+          (void) bal_write (bal_cur_file);
+        }
     }
   delete_book (&bal_book);
   exit (exit_code);
@@ -1897,9 +1957,9 @@ main (int argc, char** argv)
         case 'f':
           bal_cur_file = scm_from_locale_string (optarg);
           break;
-	case 's':
-	  bal_prompt_exit = 0;
-	  break;
+        case 's':
+          bal_prompt_exit = 0;
+          break;
         case '?':
           if (optopt=='l')
             {
