@@ -1735,7 +1735,7 @@ bal_standard_func ()
     (QUOTE(
            (define bal/number-to-quick-list 10)
 
-      (define aa
+           (define aa
             (lambda ()
              (bal/call "bal/aa"
               (list
@@ -1744,7 +1744,7 @@ bal_standard_func ()
                (cons "Opening Balance" "real")
                (cons "Currency [1]" "currency")))))
 
-      (define at
+           (define at
             (lambda ()
              (bal/call "bal/at"
               (list
