@@ -23,6 +23,8 @@ et := edit transaction
 da := delete account
 dt := delete transaction
 
+t := transfer between accounts, the most used command.
+
 la := list accounts
 lt := list transactions in current account (the last bal/number-to-quick-list transactions; by default: 10)
 ltn := list transactions in current account, prompt for number to list
