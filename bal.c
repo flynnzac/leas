@@ -372,6 +372,7 @@ bal_select_day (struct tm* curtime_info,
 void
 transaction_cb1 (void* s, size_t len, void* data)
 {
+	/* todo: check whether buf can be removed, I think it is vestigal */
   account* acct = (account*) data;
   char buf[len+1];
   int i;
