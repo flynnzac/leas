@@ -1,6 +1,6 @@
 /* 
    bal, an extensible tool for keeping track of accounts
-   Zach Flynn <zlflynn@gmail.com>
+   Copyright Zach Flynn <zlflynn@gmail.com>
 */
 
 /* 
@@ -16,7 +16,6 @@
    You should have received a copy of the GNU General Public License
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
-
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -90,7 +89,6 @@ struct book
   int n_account;
   int n_pos; /* for use in reading data */
 };
-
 
 int
 delete_book (struct book* book)
@@ -384,8 +382,6 @@ transaction_cb1 (void* s, size_t len, void* data)
     }
   buf[len] = '\0';
   
-  
-
   if (acct->n_pos > 0 || (strcmp(buf,acct->name)==0))
     {
       if (acct->n_pos==0)
@@ -443,8 +439,7 @@ account_cb1 (void* s, size_t len, void* data)
       buf[i] = ((char*)s)[i];
     }
   buf[len] = '\0';
-
-
+  
   struct book* book = (struct book*) data;
   if (book->n_pos==0)
     {
@@ -546,8 +541,6 @@ read_book_accounts_from_csv (struct book* book,
   csv_fini(&p, account_cb1, NULL, book);
   fclose(fp);
   csv_free(&p);
-
-
 }
 
 void
@@ -562,7 +555,6 @@ read_all_transactions_into_book (struct book* book,
   char buf[1024];
   size_t bytes_read;
   char* name;
-
 
   for (i=0; i < book->n_account; i++)
     {
@@ -618,8 +610,6 @@ read_all_transactions_into_book (struct book* book,
 int
 read_in (const char* base)
 {
-
-
   char* untar_cmd;
   char* account_file;
   char* rm_cmd;
@@ -758,7 +748,6 @@ write_out (const char* base)
   tmp_dir = create_tmp_dir();
   if (tmp_dir==NULL)
     return 1;
-  
 
   dir_cmd = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("mkdir ")+3));
 
@@ -767,7 +756,6 @@ write_out (const char* base)
   strcat(dir_cmd, "/");
   strcat(dir_cmd, base);
   system(dir_cmd);
-
   
   account_fn = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("accounts.csv")+3));
 
@@ -830,7 +818,6 @@ write_out (const char* base)
   free(tmp_dir);
 
   return 0;
-  
 }
 
 /* main interface functions */
@@ -1073,7 +1060,6 @@ bal_call (SCM func, SCM options)
   return ret;
 }
 
-
 /* Add transactions and accounts */
 
 SCM
@@ -1119,10 +1105,8 @@ bal_at (SCM account_name,
   free(desc_c);
   free(day_str_c);
 
-
   bal_cur_acct = account_name;
   return SCM_UNDEFINED;
-  
 }
 
 SCM
@@ -1131,7 +1115,6 @@ bal_aa (SCM name,
         SCM ob,
         SCM currency)
 {
-
   if (SCM_UNBNDP(currency))
     currency = scm_from_int (1);
   
@@ -1186,7 +1169,6 @@ bal_aa (SCM name,
 
   bal_cur_acct = name;
   return SCM_UNDEFINED;
-  
 }
 
 /* Edit existing transactions and accounts */
@@ -1194,7 +1176,6 @@ bal_aa (SCM name,
 SCM
 bal_et (SCM at_pair)
 {
-
   SCM account = scm_car (at_pair);
   SCM ts = scm_cdr (at_pair);
   
@@ -1256,7 +1237,6 @@ bal_et (SCM at_pair)
     }
 
   free(option2);
-
   free(year);
   free(month);
   free(day);
@@ -1339,10 +1319,8 @@ bal_da (SCM account)
     {
       bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
     }
-  return SCM_UNDEFINED;
-  
+  return SCM_UNDEFINED;  
 }
-
 
 /* Get the current account name */
 
@@ -1447,7 +1425,6 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
   free(acct_c);
   return list;
 }
-
 
 /* Get account information by name */
 
@@ -1614,7 +1591,6 @@ bal_total_by_account_type ()
   return ret;
 }
 
-
 /* Quit prompt */
 
 SCM
@@ -1758,7 +1734,8 @@ bal_standard_func ()
   scm_c_eval_string
     (QUOTE(
            (define bal/number-to-quick-list 10)
-           (define aa
+
+      (define aa
             (lambda ()
              (bal/call "bal/aa"
               (list
@@ -1766,7 +1743,8 @@ bal_standard_func ()
                (cons "Type" "type")
                (cons "Opening Balance" "real")
                (cons "Currency [1]" "currency")))))
-           (define at
+
+      (define at
             (lambda ()
              (bal/call "bal/at"
               (list
@@ -1798,7 +1776,6 @@ bal_standard_func ()
                tscts))
              (display "\n")))
 
-
            (define print-tscts
             (lambda (k)
              (if (list? k)
@@ -1818,9 +1795,6 @@ bal_standard_func ()
                    "\n")))
                 k))))
 
-
-
-
            (define et
             (lambda ()
              (bal/call "bal/et"
@@ -1830,8 +1804,6 @@ bal_standard_func ()
            (define lt
             (lambda ()
              (print-tscts (bal/get-transactions (bal/get-current-account) bal/number-to-quick-list))))
-
-
       
            (define ea
             (lambda ()
@@ -1883,7 +1855,6 @@ bal_standard_func ()
                 (number->string (apply + (map cdr (cdr (reverse accts)))))
                 "\n")))))
 
-
            (define re
             (lambda ()
              (print-tscts
@@ -1891,7 +1862,6 @@ bal_standard_func ()
                (list
                 (cons "Account" "default_account")
                 (cons "Regular Expression" "string"))))))
-
 
            (define sa
             (lambda ()
@@ -1942,8 +1912,7 @@ bal_standard_func ()
                (cons "Description" "string")
                (cons "Day" "day")))))
              
-           ));
-      
+           )); 
 }
 
 void
@@ -1964,7 +1933,6 @@ bal_exit (int exit_code)
   delete_book (&bal_book);
   exit (exit_code);
 }
-
 
 int
 main (int argc, char** argv)
@@ -2058,10 +2026,8 @@ main (int argc, char** argv)
 
   bal_prompton = 1;
 
-  
   while (bal_prompton)
     {
-
       ret = scm_c_catch (SCM_BOOL_T,
                          exec_string_safe,
                          "bal/prompt",
@@ -2087,7 +2053,3 @@ main (int argc, char** argv)
   bal_exit(0);
   return 0;
 }
-
-
-                        
-  
