@@ -91,3 +91,11 @@ bal depends on libreadline, libcsv, libguile, and libgc to compile.
 
 bal expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
 
+---
+
+It would be possible to write another user interface for bal in Scheme (a more graphical interface) that calls the core functions in the background.  The way you would hook it in would be something like:
+
+bal -l gui.scm startgui
+
+where (startgui) is the Scheme function to start the user interface (defined in gui.scm).
+
