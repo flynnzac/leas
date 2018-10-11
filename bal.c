@@ -29,6 +29,7 @@
 #include <unistd.h>
 #include <readline/readline.h>
 #include <csv.h>
+#include <ctype.h>
 
 /* transaction, account, and book types */
 
@@ -117,6 +118,22 @@ SCM bal_cur_file;
 int bal_prompt_exit;
 
 /* utility functions */
+
+int
+anyalpha (const char* str)
+{
+  int i;
+  int any = strlen(str) > 0 ? 0 : 1;
+  for (i=0; i < strlen(str); i++)
+    {
+      if (isdigit(str[i]) == 0)
+        {
+          any = 1;
+          break;
+        }
+    }
+  return any;
+}
 
 int
 sort_transactions (const void* a, const void* b)
@@ -266,7 +283,7 @@ create_tmp_dir ()
 /* selection functions */
 
 char*
-bal_select_account ()
+bal_select_account (const char* prompt)
 {
   int j;
   char* c;
@@ -281,7 +298,7 @@ bal_select_account ()
         {
           printf("%d: %s\n", j, bal_book.accounts[j].name);
         }
-      c = readline("Account: ");
+      c = readline(prompt);
 
       return c;
     }
@@ -306,10 +323,17 @@ bal_select_transaction (account* acct)
     }
 
   option = readline ("Transaction #: ");
-  i = atoi(option);
-
-  free(option);
-  return i;
+  if (anyalpha(option) > 0)
+    {
+      free(option);
+      return -1;
+    }
+  else
+    {
+      i = atoi(option);
+      free(option);
+      return i;
+    }
 }
 
 int
@@ -863,21 +887,16 @@ bal_call (SCM func, SCM options)
         }
       else if (strcmp(type_c, "account")==0)
         {
-          opt = bal_select_account();
-          if (strcmp(opt,"")==0)
-            {
-              k = 0;
-            }
-          else
+          opt = bal_select_account(name_c);
+          if (anyalpha(opt) == 0)
             {
               k = atoi(opt);
+              command = realloc (command,
+                                 (strlen(command)+strlen(bal_book.accounts[k].name)+5)*sizeof(char));
+              strcat(command, "\"");
+              strcat(command, bal_book.accounts[k].name);
+              strcat(command, "\"");
             }
-          
-          command = realloc (command,
-                             (strlen(command)+strlen(bal_book.accounts[k].name)+5)*sizeof(char));
-          strcat(command, "\"");
-          strcat(command, bal_book.accounts[k].name);
-          strcat(command, "\"");
         }
       else if (strcmp(type_c, "default_account")==0)
         {
@@ -896,7 +915,7 @@ bal_call (SCM func, SCM options)
           printf("%d: Asset\n", ASSET);
           printf("%d: Liability\n", LIABILITY);
           opt = readline (name_c);
-          if (strcmp(opt,"")==0)
+          if (anyalpha(opt) > 0)
             {
               k = -1;
             }
@@ -954,28 +973,35 @@ bal_call (SCM func, SCM options)
       else if (strcmp(type_c, "transaction")==0)
         {
           printf("%s\n", name_c);
-          opt = bal_select_account();
+          opt = bal_select_account("Account: ");
 
           if (opt==NULL) return SCM_UNDEFINED;
 
-          k = atoi(opt);
+          if (anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
           
-          free(opt);
+              free(opt);
 
-          j = bal_select_transaction (&bal_book.accounts[k]);
+              j = bal_select_transaction (&bal_book.accounts[k]);
 
-          opt = malloc(sizeof(char)*(((k % 10) + 1) + 1 +
-                                     ((j % 10) + 1) + 1));
+              if (j < 0)
+                opt = malloc(sizeof(char));
+              else
+                opt = malloc(sizeof(char)*(((k % 10) + 1) + 1 +
+                                           ((j % 10) + 1) + 1));
+              if (j >= 0)
+                {
 
-          sprintf(opt, "(cons %d %d)", k, j);
+                  sprintf(opt, "(cons %d %d)", k, j);
 
-          printf("%s\n", opt);
-          
-          command = realloc(command,
-                            (strlen(command)+
-                             strlen(opt)+3)*sizeof(char));
+                  command = realloc(command,
+                                    (strlen(command)+
+                                     strlen(opt)+3)*sizeof(char));
 
-          strcat(command, opt);
+                  strcat(command, opt);
+                }
+            }
           
         }
       else if (strcmp(type_c, "day")==0)
@@ -1905,6 +1931,22 @@ bal_standard_func ()
                   "("
                   (bal/get-current-account)
                   ") :> "))))
+           
+           (define bal/t
+            (lambda (to-account from-account amount desc day)
+             (bal/at to-account amount desc day)
+             (bal/at from-account (* -1 amount) desc day)))
+
+           (define t
+            (lambda ()
+             (bal/call "bal/t"
+              (list
+               (cons "To Account" "account")
+               (cons "From Account" "account")
+               (cons "Amount" "real")
+               (cons "Description" "string")
+               (cons "Day" "day")))))
+             
            ));
       
 }
