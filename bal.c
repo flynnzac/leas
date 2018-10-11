@@ -124,6 +124,7 @@ anyalpha (const char* str)
 {
   int i;
   int any = strlen(str) > 0 ? 0 : 1;
+	if (any==1) return any;
   for (i=0; i < strlen(str); i++)
     {
       if (isdigit(str[i]) == 0)
