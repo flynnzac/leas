@@ -1600,17 +1600,8 @@ bal_total_by_account_type ()
   tmp = scm_from_double(0.0);
   for (i=0; i < bal_book.n_account; i++)
     {
-      if (bal_book.accounts[i].type == INCOME ||
-          bal_book.accounts[i].type == ASSET)
-        {
-          tmp = scm_difference(tmp,
-                               scm_from_double(bal_book.accounts[i].ob));
-        }
-      else
-        {
-          tmp = scm_sum(tmp,
-                        scm_from_double(bal_book.accounts[i].ob));
-        }
+      tmp = scm_sum(tmp,
+                    scm_from_double(bal_book.accounts[i].ob));
     }
   
   ret = scm_append
@@ -1886,8 +1877,8 @@ bal_standard_func ()
                accts)
               (display
                (string-append
-                "balance check: "
-                (number->string (apply + (map cdr accts)))
+                "assets + liabilities + income + expenses: "
+                (number->string (apply + (map cdr (cdr (reverse accts)))))
                 "\n")))))
 
 
@@ -1934,8 +1925,10 @@ bal_standard_func ()
            
            (define bal/t
             (lambda (to-account from-account amount desc day)
-             (bal/at to-account amount desc day)
-             (bal/at from-account (* -1 amount) desc day)))
+             (let ((to-type (list-ref (bal/get-account to-account) 1))
+                   (from-type (list-ref (bal/get-account from-account) 1)))
+              (bal/at to-account amount desc day)
+              (bal/at from-account (* -1 amount) desc day))))
 
            (define t
             (lambda ()
