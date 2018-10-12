@@ -43,6 +43,8 @@ p X := print X where X is a Scheme object or expression.  For example, p '(1 2 3
 
 q := quit, unless -s was specified, prompt to save work before exiting.
 
+? := display all possible commands (roughly, the above text)
+
 ---
 
 At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example - display "hello, world" - is translated into the Scheme command - (display "hello, world") - and prints "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.
