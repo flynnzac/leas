@@ -1911,7 +1911,6 @@ bal_standard_func ()
                (cons "Amount" "real")
                (cons "Description" "string")
                (cons "Day" "day")))))
-             
            )); 
 }
 
