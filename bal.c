@@ -1759,22 +1759,23 @@ bal_standard_func ()
                            (list
                             (cons "Account" "default_account")
                             (cons "How many?" "integer")))))
-              (map-in-order
-               (lambda (x)
-                (display
-                 (string-append
-                  (number->string (list-ref x 2))
-                  "-"
-                  (number->string (list-ref x 3))
-                  "-"
-                  (number->string (list-ref x 4))
-                  " "
-                  (list-ref x 0)
-                  " "
-                  (number->string (list-ref x 1))
-                  "\n")))
-               tscts))
-             (display "\n")))
+              (if (list? tscts)
+                (map-in-order
+                 (lambda (x)
+                  (display
+                   (string-append
+                    (number->string (list-ref x 2))
+                    "-"
+                    (number->string (list-ref x 3))
+                    "-"
+                    (number->string (list-ref x 4))
+                    " "
+                    (list-ref x 0)
+                    " "
+                    (number->string (list-ref x 1))
+                    "\n")))
+                 tscts))
+              (display "\n"))))
 
            (define print-tscts
             (lambda (k)
@@ -1803,7 +1804,9 @@ bal_standard_func ()
 
            (define lt
             (lambda ()
-             (print-tscts (bal/get-transactions (bal/get-current-account) bal/number-to-quick-list))))
+             (let ((tscts (bal/get-transactions (bal/get-current-account) bal/number-to-quick-list)))
+              (if (list? tscts)
+                (print-tscts tscts)))))
       
            (define ea
             (lambda ()
