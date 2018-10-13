@@ -231,15 +231,31 @@ SCM
 total_transactions (const account* acct)
 {
   int i;
-  double total = 0.0;
+  double total = acct->ob;
+  double total_cur = acct->ob;
+  struct tm* curtime;
+  time_t curtime_time;
+
+  time(&curtime_time);
+  curtime = localtime(&curtime_time);
 
   for (i=0; i < acct->n_tsct; i++)
     {
+      if (((curtime->tm_year+1900) > (acct->tscts[i].year)) ||
+          (((curtime->tm_mon+1) > (acct->tscts[i].month)) &&
+           ((curtime->tm_year+1900) == (acct->tscts[i].year))) ||
+          ((curtime->tm_mday > acct->tscts[i].day) &&
+           (curtime->tm_year+1900) == acct->tscts[i].year &&
+           (curtime->tm_mon+1) == acct->tscts[i].month))
+        {
+          total_cur = total_cur + acct->tscts[i].amount;
+        }
       total = total +
         acct->tscts[i].amount;
     }
 
-  return scm_from_double(total);
+  return scm_cons(scm_from_double(total_cur),
+                  scm_from_double(total));
 }
 
 char*
@@ -1522,22 +1538,26 @@ bal_total_all_accounts ()
 SCM
 bal_total_by_account_type ()
 {
-  SCM tmp;
+  SCM tmp,tmpcur,tmptotal;
   SCM ret = SCM_EOL;
   int i,j;
 
   for (j=EXPENSE; j <= LIABILITY; j++)
     {
-      tmp = scm_from_double(0.0);
+      tmpcur = scm_from_double(0.0);
+      tmptotal = scm_from_double(0.0);
       for (i=0; i < bal_book.n_account; i++)
         {
           if (bal_book.accounts[i].type==j)
             {
-              tmp = scm_sum(tmp, total_transactions
-                            (&bal_book.accounts[i]));
+              tmp = total_transactions(&bal_book.accounts[i]);
+              tmpcur = scm_sum(tmpcur, scm_car(tmp));
+              tmptotal = scm_sum(tmptotal, scm_cdr(tmp));
             }
           
         }
+      tmp = scm_cons(tmpcur, tmptotal);
+      
       switch (j)
         {
         case EXPENSE:
@@ -1879,7 +1899,9 @@ bal_standard_func ()
                  (string-append
                   (car x)
                   " "
-                  (number->string (cdr x))
+                  (number->string (car (cdr x)))
+                  " "
+                  (number->string (cdr (cdr x)))
                   "\n")))
                accts))))
 
@@ -1894,12 +1916,7 @@ bal_standard_func ()
                   " "
                   (number->string (cdr x))
                   "\n")))
-               accts)
-              (display
-               (string-append
-                "assets + liabilities + income + expenses: "
-                (number->string (apply + (map cdr (cdr (reverse accts)))))
-                "\n")))))
+               accts))))
 
            (define re
             (lambda ()
