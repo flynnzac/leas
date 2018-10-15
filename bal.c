@@ -45,10 +45,10 @@ typedef struct tsct tsct;
 
 enum account_type
   {
-   EXPENSE,
-   INCOME,
-   ASSET,
-   LIABILITY
+    EXPENSE,
+    INCOME,
+    ASSET,
+    LIABILITY
   };
 
 typedef enum account_type account_type;
@@ -244,7 +244,7 @@ total_transactions (const account* acct)
       if (((curtime->tm_year+1900) > (acct->tscts[i].year)) ||
           (((curtime->tm_mon+1) > (acct->tscts[i].month)) &&
            ((curtime->tm_year+1900) == (acct->tscts[i].year))) ||
-          ((curtime->tm_mday > acct->tscts[i].day) &&
+          ((curtime->tm_mday >= acct->tscts[i].day) &&
            (curtime->tm_year+1900) == acct->tscts[i].year &&
            (curtime->tm_mon+1) == acct->tscts[i].month))
         {
@@ -1909,11 +1909,19 @@ bal_standard_func ()
               (map-in-order
                (lambda (x)
                 (display
-                 (string-append
-                  (car x)
-                  " "
-                  (number->string (cdr x))
-                  "\n")))
+                 (if (pair? (cdr x))
+                   (string-append
+                    (car x)
+                    " "
+                    (number->string (car (cdr x)))
+                    " "
+                    (number->string (cdr (cdr x)))
+                    "\n")
+                   (string-append
+                    (car x)
+                    " "
+                    (number->string (cdr x))
+                    "\n"))))
                accts))))
 
            (define re
