@@ -43,7 +43,7 @@ p X := print X where X is a Scheme object or expression.  For example, p '(1 2 3
 
 q := quit, unless -s was specified, prompt to save work before exiting.
 
-? := display all possible commands (roughly, the above text)
+? := display all common commands (roughly, the above text)
 
 ---
 
