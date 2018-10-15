@@ -101,3 +101,11 @@ bal -l gui.scm startgui
 
 where (startgui) is the Scheme function to start the user interface (defined in gui.scm).
 
+---
+
+How do I schedule a recurring transfer in bal?
+
+Use cron (this also works for a recurring... anything).  Just have cron run the following script at your desired frequency:
+
+/path/to/bal -f /path/to/yourbalfile -s bal/at "$to_account_name" "$from_account_name" $amount "$description" "$(/bin/date +%Y-%m-%d)"
+

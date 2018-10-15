@@ -45,10 +45,10 @@ typedef struct tsct tsct;
 
 enum account_type
   {
-    EXPENSE,
-    INCOME,
-    ASSET,
-    LIABILITY
+   EXPENSE,
+   INCOME,
+   ASSET,
+   LIABILITY
   };
 
 typedef enum account_type account_type;
@@ -122,7 +122,7 @@ anyalpha (const char* str)
 {
   int i;
   int any = strlen(str) > 0 ? 0 : 1;
-	if (any==1) return any;
+  if (any==1) return any;
   for (i=0; i < strlen(str); i++)
     {
       if (isdigit(str[i]) == 0)
@@ -386,10 +386,9 @@ bal_select_day (struct tm* curtime_info,
 void
 transaction_cb1 (void* s, size_t len, void* data)
 {
-	/* todo: check whether buf can be removed, I think it is vestigal */
   account* acct = (account*) data;
   char buf[len+1];
-  int i;
+  int i; 
   struct tm t;
 
   for (i=0; i < len; i++)
@@ -1720,7 +1719,6 @@ bal_help_text ()
 
   return scm_from_locale_string(help_text);
 }
-
 
 /* Register all functions */
 
