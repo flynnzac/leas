@@ -2044,7 +2044,31 @@ main (int argc, char** argv)
           scm_c_primitive_load(optarg);
           break;
         case 'f':
-          bal_cur_file = scm_from_locale_string (optarg);
+	  {
+	    bal_cur_file = scm_from_locale_string (optarg);
+	    fname = scm_to_locale_string (bal_cur_file);
+	    fname = realloc(fname, sizeof(char)*(strlen(fname)+
+						 strlen(".btar")
+						 +1));
+	    strcat(fname, ".btar");
+  
+	    if (access(fname, R_OK) != -1)
+	      {
+		free(fname);
+		fname = scm_to_locale_string(bal_cur_file);
+		read_in (fname);
+		if (bal_book.n_account > 0)
+		  {
+		    bal_cur_acct = scm_from_locale_string
+		      (bal_book.accounts[0].name);
+		  }
+		free(fname);
+	      }
+	    else
+	      {
+		free(fname);
+	      }
+	  }
           break;
         case 's':
           bal_prompt_exit = 0;
@@ -2072,24 +2096,11 @@ main (int argc, char** argv)
         }
     }
 
-  fname = scm_to_locale_string (bal_cur_file);
-  fname = realloc(fname, sizeof(char)*(strlen(fname)+
-                                       strlen(".btar")
-                                       +1));
-  strcat(fname, ".btar");
-  
-  if (access(fname, R_OK) != -1)
+  if (access("~/.balrc", R_OK) != -1)
     {
-      free(fname);
-      fname = scm_to_locale_string(bal_cur_file);
-      read_in (fname);
-      if (bal_book.n_account > 0)
-        {
-          bal_cur_acct = scm_from_locale_string
-            (bal_book.accounts[0].name);
-        }
-      free(fname);
+      scm_c_primitive_load("~/.balrc");
     }
+
 
   if (optind < argc)
     {
