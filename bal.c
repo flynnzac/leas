@@ -2096,9 +2096,9 @@ main (int argc, char** argv)
         }
     }
 
-  if (access("~/.balrc", R_OK) != -1)
+  if (access("~/.balrc.scm", R_OK) != -1)
     {
-      scm_c_primitive_load("~/.balrc");
+      scm_c_primitive_load("~/.balrc.scm");
     }
 
 
