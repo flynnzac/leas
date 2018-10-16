@@ -1,8 +1,76 @@
-bal
-an extensible tool to keep personal accounts in order and to study past spending habits
-----
 
-Author: Zach Flynn <zlflynn@gmail.com>
+bal(1)                                                                             General Commands Manual                                                                             bal(1)
+
+NAME
+       bal - for keeping accounts in order and studying past spending habits
+
+SYNOPSIS
+       bal [-f FILE] [-l CODE] [-s] [COMMAND]
+
+DESCRIPTION
+       bal  keeps  track  of personal accounts and spending.  It is extensible using Guile Scheme, a full programming language, so that it is easy to build arbitrary reports about your past
+       transactions and to script the program to automatically add or update transactions when arbitrary conditions are met (you could, say, write a piece of Scheme code  that  fetches  the
+       latest stock price and updates the current value of your shares).
+
+       bal's main interactive commands are:
+
+       aa     add account
+
+       at     add transaction to current account
+
+       ea     rename account
+
+       et     edit transaction
+
+       da     delete account
+
+       dt     delete transaction
+
+       t      transfer from one account to another
+
+       la     list accounts and current totals
+
+       lt     list most recent transactions in current account (change number to list by modifying the variable bal/number-to-quick-list)
+
+       ltn    list most recent transactions in current account, prompt for number to list
+
+       bt     total accounts by type (income, expense, asset, liability)
+
+       re     list transactions in current account matching a regular expression
+
+       sa     set current account
+
+       ca     display current account
+
+       w      write accounts to file
+
+       r      read save accounts from file
+
+       p X    print X, a Scheme expression
+
+       q      quit, unless -s specified, prompt to save before quit
+
+OPTIONS
+       -f FILE
+              load accounts from FILE where FILE omits the .btar extension
+
+       -l CODE
+              execute Scheme code in file CODE
+
+       -s     do not prompt to save on exit
+
+       COMMAND
+              execute COMMAND as if it was entered at bal's prompt and then exit
+
+FILES
+       bal executes Scheme code in ~/.balrc.scm if the file is present.
+
+SEE ALSO
+BUGS
+AUTHOR
+       Zach Flynn <zlflynn@gmail.com>
+
+                                                                                          2018-10-16                                                                                   bal(1)
 
 ---
 
@@ -10,58 +78,9 @@ bal is an interactive and scriptable command line personal accounting program to
 
 ---
 
-When the command "bal" is entered at the command prompt, you are greated by bal's prompt.  
-
-The main commands to add/edit/delete/list transactions and accounts are:
-
-aa := add account
-at := add transaction to current account
-
-ea := rename account
-et := edit transaction
-
-da := delete account
-dt := delete transaction
-
-t := transfer between accounts, the most used command, a convenience function which adds transactions to two accounts, one in a positive amount (the "to" account) and the other in a negative amount (the "from" account).
-
-la := list accounts
-lt := list transactions in current account (the last 10 - by default - transactions; change the number by changing the Scheme variable bal/number-to-quick-list)
-ltn := list transactions in current account, prompt for number to list
-
-bt := total accounts by type (income, expense, asset, liability)
-
-re := list transactions in current account matching a regular expression
-
-sa := set current account
-ca := display current account
-
-w := write out a saved bal file
-r := read in a saved bal file
-
-p X := print X where X is a Scheme object or expression.  For example, p '(1 2 3) will print the list (1 2 3) and p "hello, world" will print "hello, world".
-
-q := quit, unless -s was specified, prompt to save work before exiting.
-
-? := display all common commands (roughly, the above text)
-
----
-
 At the prompt, any Scheme function can be entered (except that the usual outside parenthesis should be omitted; for example - display "hello, world" - is translated into the Scheme command - (display "hello, world") - and prints "hello, world").  But you do not need to know any Scheme to use bal, just to extend it.
 
 In fact, the above commands are Scheme functions.  To see their source code, look at the function called "bal_standard_func()" in bal.c.  The interactive commands above use the function "bal/call" to prompt the user for their options. Non-interactive versions of most of the commands XX are usually called "bal/XX" and take their arguments in the standard way to pass arguments to functions in Scheme.  If you are familiar with Emacs, "bal/call" has a similar purpose as the Emacs Lisp "interactive" function, used to make Scheme functions interactive.
-
----
-
-The command has three options:
-
--f file := specify a file to load data from (specify it without the ".btar" extension; to load "zach.btar", type -f zach)
-
--l file := load user-written Guile Scheme functions from file
-
--s := do not prompt to save on exit, for use in scripting
-
-If you specify any other text as an argument to bal, it will execute the text as if it were entered at the command prompt and then exit (prompting to save the result unless -s is given).
 
 ---
 

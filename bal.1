@@ -5,7 +5,7 @@
 .SH NAME
 bal \- for keeping accounts in order and studying past spending habits
 .SH SYNOPSIS
-.B bal [-f FILE] [-l CODE] [-s]
+.B bal [-f FILE] [-l CODE] [-s] [COMMAND]
 
 .SH DESCRIPTION
 .B bal
@@ -79,6 +79,11 @@ execute Scheme code in file CODE
 .TP
 .BR \-s
 do not prompt to save on exit
+.TP
+.BR COMMAND
+execute COMMAND as if it was entered at
+.B bal's
+prompt and then exit
 
 .SH FILES
 
