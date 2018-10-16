@@ -53,7 +53,7 @@ In fact, the above commands are Scheme functions.  To see their source code, loo
 
 ---
 
-The command has two options:
+The command has three options:
 
 -f file := specify a file to load data from (specify it without the ".btar" extension; to load "zach.btar", type -f zach)
 

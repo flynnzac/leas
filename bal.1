@@ -1,6 +1,6 @@
-.\" Copyright (C), 2018  
-.\" You may distribute this file under the terms of the GNU Free
-.\" Documentation License.
+.\" Copyright (C) Zach Flynn <zlflynn@gmail.com>, 2018  
+.\" You may distribute this file under the terms of the GNU Free Documentation License.
+
 .TH bal 1 2018-10-16 
 .SH NAME
 bal \- for keeping accounts in order and studying past spending habits
@@ -9,15 +9,82 @@ bal \- for keeping accounts in order and studying past spending habits
 
 .SH DESCRIPTION
 .B bal
-keeps tract of personal accounts and spending.  It is extensible using
-Guile Scheme, a full programming language, so that it is easy to build
-arbitrary reports about your past transactions and to script the
-program to automatically add or update transactions when arbitrary
-conditions are met (you could, say, write a piece of Scheme code that
-fetches the latest stock price and updates the current value of your
-shares).
+keeps track of personal accounts and spending.  It is extensible using Guile Scheme, a full programming language, so that it is easy to build arbitrary reports about your past transactions and to script the program to automatically add or update transactions when arbitrary conditions are met (you could, say, write a piece of Scheme code that fetches the latest stock price and updates the current value of your shares).
+
+.B bal's
+main interactive commands are:
+
+.TP
+.BR aa
+add account
+.TP
+.BR at
+add transaction to current account
+.TP
+.BR ea
+rename account
+.TP
+.BR et
+edit transaction
+.TP
+.BR da
+delete account
+.TP
+.BR dt
+delete transaction
+.TP
+.BR t
+transfer from one account to another
+.TP
+.BR la
+list accounts and current totals
+.TP
+.BR lt
+list most recent transactions in current account (change number to list by modifying the variable bal/number-to-quick-list)
+.TP
+.BR ltn
+list most recent transactions in current account, prompt for number to list
+.TP
+.BR bt
+total accounts by type (income, expense, asset, liability)
+.TP
+.BR re
+list transactions in current account matching a regular expression
+.TP
+.BR sa
+set current account
+.TP
+.BR ca
+display current account
+.TP
+.BR w
+write accounts to file
+.TP
+.BR r
+read save accounts from file
+.TP
+.BR p " " X
+print X, a Scheme expression
+.TP
+.BR q
+quit, unless -s specified, prompt to save before quit
+
 .SH OPTIONS
+.TP
+.BR \-f " " FILE
+load accounts from FILE where FILE omits the \.btar extension
+.TP
+.BR \-l " " CODE
+execute Scheme code in file CODE
+.TP
+.BR \-s
+do not prompt to save on exit
+
 .SH FILES
+
+.B bal
+executes Scheme code in ~/.balrc.scm if the file is present.
+
 .SH "SEE ALSO"
 .SH BUGS
 .SH AUTHOR
