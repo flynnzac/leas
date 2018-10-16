@@ -1928,11 +1928,11 @@ bal_standard_func ()
                     " "
                     (number->string (cdr (cdr x)))
                     "\n")
-                   (string-append
-                    (car x)
-                    " "
-                    (number->string (cdr x))
-                    "\n"))))
+                     (string-append
+                      (car x)
+                      " "
+                      (number->string (cdr x))
+                      "\n"))))
                accts))))
 
            (define re
