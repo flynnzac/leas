@@ -3,7 +3,7 @@ bal: bal.c .FORCE
 
 .FORCE:
 
-doc: bal.1
+doc: bal.1 ABOUT
 	echo "Man Page\n---\n" > README
 	man -P cat -l bal.1 >> README
 	echo "\n---\n" >> README
