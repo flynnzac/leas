@@ -1537,10 +1537,12 @@ bal_total_all_accounts ()
 SCM
 bal_total_by_account_type ()
 {
-  SCM tmp,tmpcur,tmptotal;
+  SCM tmp,tmpcur,tmptotal,tmpallcur,tmpalltotal;
   SCM ret = SCM_EOL;
   int i,j;
 
+  tmpallcur = scm_from_double(0.0);
+  tmpalltotal = scm_from_double(0.0);
   for (j=EXPENSE; j <= LIABILITY; j++)
     {
       tmpcur = scm_from_double(0.0);
@@ -1552,8 +1554,9 @@ bal_total_by_account_type ()
               tmp = total_transactions(&bal_book.accounts[i]);
               tmpcur = scm_sum(tmpcur, scm_car(tmp));
               tmptotal = scm_sum(tmptotal, scm_cdr(tmp));
+              tmpallcur = scm_sum(tmpallcur, scm_car(tmp));
+              tmpalltotal = scm_sum(tmpalltotal, scm_cdr(tmp));
             }
-          
         }
       tmp = scm_cons(tmpcur, tmptotal);
       
@@ -1595,6 +1598,14 @@ bal_total_by_account_type ()
           
     }
 
+  tmp = scm_cons(tmpallcur, tmpalltotal);
+  ret = scm_append
+    (scm_list_2
+     (ret,
+      scm_list_1
+      (scm_cons(scm_from_locale_string("total"),
+                tmp))));
+  
   tmp = scm_from_double(0.0);
   for (i=0; i < bal_book.n_account; i++)
     {
