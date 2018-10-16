@@ -1,5 +1,5 @@
 /* 
-   bal, an extensible tool for keeping track of accounts
+   bal - for keeping accounts in order and studying past spending habits
    Copyright Zach Flynn <zlflynn@gmail.com>
 */
 
