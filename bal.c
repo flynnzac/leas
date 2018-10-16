@@ -2033,7 +2033,6 @@ main (int argc, char** argv)
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func();
   bal_cur_acct = SCM_UNDEFINED;
-
   bal_cur_file = scm_from_locale_string ("_");
   
   while ((k = getopt(argc, argv, "f:l:s")) != -1)
