@@ -1,7 +1,5 @@
-bal: bal.c .FORCE
+bal: bal.c 
 	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall
-
-.FORCE:
 
 doc: bal.1 ABOUT
 	echo "Man Page\n---\n" > README
