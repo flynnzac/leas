@@ -1,0 +1,24 @@
+.\" Copyright (C), 2018  
+.\" You may distribute this file under the terms of the GNU Free
+.\" Documentation License.
+.TH bal 1 2018-10-16 
+.SH NAME
+bal \- for keeping accounts in order and studying past spending habits
+.SH SYNOPSIS
+.B bal [-f FILE] [-l CODE] [-s]
+
+.SH DESCRIPTION
+.B bal
+keeps tract of personal accounts and spending.  It is extensible using
+Guile Scheme, a full programming language, so that it is easy to build
+arbitrary reports about your past transactions and to script the
+program to automatically add or update transactions when arbitrary
+conditions are met (you could, say, write a piece of Scheme code that
+fetches the latest stock price and updates the current value of your
+shares).
+.SH OPTIONS
+.SH FILES
+.SH "SEE ALSO"
+.SH BUGS
+.SH AUTHOR
+Zach Flynn <zlflynn@gmail.com>
