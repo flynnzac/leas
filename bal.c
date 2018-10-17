@@ -749,7 +749,7 @@ write_accounts (const char* file)
 }
 
 int
-write_out (const char* base)
+write_out (char* base)
 {
   char* account_fn;
   char* tsct_fn;
@@ -764,19 +764,23 @@ write_out (const char* base)
   if (tmp_dir==NULL)
     return 1;
 
-  dir_cmd = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("mkdir ")+3));
+  dir_cmd = malloc(sizeof(char)*(strlen(basename(base))+
+                                 strlen(tmp_dir)+
+                                 strlen("mkdir ")+3));
 
   strcpy(dir_cmd, "mkdir ");
   strcat(dir_cmd, tmp_dir);
   strcat(dir_cmd, "/");
-  strcat(dir_cmd, base);
+  strcat(dir_cmd, basename(base));
   system(dir_cmd);
   
-  account_fn = malloc(sizeof(char)*(strlen(base)+strlen(tmp_dir)+strlen("accounts.csv")+3));
+  account_fn = malloc(sizeof(char)*(strlen(basename(base))+
+                                    strlen(tmp_dir)+
+                                    strlen("accounts.csv")+3));
 
   strcpy(account_fn, tmp_dir);
   strcat(account_fn, "/");
-  strcat(account_fn, base);
+  strcat(account_fn, basename(base));
   strcat(account_fn, "/");
   strcat(account_fn, "accounts.csv");
   i = write_accounts (account_fn);
@@ -791,14 +795,14 @@ write_out (const char* base)
     {
       tsct_fn = malloc
         (sizeof(char)*(strlen(bal_book.accounts[i].name) +
-                       strlen(base) +
+                       strlen(basename(base)) +
                        strlen(tmp_dir) + 
                        strlen("/.csv") +
                        2));
 
       strcpy(tsct_fn, tmp_dir);
       strcat(tsct_fn, "/");
-      strcat(tsct_fn, base);
+      strcat(tsct_fn, basename(base));
       strcat(tsct_fn, "/");
       strcat(tsct_fn, bal_book.accounts[i].name);
       strcat(tsct_fn, ".csv");
@@ -811,23 +815,23 @@ write_out (const char* base)
                                  strlen(base)+
                                  strlen(".btar -C ")+
                                  strlen(tmp_dir)+
-                                 strlen(base)+2));
+                                 strlen(basename(base))+2));
   strcpy(tar_cmd, "tar caf ");
   strcat(tar_cmd, base);
   strcat(tar_cmd, ".btar -C ");
   strcat(tar_cmd, tmp_dir);
   strcat(tar_cmd, " ");
-  strcat(tar_cmd, base);
+  strcat(tar_cmd, basename(base));
   system(tar_cmd);
   free(tar_cmd);
 
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+
                                 strlen(tmp_dir)+
-                                strlen(base)+2));
+                                strlen(basename(base))+2));
   strcpy(rm_cmd, "rm -R ");
   strcat(rm_cmd, tmp_dir);
   strcat(rm_cmd, "/");
-  strcat(rm_cmd, base);
+  strcat(rm_cmd, basename(base));
   system(rm_cmd);
   free(rm_cmd);
   free(tmp_dir);
