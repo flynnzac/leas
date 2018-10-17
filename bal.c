@@ -20,7 +20,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <string.h>
 #include <regex.h>
 #include <libguile.h>
 #include <math.h>
@@ -29,7 +28,8 @@
 #include <readline/readline.h>
 #include <csv.h>
 #include <ctype.h>
-
+#include <string.h>
+#include <libgen.h>
 /* transaction, account, and book types */
 
 struct tsct
@@ -560,7 +560,7 @@ read_book_accounts_from_csv (struct book* book,
 
 void
 read_all_transactions_into_book (struct book* book,
-                                 const char* base,
+                                 char* base,
                                  const char* tmp_dir)
 
 {
@@ -573,7 +573,7 @@ read_all_transactions_into_book (struct book* book,
 
   for (i=0; i < book->n_account; i++)
     {
-      name = malloc(sizeof(char)*(strlen(base) +
+      name = malloc(sizeof(char)*(strlen(basename(base)) +
                                   strlen(tmp_dir) +
                                   strlen("/") +
                                   strlen(book->accounts[i].name)+
@@ -581,7 +581,7 @@ read_all_transactions_into_book (struct book* book,
 
       strcpy(name, tmp_dir);
       strcat(name, "/");
-      strcat(name, base);
+      strcat(name, basename(base));
       strcat(name, "/");
       strcat(name, book->accounts[i].name);
       strcat(name, ".csv");
@@ -623,7 +623,7 @@ read_all_transactions_into_book (struct book* book,
 }
 
 int
-read_in (const char* base)
+read_in (char* base)
 {
   char* untar_cmd;
   char* account_file;
@@ -650,13 +650,13 @@ read_in (const char* base)
   free(untar_cmd);
 
   /* read in accounts */
-  account_file = malloc(sizeof(char)*(strlen(base) +
+  account_file = malloc(sizeof(char)*(strlen(basename(base)) +
                                       strlen(tmp_dir) +
                                       strlen("/accounts.csv")+
                                       2));
   strcpy(account_file, tmp_dir);
   strcat(account_file, "/");
-  strcat(account_file, base);
+  strcat(account_file, basename(base));
   strcat(account_file, "/accounts.csv");
 
   read_book_accounts_from_csv (&bal_book, account_file);
@@ -671,12 +671,12 @@ read_in (const char* base)
   /* clean up */
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
                                 strlen(tmp_dir) + 
-                                strlen(base)+
+                                strlen(basename(base))+
                                 2));
   strcpy(rm_cmd, "rm -R ");
   strcat(rm_cmd, tmp_dir);
   strcat(rm_cmd, "/");
-  strcat(rm_cmd, base);
+  strcat(rm_cmd, basename(base));
   system(rm_cmd);
   free(rm_cmd);
 
