@@ -1663,6 +1663,7 @@ bal_write (SCM file)
     }
   write_out(file_c);
   free(file_c);
+
   bal_cur_file = file;
   return SCM_UNDEFINED;
 }
@@ -1672,11 +1673,12 @@ bal_write (SCM file)
 SCM
 bal_read (SCM file)
 {
-  char* file_c = scm_to_locale_string (file);
+  char* file_c = scm_to_locale_string(file);
   delete_book (&bal_book);
   bal_book.n_account = 0;
   read_in (file_c);
   free(file_c);
+
   if (bal_book.n_account > 0)
     {
       bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
@@ -2043,31 +2045,31 @@ main (int argc, char** argv)
           scm_c_primitive_load(optarg);
           break;
         case 'f':
-	  {
-	    bal_cur_file = scm_from_locale_string (optarg);
-	    fname = scm_to_locale_string (bal_cur_file);
-	    fname = realloc(fname, sizeof(char)*(strlen(fname)+
-						 strlen(".btar")
-						 +1));
-	    strcat(fname, ".btar");
+          {
+            bal_cur_file = scm_from_locale_string (optarg);
+            fname = scm_to_locale_string (bal_cur_file);
+            fname = realloc(fname, sizeof(char)*(strlen(fname)+
+                                                 strlen(".btar")
+                                                 +1));
+            strcat(fname, ".btar");
   
-	    if (access(fname, R_OK) != -1)
-	      {
-		free(fname);
-		fname = scm_to_locale_string(bal_cur_file);
-		read_in (fname);
-		if (bal_book.n_account > 0)
-		  {
-		    bal_cur_acct = scm_from_locale_string
-		      (bal_book.accounts[0].name);
-		  }
-		free(fname);
-	      }
-	    else
-	      {
-		free(fname);
-	      }
-	  }
+            if (access(fname, R_OK) != -1)
+              {
+                free(fname);
+                fname = scm_to_locale_string(bal_cur_file);
+                read_in (fname);
+                if (bal_book.n_account > 0)
+                  {
+                    bal_cur_acct = scm_from_locale_string
+                      (bal_book.accounts[0].name);
+                  }
+                free(fname);
+              }
+            else
+              {
+                free(fname);
+              }
+          }
           break;
         case 's':
           bal_prompt_exit = 0;
@@ -2095,11 +2097,21 @@ main (int argc, char** argv)
         }
     }
 
-  if (access("~/.balrc.scm", R_OK) != -1)
+  char* home = getenv("HOME");
+  char* balrc;
+  
+  balrc = malloc(sizeof(char)*(strlen(home)+
+                               strlen("/.balrc.scm")+
+                               2));
+  strcpy(balrc, home);
+  strcat(balrc, "/.balrc.scm");
+  
+  if (access(balrc, R_OK) != -1)
     {
-      scm_c_primitive_load("~/.balrc.scm");
+      scm_c_primitive_load(balrc);
     }
 
+  free(balrc);
 
   if (optind < argc)
     {
