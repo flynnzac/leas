@@ -1699,43 +1699,6 @@ bal_get_current_file ()
 
 #define QUOTE(...) #__VA_ARGS__
 
-/* create help text */
-SCM
-bal_help_text ()
-{
-  char* help_text = QUOTE(
-                          aa = add account\n
-                          at = add transaction to current account\n
-                          \n
-                          ea = rename account\n
-                          et = edit transaction\n
-                          \n
-                          da = delete account\n
-                          dt = delete transaction\n
-                          \n
-                          t = transfer between accounts, the most used command, a convenience function which adds transactions to two accounts, one in a positive amount (the to account) and the other in a negative amount (the from account).\n
-                          \n
-                          la = list accounts\n
-                          lt = list transactions in current account (the last 10 - by default - transactions; change the number by changing the Scheme variable bal/number-to-quick-list)\n
-                          ltn = list transactions in current account, prompt for number to list\n
-                          \n
-                          bt = total accounts by type (income, expense, asset, liability)\n
-                          \n
-                          re = list transactions in current account matching a regular expression\n
-                          \n
-                          sa = set current account\n
-                          ca = display current account\n
-                          \n
-                          w = write out a saved bal file\n
-                          r = read in a saved bal file\n
-                          \n
-                          p X = print X where X is a Scheme object or expression.  \n
-                          \n
-                          q = quit, unless -s was specified, prompt to save work before exiting.\n
-                          );
-
-  return scm_from_locale_string(help_text);
-}
 
 /* Register all functions */
 
@@ -1797,9 +1760,6 @@ register_guile_functions (void* data)
   /* generic method to create interactive commands */
   scm_c_define_gsubr("bal/call", 2, 0, 0, &bal_call);
 
-  /* return help text */
-  scm_c_define_gsubr("bal/help-text", 0, 0, 0, &bal_help_text);
-  
   return NULL;
 }
 
@@ -1882,7 +1842,9 @@ bal_standard_func ()
 
            (define lt
             (lambda ()
-             (let ((tscts (bal/get-transactions (bal/get-current-account) bal/number-to-quick-list)))
+             (let ((tscts (bal/get-transactions
+                           (bal/get-current-account)
+                           bal/number-to-quick-list)))
               (if (list? tscts)
                 (print-tscts tscts)))))
       
@@ -1997,10 +1959,6 @@ bal_standard_func ()
                (cons "Amount" "real")
                (cons "Description" "string")
                (cons "Day" "day")))))
-
-           (define ?
-            (lambda ()
-             (p (bal/help-text))))
 
            )); 
 }
