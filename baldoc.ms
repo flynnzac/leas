@@ -1,5 +1,6 @@
 .RP no
-.NR PD 2
+\R'PD 0.6v'
+\R'PS 11000'
 .ND
 .TL
 bal - an extensible tool for keeping accounts in order and studying past spending habits
