@@ -1065,6 +1065,7 @@ bal_call (SCM func, SCM options)
 
     }
 
+  printf("command: %s\n", command);
   SCM ret = scm_c_catch (SCM_BOOL_T,
                          exec_string_safe,
                          command,
@@ -1375,7 +1376,7 @@ bal_get_transactions (SCM acct, SCM num)
 
   n = num_c < a->n_tsct ? num_c : a->n_tsct;
   ret = SCM_EOL;
-  for (i=n-1; i > 0; i--)
+  for (i=n-1; i >= 0; i--)
     {
       ret = scm_append (scm_list_2(ret,
                                    scm_list_1(tsct_to_scm(a->tscts[a->n_tsct-1-i]))));
@@ -1959,6 +1960,8 @@ bal_standard_func ()
             (lambda (to-account from-account amount desc day)
              (let ((to-type (list-ref (bal/get-account to-account) 1))
                    (from-type (list-ref (bal/get-account from-account) 1)))
+              (display (string-append "Amount: "
+                        (number->string amount) "\n"))
               (bal/at to-account amount desc day)
               (bal/at from-account (* -1 amount) desc day))))
 
