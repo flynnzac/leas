@@ -1784,7 +1784,7 @@ bal_standard_func ()
   scm_c_eval_string
     (QUOTE(
            (define bal/number-to-quick-list 10)
-
+           (use-modules (ice-9 format))
            (define aa
             (lambda ()
              (bal/call "bal/aa"
@@ -1803,36 +1803,16 @@ bal_standard_func ()
                (cons "Description" "string")
                (cons "Day" "day")))))
 
-           (define ltn
-            (lambda ()
-             (let ((tscts (bal/call "bal/get-transactions"
-                           (list
-                            (cons "Account" "default_account")
-                            (cons "How many?" "integer")))))
-              (if (list? tscts)
-                (map-in-order
-                 (lambda (x)
-                  (display
-                   (string-append
-                    (number->string (list-ref x 2))
-                    "-"
-                    (number->string (list-ref x 3))
-                    "-"
-                    (number->string (list-ref x 4))
-                    " "
-                    (list-ref x 0)
-                    " "
-                    (number->string (list-ref x 1))
-                    "\n")))
-                 tscts))
-              (display "\n"))))
 
            (define print-tscts
             (lambda (k)
              (if (list? k)
-               (map-in-order
-                (lambda (x)
-                 (display
+               (let ((len (apply max
+                           (map (lambda (x)
+                                 (string-length (car x))) k))))
+                (map-in-order
+                 (lambda (x)
+                  (display
                   (string-append
                    (number->string (list-ref x 2))
                    "-"
@@ -1840,12 +1820,24 @@ bal_standard_func ()
                    "-"
                    (number->string (list-ref x 4))
                    " "
-                   (list-ref x 0)
+                   (format #f (string-append
+                               "~"
+                               (number->string (+ len 5))
+                               "a") (list-ref x 0))
                    " "
-                   (number->string (list-ref x 1))
+                   (format #f "~10,2f" (list-ref x 1))
                    "\n")))
-                k))))
+                 k)))))
 
+           
+           (define ltn
+            (lambda ()
+             (let ((tscts (bal/call "bal/get-transactions"
+                           (list
+                            (cons "Account" "default_account")
+                            (cons "How many?" "integer")))))
+              (print-tscts tscts))))
+           
            (define et
             (lambda ()
              (bal/call "bal/et"
@@ -1881,37 +1873,54 @@ bal_standard_func ()
 
            (define la
             (lambda ()
-             (let ((accts (bal/total-all-accounts)))
+             (let* ((accts (bal/total-all-accounts))
+                    (len
+                     (apply max
+                      (map
+                       (lambda (x) (string-length (car x))) accts))))
               (map-in-order
                (lambda (x)
                 (display
                  (string-append
-                  (car x)
+                  (format #f
+                   (string-append "~"
+                    (number->string (+ len 5))
+                    "a") (car x))
                   " "
-                  (number->string (car (cdr x)))
+                  (format #f "~10,2f" (car (cdr x)))
                   " "
-                  (number->string (cdr (cdr x)))
+                  (format #f "~10,2f" (cdr (cdr x)))
                   "\n")))
                accts))))
 
            (define bt
             (lambda ()
-             (let ((accts (bal/total-by-account-type)))
+             (let* ((accts (bal/total-by-account-type))
+                   (len
+                     (apply max
+                      (map
+                       (lambda (x) (string-length (car x))) accts))))
               (map-in-order
                (lambda (x)
                 (display
                  (if (pair? (cdr x))
                    (string-append
-                    (car x)
+                    (format #f
+                     (string-append "~"
+                      (number->string (+ len 5))
+                      "a") (car x))
                     " "
-                    (number->string (car (cdr x)))
+                    (format #f "~10,2f" (car (cdr x)))
                     " "
-                    (number->string (cdr (cdr x)))
+                    (format #f "~10,2f" (cdr (cdr x)))
                     "\n")
                      (string-append
-                      (car x)
+                      (format #f
+                       (string-append "~"
+                        (number->string (+ len 5))
+                        "a") (car x))
                       " "
-                      (number->string (cdr x))
+                      (format #f "~10,2f" (cdr x))
                       "\n"))))
                accts))))
 
