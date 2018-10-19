@@ -1559,8 +1559,11 @@ bal_total_by_account_type ()
               tmp = total_transactions(&bal_book.accounts[i]);
               tmpcur = scm_sum(tmpcur, scm_car(tmp));
               tmptotal = scm_sum(tmptotal, scm_cdr(tmp));
-              tmpallcur = scm_sum(tmpallcur, scm_car(tmp));
-              tmpalltotal = scm_sum(tmpalltotal, scm_cdr(tmp));
+              if (j==ASSET || j == LIABILITY)
+                {
+                  tmpallcur = scm_sum(tmpallcur, scm_car(tmp));
+                  tmpalltotal = scm_sum(tmpalltotal, scm_cdr(tmp));
+                }
             }
         }
       tmp = scm_cons(tmpcur, tmptotal);
