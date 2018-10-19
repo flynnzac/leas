@@ -2,6 +2,3 @@ bal
 bal.exe
 *.btar
 *~
-*.aux
-*.log
-*.out

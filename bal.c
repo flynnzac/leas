@@ -1374,10 +1374,10 @@ bal_get_transactions (SCM acct, SCM num)
 
   n = num_c < a->n_tsct ? num_c : a->n_tsct;
   ret = SCM_EOL;
-  for (i=0; i < n; i++)
+  for (i=n-1; i > 0; i--)
     {
       ret = scm_append (scm_list_2(ret,
-                                   scm_list_1(tsct_to_scm(a->tscts[i]))));
+                                   scm_list_1(tsct_to_scm(a->tscts[a->n_tsct-1-i]))));
     }
 
   free(acct_c);
@@ -1678,6 +1678,7 @@ SCM
 bal_read (SCM file)
 {
   char* file_c = scm_to_locale_string(file);
+  int i;
   delete_book (&bal_book);
   bal_book.n_account = 0;
   read_in (file_c);
@@ -1686,6 +1687,13 @@ bal_read (SCM file)
   if (bal_book.n_account > 0)
     {
       bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
+      for (i=0; i < bal_book.n_account; i++)
+        {
+          qsort(bal_book.accounts[i].tscts,
+                bal_book.accounts[i].n_tsct,
+                sizeof(tsct),
+                sort_transactions);
+        }
     }
   return SCM_UNDEFINED;
 }
