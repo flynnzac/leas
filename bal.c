@@ -188,7 +188,8 @@ exec_string_safe (void* toeval_v)
   return ret;
 }
 
-SCM exec_string_safe_history (void* toeval_v)
+SCM
+exec_string_safe_history (void* toeval_v)
 {
   if (strcmp((char*) toeval_v, "") != 0)
     {
