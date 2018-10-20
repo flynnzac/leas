@@ -230,6 +230,18 @@ tsct_to_scm (const tsct t)
 }
 
 SCM
+acct_to_scm (const account a)
+{
+  SCM name = scm_from_locale_string(a.name);
+  SCM type = scm_from_int(a.type);
+  SCM curr = scm_from_double(a.curr);
+  SCM ntsct = scm_from_int(a.n_tsct);
+  SCM ob = scm_from_double(a.ob);
+
+  return scm_list_5(name,type,curr,ntsct,ob);
+}
+
+SCM
 total_transactions (const account* acct)
 {
   int i;
@@ -926,7 +938,7 @@ bal_call (SCM func, SCM options)
               strcat(command, "\"");
             }
         }
-      else if (strcmp(type_c, "default_account")==0)
+      else if (strcmp(type_c, "current_account")==0)
         {
           opt = scm_to_locale_string (bal_cur_acct);
           command = realloc(command,
@@ -1472,12 +1484,9 @@ bal_get_account (SCM name)
 {
   char* name_c = scm_to_locale_string (name);
   account* acct = find_account_in_book (&bal_book, name_c);
-  SCM type = scm_from_int (acct->type);
-  SCM curr = scm_from_double (acct->curr);
-  SCM ntsct = scm_from_int (acct->n_tsct);
 
   free(name_c);
-  return scm_list_4(name, type, curr, ntsct);
+  return acct_to_scm(*acct);
 }
 
 /* Get account information for all accounts */
@@ -1501,6 +1510,23 @@ bal_get_all_accounts ()
   return ret;
 }
 
+/* Get transaction by number of account and number of transaction */
+SCM
+bal_get_transaction_by_location (SCM acct_num, SCM tsct_num)
+{
+  int acct_c = scm_to_int(acct_num);
+  int tsct_c = scm_to_int(tsct_num);
+
+  return tsct_to_scm(bal_book.accounts[acct_c].tscts[tsct_c]);
+}
+
+/* Get account by number */
+SCM
+bal_get_account_by_location (SCM acct_num)
+{
+  int acct_c = scm_to_int(acct_num);
+  return acct_to_scm(bal_book.accounts[acct_c]);
+}
 
 /* Get opening balances */
 SCM
@@ -1769,6 +1795,8 @@ register_guile_functions (void* data)
                      &bal_get_all_transactions);
   scm_c_define_gsubr("bal/get-transactions-by-regex", 2, 0, 0,
                      &bal_get_transactions_by_regex);
+  scm_c_define_gsubr("bal/get-transaction-by-location", 2, 0, 0,
+                     &bal_get_transaction_by_location);
 
   /* Get accounts */
   scm_c_define_gsubr("bal/get-account", 1, 0, 0, &bal_get_account);
@@ -1776,6 +1804,8 @@ register_guile_functions (void* data)
                      &bal_get_all_accounts);
   scm_c_define_gsubr("bal/get-number-of-accounts", 0, 0, 0,
                      &bal_get_number_of_accounts);
+  scm_c_define_gsubr("bal/get-account-by-location", 1, 0, 0,
+                     &bal_get_account_by_location);
   
   /* Total accounts */
   scm_c_define_gsubr("bal/total-account", 1, 0, 0, &bal_total_account);
@@ -1828,7 +1858,7 @@ bal_standard_func ()
             (lambda ()
              (bal/call "bal/at"
               (list
-               (cons "Account" "default_account")
+               (cons "Account" "current_account")
                (cons "Amount" "real")
                (cons "Description" "string")
                (cons "Day" "day")))))
@@ -1864,7 +1894,7 @@ bal_standard_func ()
             (lambda ()
              (let ((tscts (bal/call "bal/get-transactions"
                            (list
-                            (cons "Account" "default_account")
+                            (cons "Account" "current_account")
                             (cons "How many?" "integer")))))
               (print-tscts tscts))))
            
@@ -1960,7 +1990,7 @@ bal_standard_func ()
              (print-tscts
               (bal/call "bal/get-transactions-by-regex"
                (list
-                (cons "Account" "default_account")
+                (cons "Account" "current_account")
                 (cons "Regular Expression" "string"))))))
 
            (define sa

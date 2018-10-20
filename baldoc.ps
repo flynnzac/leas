@@ -1,11 +1,11 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.22.3
-%%CreationDate: Sat Oct 20 00:30:05 2018
+%%CreationDate: Sat Oct 20 14:45:08 2018
 %%DocumentNeededResources: font Times-Bold
 %%+ font Times-Italic
 %%+ font Times-Roman
 %%DocumentSuppliedResources: procset grops 1.22 3
-%%Pages: 2
+%%Pages: 3
 %%PageOrder: Ascend
 %%DocumentMedia: Default 612 792 0 () ()
 %%Orientation: Portrait
@@ -283,8 +283,54 @@ Q(.)-.605 E .351(This document describes basic usage of)72 288.6 R F0
 2.975(rt).165 G .224(asks your \214nancial life needs automated \(for e)
 -2.975 F .224(xample, a script to update the v)-.165 F(alue)-.275 E(of \
 your stock or mutual fund holdings by fetching the latest prices from t\
-he internet\).)72 327.6 Q F0 2.75(2. Basic)72 353.6 R(usage)2.75 E 2.75
-(3. All)72 386.8 R(bal functions)2.75 E 0 Cg EP
+he internet\).)72 327.6 Q F0 2.75(2. Basic)72 353.6 R(usage)2.75 E F1
+.432(The command prompt is a Scheme interpreter e)72 373.8 R .432
+(xcept that the outer)-.165 F .432(-most S e)-.22 F .432
+(xpression should not)-.165 F(be enclosed in parenthesis to sa)72 386.8
+Q .33 -.165(ve o)-.22 H 2.75(nt).165 G 2.75(yping. The)-2.75 F(follo)
+2.75 E(wing)-.275 E F0 2.75(3. Cr)72 412.8 R(eating interacti)-.198 E
+.22 -.11(ve f)-.11 H(unctions).11 E F1 1.76 -.88(To c)72 433 T
+(reate interacti).88 E .33 -.165(ve f)-.275 H
+(unctions, use the Scheme function).165 E(options.)72 453.2 Q/F2 11
+/Times-Italic@0 SF(\(bal/call)A F1(func)A F2(func)2.962 E F1 .212
+(is a string gi)2.962 F .211(ving the function name to call, and)-.275 F
+F2(options)2.961 E F1 .211(is a list of pairs)2.961 F .789
+(containing \(in its car\) the prompt to gi)72 466.2 R 1.119 -.165(ve t)
+-.275 H .79(he user and the type of the ar).165 F .79
+(gument to require \(in its)-.198 F 2.75(cdr\). The)72 479.2 R(follo)
+2.75 E(wing types are recognized in)-.275 E F0(bal.)2.75 E F1 23.65
+<8373>72 499.4 S
+(tring - the option will be treated as a string in the function call)
+-23.65 E 23.65<8361>72 519.6 S .284
+(ccount - the option will be to select an)-23.65 F F2 -.22(ex)3.033 G
+(isting).22 E F1 .283(account \(the name of which will be passed)3.033 F
+(as a string to the function call\).)99.5 532.6 Q 23.65<8363>72 552.8 S
+.766(urrent_account - the name of the current account will be passed as\
+ a string \(the user will)-23.65 F(not see a prompt for this option\).)
+99.5 565.8 Q 23.65<8374>72 586 S
+(ype - prompt to select an account type \(Asset, Liability)-23.65 E 2.75
+(,I)-.715 G(ncome, Expense\).)-2.75 E 23.65<8363>72 606.2 S(urrenc)
+-23.65 E 2.844(y-p)-.165 G .094(rompt to select a v)-2.844 F .094
+(alue of the currenc)-.275 F 2.844(y\()-.165 G .094(by def)-2.844 F .094
+(ault: 1\) in an account, passed as a)-.11 F(number to the function.)
+99.5 619.2 Q 23.65<8374>72 639.4 S 1.188
+(ransaction - prompt to select an e)-23.65 F 1.189
+(xisting transaction, passed as a pair gi)-.165 F 1.189
+(ving the account)-.275 F(number and the transaction number)99.5 652.4 Q
+(.)-.605 E 23.65<8364>72 672.6 S .163(ay - prompt to select a year)
+-23.65 F 2.913(,am)-.44 G .163(onth, and a day)-2.913 F 2.913(,p)-.715 G
+.163(assed as a string in YYYY)-2.913 F .163(-MM-DD for)-1.221 F(-)-.22
+E(mat.)99.5 685.6 Q 23.65<836f>72 705.8 S .415(ther - passed e)-23.65 F
+.415(xactly as entered \(the user can enter an)-.165 F 3.165(yS)-.165 G
+.415(cheme e)-3.165 F .415(xpression and it will just)-.165 F
+(be copied as an ar)99.5 718.8 Q(gument to the function\).)-.198 E 0 Cg
+EP
+%%Page: 2 3
+%%BeginPageSetup
+BP
+%%EndPageSetup
+/F0 11/Times-Roman@0 SF(-2-)281.587 49 Q/F1 11/Times-Bold@0 SF 2.75
+(4. All)72 85 R(bal functions)2.75 E 0 Cg EP
 %%Trailer
 end
 %%EOF

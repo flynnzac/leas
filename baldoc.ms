@@ -25,6 +25,38 @@ using the built-in functions and gives a full reference manual to the functions 
 .NH
 Basic usage
 .LP
+The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  The following
+.NH
+Creating interactive functions
+.LP
+To create interactive functions, use the Scheme function
+.LP
+.c(
+.I (bal/call func options\).
+.c)
+.I func
+is a string giving the function name to call, and
+.I options
+is a list of pairs containing (in its car) the prompt to give the user and the type of the argument to require (in its cdr).  The following types are recognized in
+.B bal.
+.IP \(bu
+string - the option will be treated as a string in the function call
+.IP \(bu
+account - the option will be to select an
+.I existing
+account (the name of which will be passed as a string to the function call).
+.IP \(bu
+current_account - the name of the current account will be passed as a string (the user will not see a prompt for this option).
+.IP \(bu
+type - prompt to select an account type (Asset, Liability, Income, Expense).
+.IP \(bu
+currency - prompt to select a value of the currency (by default: 1) in an account, passed as a number to the function.  
+.IP \(bu
+transaction - prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
+.IP \(bu
+day - prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
+.IP \(bu
+other - passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
 .NH
 All bal functions
 
