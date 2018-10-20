@@ -28,7 +28,7 @@ Interactive functions
 The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" - functions that can be entered without arguments at the prompt and then prompt the user for options - available in
 .CW bal.
 .NH 2
-Functions to add/edit/delete/get accounts
+Functions to add accounts and transactions
 .IP \(bu
 .CW "(aa)"
 - Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
@@ -39,9 +39,63 @@ Functions to add/edit/delete/get accounts
 .CW "(t)"
 - Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
-Functions to add/edit/delete/get transactions
+Functions to edit accounts transactions
+.IP \(bu
+.CW "(ea)"
+- Rename account.
+.IP \(bu
+.CW "(et [n])"
+- Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
+.IP \(bu
+.CW "(da)"
+- Delete account.
+.IP \(bu
+.CW "(dt)"
+- Delete transaction.
+.NH 2
+Functions to print account and transaction information
+.IP \(bu
+.CW "(la)"
+- Lists all accounts and their present and future balances.
+.IP \(bu
+.CW "(lt)"
+- Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
+.CW bal/number-to-quick-list
+so entering the following at the prompt will change the number to list:
+.CW "set! bal/number-to-quick-list NUM"
+.IP \(bu
+.CW "(ltn)"
+- The same as
+.CW "(lt)"
+except that it prompts for the number to list and for the account to list the transactions from.
+.IP \(bu
+.CW "(bt)"
+- List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
+.IP \(bu
+.CW "(re)"
+- Search for transactions in the current account with a description that matches a regular expression (prompted for).
 .NH 2
 Utility functions
+.IP \(bu
+.CW "(sa)"
+- Set current account.
+.IP \(bu
+.CW "(ca)"
+- Print current account.
+.IP \(bu
+.CW "(w)"
+- Write account to file (prompted for name).
+.IP \(bu
+.CW "(r)"
+- Read saved accounts from file.
+.IP \(bu
+.CW "(p X)"
+- Print the Scheme object
+.CW "X."
+.IP \(bu
+.CW "(q)"
+- quit
+.CW bal
 .NH
 Creating interactive functions
 .LP
@@ -105,6 +159,6 @@ is also a Scheme function. It adds a negative transactions to the "from account"
 .DE
 
 .NH
-All bal functions
+Non-interactive functions
 
 

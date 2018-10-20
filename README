@@ -58,7 +58,7 @@ DESCRIPTION
 
        w      write accounts to file
 
-       r      read save accounts from file
+       r      read saved accounts from file
 
        p X    print X, a Scheme expression
 
