@@ -1743,7 +1743,7 @@ register_guile_functions (void* data)
 {
   /* Adding functions */
   scm_c_define_gsubr("bal/at", 4, 0, 0, &bal_at);
-  scm_c_define_gsubr("bal/aa", 4, 0, 0, &bal_aa);
+  scm_c_define_gsubr("bal/aa", 3, 0, 0, &bal_aa);
 
   /* Editing functions */
   scm_c_define_gsubr("bal/et", 1, 0, 0, &bal_et);
