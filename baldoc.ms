@@ -31,12 +31,15 @@ Creating interactive functions
 .LP
 To create interactive functions, use the Scheme function
 .LP
-.c(
-.I (bal/call func options\).
-.c)
-.I func
+.DS C
+.ft CW
+(bal/call func options)
+.DE
+.LP
+.ad l
+.CW func
 is a string giving the function name to call, and
-.I options
+.CW options
 is a list of pairs containing (in its car) the prompt to give the user and the type of the argument to require (in its cdr).  The following types are recognized in
 .B bal.
 .IP \(bu
@@ -44,7 +47,8 @@ string - the option will be treated as a string in the function call
 .IP \(bu
 account - the option will be to select an
 .I existing
-account (the name of which will be passed as a string to the function call).
+account (the name of which will be passed as a string to the function
+call).
 .IP \(bu
 current_account - the name of the current account will be passed as a string (the user will not see a prompt for this option).
 .IP \(bu
@@ -57,6 +61,35 @@ transaction - prompt to select an existing transaction, passed as a pair giving 
 day - prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
 .IP \(bu
 other - passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
+.LP
+.B Example.
+The interactive function
+.CW "(t)"
+creates a transfer from one account to another account.  It is written in the following way,
+.DS I
+.ft CW
+(define t
+  (lambda ()
+    (bal/call "bal/t"
+              (list
+               (cons "To Account" "account")
+               (cons "From Account" "account")
+               (cons "Amount" "real")
+               (cons "Description" "string")
+               (cons "Day" "day")))))
+.DE
+.CW "bal/t"
+is also a Scheme function. It adds a negative transactions to the "from account" and a positive transaction to the "to account". Its source is,
+.DS I
+.ft CW
+(define bal/t
+  (lambda (to-account from-account amount desc day)
+    (let ((to-type (list-ref (bal/get-account to-account) 1))
+          (from-type (list-ref (bal/get-account from-account) 1)))
+      (bal/at to-account amount desc day)
+      (bal/at from-account (* -1 amount) desc day))))
+.DE
+
 .NH
 All bal functions
 

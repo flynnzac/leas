@@ -1,9 +1,10 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.22.3
-%%CreationDate: Sat Oct 20 14:45:08 2018
+%%CreationDate: Sat Oct 20 15:12:46 2018
 %%DocumentNeededResources: font Times-Bold
 %%+ font Times-Italic
 %%+ font Times-Roman
+%%+ font Courier
 %%DocumentSuppliedResources: procset grops 1.22 3
 %%Pages: 3
 %%PageOrder: Ascend
@@ -200,6 +201,7 @@ setpacking
 %%IncludeResource: font Times-Bold
 %%IncludeResource: font Times-Italic
 %%IncludeResource: font Times-Roman
+%%IncludeResource: font Courier
 grops begin/DEFS 1 dict def DEFS begin/u{.001 mul}bind def end/RES 72
 def/PL 792 def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
 /scaron/zcaron/Ydieresis/trademark/quotesingle/Euro/.notdef/.notdef
@@ -228,8 +230,8 @@ def/PL 792 def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
 /egrave/eacute/ecircumflex/edieresis/igrave/iacute/icircumflex/idieresis
 /eth/ntilde/ograve/oacute/ocircumflex/otilde/odieresis/divide/oslash
 /ugrave/uacute/ucircumflex/udieresis/yacute/thorn/ydieresis]def
-/Times-Roman@0 ENC0/Times-Roman RE/Times-Italic@0 ENC0/Times-Italic RE
-/Times-Bold@0 ENC0/Times-Bold RE
+/Courier@0 ENC0/Courier RE/Times-Roman@0 ENC0/Times-Roman RE
+/Times-Italic@0 ENC0/Times-Italic RE/Times-Bold@0 ENC0/Times-Bold RE
 %%EndSetup
 %%Page: 0 1
 %%BeginPageSetup
@@ -291,46 +293,64 @@ Q .33 -.165(ve o)-.22 H 2.75(nt).165 G 2.75(yping. The)-2.75 F(follo)
 2.75 E(wing)-.275 E F0 2.75(3. Cr)72 412.8 R(eating interacti)-.198 E
 .22 -.11(ve f)-.11 H(unctions).11 E F1 1.76 -.88(To c)72 433 T
 (reate interacti).88 E .33 -.165(ve f)-.275 H
-(unctions, use the Scheme function).165 E(options.)72 453.2 Q/F2 11
-/Times-Italic@0 SF(\(bal/call)A F1(func)A F2(func)2.962 E F1 .212
-(is a string gi)2.962 F .211(ving the function name to call, and)-.275 F
-F2(options)2.961 E F1 .211(is a list of pairs)2.961 F .789
-(containing \(in its car\) the prompt to gi)72 466.2 R 1.119 -.165(ve t)
--.275 H .79(he user and the type of the ar).165 F .79
-(gument to require \(in its)-.198 F 2.75(cdr\). The)72 479.2 R(follo)
-2.75 E(wing types are recognized in)-.275 E F0(bal.)2.75 E F1 23.65
-<8373>72 499.4 S
+(unctions, use the Scheme function).165 E/F2 11/Courier@0 SF
+(\(bal/call func options\))212.1 459.7 Q(func)72 486.4 Q F1
+(is a string gi)2.75 E(ving the function name to call, and)-.275 E F2
+(options)2.75 E F1(is a list of pairs containing \(in)2.75 E
+(its car\) the prompt to gi)72 499.4 Q .33 -.165(ve t)-.275 H
+(he user and the type of the ar).165 E
+(gument to require \(in its cdr\).)-.198 E(The fol-)5.5 E(lo)72 512.4 Q
+(wing types are recognized in)-.275 E F0(bal.)2.75 E F1 23.65<8373>72
+532.6 S
 (tring - the option will be treated as a string in the function call)
--23.65 E 23.65<8361>72 519.6 S .284
-(ccount - the option will be to select an)-23.65 F F2 -.22(ex)3.033 G
-(isting).22 E F1 .283(account \(the name of which will be passed)3.033 F
-(as a string to the function call\).)99.5 532.6 Q 23.65<8363>72 552.8 S
-.766(urrent_account - the name of the current account will be passed as\
- a string \(the user will)-23.65 F(not see a prompt for this option\).)
-99.5 565.8 Q 23.65<8374>72 586 S
+-23.65 E 23.65<8361>72 552.8 S(ccount - the option will be to select an)
+-23.65 E/F3 11/Times-Italic@0 SF -.22(ex)2.75 G(isting).22 E F1
+(account \(the name of which will be passed)2.75 E
+(as a string to the function call\).)99.5 565.8 Q 23.65<8363>72 586 S(u\
+rrent_account - the name of the current account will be passed as a str\
+ing \(the user will)-23.65 E(not see a prompt for this option\).)99.5
+599 Q 23.65<8374>72 619.2 S
 (ype - prompt to select an account type \(Asset, Liability)-23.65 E 2.75
-(,I)-.715 G(ncome, Expense\).)-2.75 E 23.65<8363>72 606.2 S(urrenc)
--23.65 E 2.844(y-p)-.165 G .094(rompt to select a v)-2.844 F .094
-(alue of the currenc)-.275 F 2.844(y\()-.165 G .094(by def)-2.844 F .094
-(ault: 1\) in an account, passed as a)-.11 F(number to the function.)
-99.5 619.2 Q 23.65<8374>72 639.4 S 1.188
-(ransaction - prompt to select an e)-23.65 F 1.189
-(xisting transaction, passed as a pair gi)-.165 F 1.189
-(ving the account)-.275 F(number and the transaction number)99.5 652.4 Q
-(.)-.605 E 23.65<8364>72 672.6 S .163(ay - prompt to select a year)
--23.65 F 2.913(,am)-.44 G .163(onth, and a day)-2.913 F 2.913(,p)-.715 G
-.163(assed as a string in YYYY)-2.913 F .163(-MM-DD for)-1.221 F(-)-.22
-E(mat.)99.5 685.6 Q 23.65<836f>72 705.8 S .415(ther - passed e)-23.65 F
-.415(xactly as entered \(the user can enter an)-.165 F 3.165(yS)-.165 G
-.415(cheme e)-3.165 F .415(xpression and it will just)-.165 F
-(be copied as an ar)99.5 718.8 Q(gument to the function\).)-.198 E 0 Cg
-EP
+(,I)-.715 G(ncome, Expense\).)-2.75 E 23.65<8363>72 639.4 S(urrenc)
+-23.65 E 2.75(y-p)-.165 G(rompt to select a v)-2.75 E
+(alue of the currenc)-.275 E 2.75(y\()-.165 G(by def)-2.75 E
+(ault: 1\) in an account, passed as a)-.11 E(number to the function.)
+99.5 652.4 Q 23.65<8374>72 672.6 S(ransaction - prompt to select an e)
+-23.65 E(xisting transaction, passed as a pair gi)-.165 E
+(ving the account)-.275 E(number and the transaction number)99.5 685.6 Q
+(.)-.605 E 23.65<8364>72 705.8 S(ay - prompt to select a year)-23.65 E
+2.75(,am)-.44 G(onth, and a day)-2.75 E 2.75(,p)-.715 G
+(assed as a string in YYYY)-2.75 E(-MM-DD for)-1.221 E(-)-.22 E(mat.)
+99.5 718.8 Q 0 Cg EP
 %%Page: 2 3
 %%BeginPageSetup
 BP
 %%EndPageSetup
-/F0 11/Times-Roman@0 SF(-2-)281.587 49 Q/F1 11/Times-Bold@0 SF 2.75
-(4. All)72 85 R(bal functions)2.75 E 0 Cg EP
+/F0 11/Times-Roman@0 SF(-2-)281.587 49 Q 23.65<836f>72 85 S
+(ther - passed e)-23.65 E(xactly as entered \(the user can enter an)
+-.165 E 2.75(yS)-.165 G(cheme e)-2.75 E(xpression and it will just)-.165
+E(be copied as an ar)99.5 98 Q(gument to the function\).)-.198 E/F1 11
+/Times-Bold@0 SF(Example.)72 118.2 Q F0(The interacti)5.5 E .33 -.165
+(ve f)-.275 H(unction).165 E/F2 11/Courier@0 SF(\(t\))2.75 E F0
+(creates a transfer from one account to another account.)2.75 E
+(It is written in the follo)72 131.2 Q(wing w)-.275 E(ay)-.11 E(,)-.715
+E F2(\(define t)108 150.7 Q(\(lambda \(\))121.2 163.7 Q
+(\(bal/call "bal/t")134.4 176.7 Q(\(list)200.4 189.7 Q
+(\(cons "To Account" "account"\))207 202.7 Q
+(\(cons "From Account" "account"\))207 215.7 Q(\(cons "Amount" "real"\))
+207 228.7 Q(\(cons "Description" "string"\))207 241.7 Q
+(\(cons "Day" "day"\)\)\)\)\))207 254.7 Q(bal/t)72 274.2 Q F0
+(is also a Scheme function. It adds a ne)2.75 E -.055(ga)-.165 G(ti).055
+E .33 -.165(ve t)-.275 H(ransactions to the "from account" and a pos-)
+.165 E(iti)72 287.2 Q .33 -.165(ve t)-.275 H
+(ransaction to the "to account". Its source is,).165 E F2
+(\(define bal/t)108 306.7 Q
+(\(lambda \(to-account from-account amount desc day\))121.2 319.7 Q
+(\(let \(\(to-type \(list-ref \(bal/get-account to-account\) 1\)\))134.4
+332.7 Q(\(from-type \(list-ref \(bal/get-account from-account\) 1\)\)\))
+174 345.7 Q(\(bal/at to-account amount desc day\))147.6 358.7 Q
+(\(bal/at from-account \(* -1 amount\) desc day\)\)\)\))147.6 371.7 Q F1
+2.75(4. All)72 417.2 R(bal functions)2.75 E 0 Cg EP
 %%Trailer
 end
 %%EOF
