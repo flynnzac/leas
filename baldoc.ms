@@ -30,7 +30,14 @@ The command prompt is a Scheme interpreter except that the outer-most S expressi
 .NH 2
 Functions to add/edit/delete/get accounts
 .IP \(bu
+.CW "(aa)"
+- Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
 .IP \(bu
+.CW "(at)"
+- Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
+.IP \(bu
+.CW "(t)"
+- Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
 Functions to add/edit/delete/get transactions
 .NH 2
@@ -62,8 +69,6 @@ call).
 current_account - the name of the current account will be passed as a string (the user will not see a prompt for this option).
 .IP \(bu
 type - prompt to select an account type (Asset, Liability, Income, Expense).
-.IP \(bu
-currency - prompt to select a value of the currency (by default: 1) in an account, passed as a number to the function.  
 .IP \(bu
 transaction - prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
 .IP \(bu
