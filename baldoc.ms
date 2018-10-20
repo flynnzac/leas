@@ -1,6 +1,6 @@
 .RP no
 \R'PD 0.6v'
-\R'PS 11000'
+\R'PS 10000'
 .ND
 .TL
 bal - an extensible tool for keeping accounts in order and studying past spending habits
@@ -23,9 +23,18 @@ This document describes basic usage of
 .B bal
 using the built-in functions and gives a full reference manual to the functions that are available from Scheme to aid in writing your own code to automate whatever tasks your financial life needs automated (for example, a script to update the value of your stock or mutual fund holdings by fetching the latest prices from the internet).
 .NH
-Basic usage
+Interactive functions
 .LP
-The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  The following
+The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" - functions that can be entered without arguments at the prompt and then prompt the user for options - available in
+.CW bal.
+.NH 2
+Functions to add/edit/delete/get accounts
+.IP \(bu
+.IP \(bu
+.NH 2
+Functions to add/edit/delete/get transactions
+.NH 2
+Utility functions
 .NH
 Creating interactive functions
 .LP

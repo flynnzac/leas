@@ -1,6 +1,6 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.22.3
-%%CreationDate: Sat Oct 20 15:12:46 2018
+%%CreationDate: Sat Oct 20 15:20:53 2018
 %%DocumentNeededResources: font Times-Bold
 %%+ font Times-Italic
 %%+ font Times-Roman
@@ -237,120 +237,127 @@ def/PL 792 def/LS false def/ENC0[/asciicircum/asciitilde/Scaron/Zcaron
 %%BeginPageSetup
 BP
 %%EndPageSetup
-/F0 13/Times-Bold@0 SF .694(bal - an extensible tool f)108 139 R .694
-(or k)-.325 F .694(eeping accounts in order and study-)-.13 F
-(ing past spending habits)220.991 155 Q/F1 11/Times-Italic@0 SF(Zac)
-262.876 194 Q 2.75(hF)-.165 G(lynn)-2.75 E(ABSTRA)262.188 246 Q(CT)-.33
-E/F2 11/Times-Roman@0 SF(Gi)135.5 272 Q -.165(ve)-.275 G 3.513(sb).165 G
-.763(asic o)-3.513 F -.165(ve)-.165 G(rvie).165 E 3.513(wo)-.275 G 3.513
-(ft)-3.513 G .763(he package and pro)-3.513 F .764
-(vides a full reference manual)-.165 F 1.022(to the v)108 285 R 1.021
-(arious Guile Scheme functions bal e)-.275 F 3.771(xposes. This)-.165 F
-1.021(documentation can be)3.771 F .948(freely modi\214ed and redistrib)
-108 298 R .948(uted under the terms of the GNU Free Documenta-)-.22 F
-(tion License.)108 311 Q(20 October 2018)72 363 Q 0 Cg EP
+/F0 12/Times-Bold@0 SF 2.066(bal - an extensible tool f)108 135 R 2.066
+(or k)-.3 F 2.066(eeping accounts in order and studying)-.12 F
+(past spending habits)235.65 150 Q/F1 10/Times-Italic@0 SF(Zac)265.16
+186 Q 2.5(hF)-.15 G(lynn)-2.5 E(ABSTRA)264.535 234 Q(CT)-.3 E/F2 10
+/Times-Roman@0 SF(Gi)133 258 Q -.15(ve)-.25 G 3.681(sb).15 G 1.181
+(asic o)-3.681 F -.15(ve)-.15 G(rvie).15 E 3.681(wo)-.25 G 3.681(ft)
+-3.681 G 1.181(he package and pro)-3.681 F 1.182
+(vides a full reference manual to the)-.15 F -.25(va)108 270 S .369
+(rious Guile Scheme functions bal e).25 F 2.869(xposes. This)-.15 F .369
+(documentation can be freely modi\214ed)2.869 F(and redistrib)108 282 Q
+(uted under the terms of the GNU Free Documentation License.)-.2 E
+(20 October 2018)72 330 Q 0 Cg EP
 %%Page: 1 2
 %%BeginPageSetup
 BP
 %%EndPageSetup
-/F0 11/Times-Bold@0 SF 2.75(1. Intr)72 124 R(oduction)-.198 E(bal)72
-144.2 Q/F1 11/Times-Roman@0 SF .307(is an e)3.057 F .307
-(xtensible personal account manager)-.165 F 3.057(,r)-.44 G .307
-(ecording all the good, bad, terrible, and mundane)-3.057 F 1.892
-(\214nancial decisions you mak)72 157.2 R 4.642(ea)-.11 G 1.893
-(nd helping you plan for the future. It is e)-4.642 F 1.893
-(xtensible because its)-.165 F .725
-(prompt is simply a Guile Scheme interpreter \(where you don')72 170.2 R
-3.475(te)-.198 G .725(nclose the outer S-e)-3.475 F .725(xpression in)
--.165 F 1.342(parenthesis\) so it can e)72 183.2 R -.165(xe)-.165 G
-1.343(cute arbitrary code on your transactions. It has a b).165 F 1.343
-(uilt-in function for)-.22 F .243(making Scheme functions interacti)72
-196.2 R .573 -.165(ve t)-.275 H .243(hat allo).165 F .242
-(ws you to specify that the function tak)-.275 F .242(es "accounts")-.11
-F .774(or "transactions" \(which are simply Scheme lists with certain v)
-72 209.2 R .775(alues\) as ar)-.275 F .775(guments and ha)-.198 F 1.105
--.165(ve t)-.22 H(he).165 E
-(user select the account or transaction from a menu.)72 222.2 Q .426
-(The main interf)72 242.4 R .426(ace is a command prompt interf)-.11 F
-.425(ace using the Scheme interpreter with some b)-.11 F(uilt-)-.22 E
-.279(in C functions that can be called from Scheme, b)72 255.4 R .28
-(ut of course, other interf)-.22 F .28(aces could be de)-.11 F -.165(ve)
--.275 G(loped).165 E(by running Scheme code at the interpreter)72 268.4
-Q(.)-.605 E .351(This document describes basic usage of)72 288.6 R F0
-(bal)3.1 E F1 .35(using the b)3.1 F .35(uilt-in functions and gi)-.22 F
--.165(ve)-.275 G 3.1(saf).165 G .35(ull reference)-3.1 F .674
-(manual to the functions that are a)72 301.6 R -.275(va)-.22 G .675
-(ilable from Scheme to aid in writing your o).275 F .675
-(wn code to auto-)-.275 F .225(mate whate)72 314.6 R -.165(ve)-.275 G
-2.975(rt).165 G .224(asks your \214nancial life needs automated \(for e)
--2.975 F .224(xample, a script to update the v)-.165 F(alue)-.275 E(of \
-your stock or mutual fund holdings by fetching the latest prices from t\
-he internet\).)72 327.6 Q F0 2.75(2. Basic)72 353.6 R(usage)2.75 E F1
-.432(The command prompt is a Scheme interpreter e)72 373.8 R .432
-(xcept that the outer)-.165 F .432(-most S e)-.22 F .432
-(xpression should not)-.165 F(be enclosed in parenthesis to sa)72 386.8
-Q .33 -.165(ve o)-.22 H 2.75(nt).165 G 2.75(yping. The)-2.75 F(follo)
-2.75 E(wing)-.275 E F0 2.75(3. Cr)72 412.8 R(eating interacti)-.198 E
-.22 -.11(ve f)-.11 H(unctions).11 E F1 1.76 -.88(To c)72 433 T
-(reate interacti).88 E .33 -.165(ve f)-.275 H
-(unctions, use the Scheme function).165 E/F2 11/Courier@0 SF
-(\(bal/call func options\))212.1 459.7 Q(func)72 486.4 Q F1
-(is a string gi)2.75 E(ving the function name to call, and)-.275 E F2
-(options)2.75 E F1(is a list of pairs containing \(in)2.75 E
-(its car\) the prompt to gi)72 499.4 Q .33 -.165(ve t)-.275 H
-(he user and the type of the ar).165 E
-(gument to require \(in its cdr\).)-.198 E(The fol-)5.5 E(lo)72 512.4 Q
-(wing types are recognized in)-.275 E F0(bal.)2.75 E F1 23.65<8373>72
-532.6 S
+/F0 10/Times-Bold@0 SF 2.5(1. Intr)72 120 R(oduction)-.18 E(bal)72 139.2
+Q/F1 10/Times-Roman@0 SF .416(is an e)2.916 F .416
+(xtensible personal account manager)-.15 F 2.916(,r)-.4 G .416
+(ecording all the good, bad, terrible, and mundane \214nancial)-2.916 F
+.004(decisions you mak)72 151.2 R 2.504(ea)-.1 G .004
+(nd helping you plan for the future. It is e)-2.504 F .003
+(xtensible because its prompt is simply a Guile)-.15 F .645
+(Scheme interpreter \(where you don')72 163.2 R 3.145(te)-.18 G .645
+(nclose the outer S-e)-3.145 F .646
+(xpression in parenthesis\) so it can e)-.15 F -.15(xe)-.15 G .646
+(cute arbi-).15 F 1.622(trary code on your transactions. It has a b)72
+175.2 R 1.622(uilt-in function for making Scheme functions interacti)-.2
+F 1.922 -.15(ve t)-.25 H(hat).15 E(allo)72 187.2 Q .905
+(ws you to specify that the function tak)-.25 F .906
+(es "accounts" or "transactions" \(which are simply Scheme lists)-.1 F
+(with certain v)72 199.2 Q(alues\) as ar)-.25 E(guments and ha)-.18 E .3
+-.15(ve t)-.2 H(he user select the account or transaction from a menu.)
+.15 E .259(The main interf)72 218.4 R .259
+(ace is a command prompt interf)-.1 F .259
+(ace using the Scheme interpreter with some b)-.1 F .258
+(uilt-in C func-)-.2 F .017(tions that can be called from Scheme, b)72
+230.4 R .017(ut of course, other interf)-.2 F .017(aces could be de)-.1
+F -.15(ve)-.25 G .017(loped by running Scheme).15 F
+(code at the interpreter)72 242.4 Q(.)-.55 E .108
+(This document describes basic usage of)72 261.6 R F0(bal)2.608 E F1
+.108(using the b)2.608 F .108(uilt-in functions and gi)-.2 F -.15(ve)
+-.25 G 2.607(saf).15 G .107(ull reference manual to)-2.607 F .856
+(the functions that are a)72 273.6 R -.25(va)-.2 G .856
+(ilable from Scheme to aid in writing your o).25 F .857
+(wn code to automate whate)-.25 F -.15(ve)-.25 G 3.357(rt).15 G(asks)
+-3.357 E .462(your \214nancial life needs automated \(for e)72 285.6 R
+.462(xample, a script to update the v)-.15 F .461
+(alue of your stock or mutual fund)-.25 F
+(holdings by fetching the latest prices from the internet\).)72 297.6 Q
+F0 2.5(2. Interacti)72 321.6 R .2 -.1(ve f)-.1 H(unctions).1 E F1 2.188
+(The command prompt is a Scheme interpreter e)72 340.8 R 2.189
+(xcept that the outer)-.15 F 2.189(-most S e)-.2 F 2.189
+(xpression should not be)-.15 F .18(enclosed in parenthesis to sa)72
+352.8 R .48 -.15(ve o)-.2 H 2.68(nt).15 G 2.68(yping. This)-2.68 F .18
+(section describes the "interacti)2.68 F .48 -.15(ve f)-.25 H .18
+(unctions" - functions that).15 F(can be entered without ar)72 364.8 Q
+(guments at the prompt and then prompt the user for options - a)-.18 E
+-.25(va)-.2 G(ilable in).25 E/F2 10/Courier@0 SF(bal.)2.5 E F0 2.5
+(2.1. Functions)72 388.8 R(to add/edit/delete/get accounts)2.5 E F1<83>
+72 408 Q<83>72 427.2 Q F0 2.5(2.2. Functions)72 451.2 R
+(to add/edit/delete/get transactions)2.5 E 2.5(2.3. Utility)72 475.2 R
+(functions)2.5 E 2.5(3. Cr)72 499.2 R(eating interacti)-.18 E .2 -.1
+(ve f)-.1 H(unctions).1 E F1 1.6 -.8(To c)72 518.4 T(reate interacti).8
+E .3 -.15(ve f)-.25 H(unctions, use the Scheme function).15 E F2
+(\(bal/call func options\))219 543.6 Q(func)72 568.8 Q F1
+(is a string gi)2.5 E(ving the function name to call, and)-.25 E F2
+(options)2.5 E F1(is a list of pairs containing \(in its car\) the)2.5 E
+(prompt to gi)72 580.8 Q .3 -.15(ve t)-.25 H
+(he user and the type of the ar).15 E(gument to require \(in its cdr\).)
+-.18 E(The follo)5 E(wing types are recog-)-.25 E(nized in)72 592.8 Q F0
+(bal.)2.5 E F1 21.5<8373>72 612 S
 (tring - the option will be treated as a string in the function call)
--23.65 E 23.65<8361>72 552.8 S(ccount - the option will be to select an)
--23.65 E/F3 11/Times-Italic@0 SF -.22(ex)2.75 G(isting).22 E F1
-(account \(the name of which will be passed)2.75 E
-(as a string to the function call\).)99.5 565.8 Q 23.65<8363>72 586 S(u\
-rrent_account - the name of the current account will be passed as a str\
-ing \(the user will)-23.65 E(not see a prompt for this option\).)99.5
-599 Q 23.65<8374>72 619.2 S
-(ype - prompt to select an account type \(Asset, Liability)-23.65 E 2.75
-(,I)-.715 G(ncome, Expense\).)-2.75 E 23.65<8363>72 639.4 S(urrenc)
--23.65 E 2.75(y-p)-.165 G(rompt to select a v)-2.75 E
-(alue of the currenc)-.275 E 2.75(y\()-.165 G(by def)-2.75 E
-(ault: 1\) in an account, passed as a)-.11 E(number to the function.)
-99.5 652.4 Q 23.65<8374>72 672.6 S(ransaction - prompt to select an e)
--23.65 E(xisting transaction, passed as a pair gi)-.165 E
-(ving the account)-.275 E(number and the transaction number)99.5 685.6 Q
-(.)-.605 E 23.65<8364>72 705.8 S(ay - prompt to select a year)-23.65 E
-2.75(,am)-.44 G(onth, and a day)-2.75 E 2.75(,p)-.715 G
-(assed as a string in YYYY)-2.75 E(-MM-DD for)-1.221 E(-)-.22 E(mat.)
-99.5 718.8 Q 0 Cg EP
+-21.5 E 21.5<8361>72 631.2 S(ccount - the option will be to select an)
+-21.5 E/F3 10/Times-Italic@0 SF -.2(ex)2.5 G(isting).2 E F1
+(account \(the name of which will be passed as a string)2.5 E
+(to the function call\).)97 643.2 Q 21.5<8363>72 662.4 S(urrent_account\
+ - the name of the current account will be passed as a string \(the use\
+r will not see a)-21.5 E(prompt for this option\).)97 674.4 Q 21.5<8374>
+72 693.6 S(ype - prompt to select an account type \(Asset, Liability)
+-21.5 E 2.5(,I)-.65 G(ncome, Expense\).)-2.5 E 21.5<8363>72 712.8 S
+(urrenc)-21.5 E 2.5(y-p)-.15 G(rompt to select a v)-2.5 E
+(alue of the currenc)-.25 E 2.5(y\()-.15 G(by def)-2.5 E
+(ault: 1\) in an account, passed as a number)-.1 E(to the function.)97
+724.8 Q 0 Cg EP
 %%Page: 2 3
 %%BeginPageSetup
 BP
 %%EndPageSetup
-/F0 11/Times-Roman@0 SF(-2-)281.587 49 Q 23.65<836f>72 85 S
-(ther - passed e)-23.65 E(xactly as entered \(the user can enter an)
--.165 E 2.75(yS)-.165 G(cheme e)-2.75 E(xpression and it will just)-.165
-E(be copied as an ar)99.5 98 Q(gument to the function\).)-.198 E/F1 11
-/Times-Bold@0 SF(Example.)72 118.2 Q F0(The interacti)5.5 E .33 -.165
-(ve f)-.275 H(unction).165 E/F2 11/Courier@0 SF(\(t\))2.75 E F0
-(creates a transfer from one account to another account.)2.75 E
-(It is written in the follo)72 131.2 Q(wing w)-.275 E(ay)-.11 E(,)-.715
-E F2(\(define t)108 150.7 Q(\(lambda \(\))121.2 163.7 Q
-(\(bal/call "bal/t")134.4 176.7 Q(\(list)200.4 189.7 Q
-(\(cons "To Account" "account"\))207 202.7 Q
-(\(cons "From Account" "account"\))207 215.7 Q(\(cons "Amount" "real"\))
-207 228.7 Q(\(cons "Description" "string"\))207 241.7 Q
-(\(cons "Day" "day"\)\)\)\)\))207 254.7 Q(bal/t)72 274.2 Q F0
-(is also a Scheme function. It adds a ne)2.75 E -.055(ga)-.165 G(ti).055
-E .33 -.165(ve t)-.275 H(ransactions to the "from account" and a pos-)
-.165 E(iti)72 287.2 Q .33 -.165(ve t)-.275 H
-(ransaction to the "to account". Its source is,).165 E F2
-(\(define bal/t)108 306.7 Q
-(\(lambda \(to-account from-account amount desc day\))121.2 319.7 Q
-(\(let \(\(to-type \(list-ref \(bal/get-account to-account\) 1\)\))134.4
-332.7 Q(\(from-type \(list-ref \(bal/get-account from-account\) 1\)\)\))
-174 345.7 Q(\(bal/at to-account amount desc day\))147.6 358.7 Q
-(\(bal/at from-account \(* -1 amount\) desc day\)\)\)\))147.6 371.7 Q F1
-2.75(4. All)72 417.2 R(bal functions)2.75 E 0 Cg EP
+/F0 10/Times-Roman@0 SF(-2-)282.17 48 Q 21.5<8374>72 84 S
+(ransaction - prompt to select an e)-21.5 E
+(xisting transaction, passed as a pair gi)-.15 E
+(ving the account number and)-.25 E(the transaction number)97 96 Q(.)
+-.55 E 21.5<8364>72 115.2 S(ay - prompt to select a year)-21.5 E 2.5
+(,am)-.4 G(onth, and a day)-2.5 E 2.5(,p)-.65 G
+(assed as a string in YYYY)-2.5 E(-MM-DD format.)-1.11 E 21.5<836f>72
+134.4 S(ther - passed e)-21.5 E
+(xactly as entered \(the user can enter an)-.15 E 2.5(yS)-.15 G(cheme e)
+-2.5 E(xpression and it will just be copied)-.15 E(as an ar)97 146.4 Q
+(gument to the function\).)-.18 E/F1 10/Times-Bold@0 SF(Example.)72
+165.6 Q F0(The interacti)5 E .3 -.15(ve f)-.25 H(unction).15 E/F2 10
+/Courier@0 SF(\(t\))2.5 E F0
+(creates a transfer from one account to another account.)2.5 E
+(It is writ-)5 E(ten in the follo)72 177.6 Q(wing w)-.25 E(ay)-.1 E(,)
+-.65 E F2(\(define t)108 195.6 Q(\(lambda \(\))120 207.6 Q
+(\(bal/call "bal/t")132 219.6 Q(\(list)192 231.6 Q
+(\(cons "To Account" "account"\))198 243.6 Q
+(\(cons "From Account" "account"\))198 255.6 Q(\(cons "Amount" "real"\))
+198 267.6 Q(\(cons "Description" "string"\))198 279.6 Q
+(\(cons "Day" "day"\)\)\)\)\))198 291.6 Q(bal/t)72 309.6 Q F0
+(is also a Scheme function. It adds a ne)2.5 E -.05(ga)-.15 G(ti).05 E
+.3 -.15(ve t)-.25 H(ransactions to the "from account" and a positi).15 E
+.3 -.15(ve t)-.25 H(rans-).15 E
+(action to the "to account". Its source is,)72 321.6 Q F2
+(\(define bal/t)108 339.6 Q
+(\(lambda \(to-account from-account amount desc day\))120 351.6 Q
+(\(let \(\(to-type \(list-ref \(bal/get-account to-account\) 1\)\))132
+363.6 Q(\(from-type \(list-ref \(bal/get-account from-account\) 1\)\)\))
+168 375.6 Q(\(bal/at to-account amount desc day\))144 387.6 Q
+(\(bal/at from-account \(* -1 amount\) desc day\)\)\)\))144 399.6 Q F1
+2.5(4. All)72 441.6 R(bal functions)2.5 E 0 Cg EP
 %%Trailer
 end
 %%EOF
