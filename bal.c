@@ -59,7 +59,6 @@ struct account
   char* name;
   tsct* tscts;
   double ob;
-  double curr;
   int n_tsct;
   int n_pos;
 };
@@ -234,11 +233,10 @@ acct_to_scm (const account a)
 {
   SCM name = scm_from_locale_string(a.name);
   SCM type = scm_from_int(a.type);
-  SCM curr = scm_from_double(a.curr);
   SCM ntsct = scm_from_int(a.n_tsct);
   SCM ob = scm_from_double(a.ob);
 
-  return scm_list_5(name,type,curr,ntsct,ob);
+  return scm_list_4(name,type,ntsct,ob);
 }
 
 SCM
@@ -533,19 +531,16 @@ account_cb1 (void* s, size_t len, void* data)
     case 2:
       book->accounts[book->n_account].ob = atof(buf);
       break;
-    case 3:
-      book->accounts[book->n_account].curr = atof(buf);
-      break;
     default:
       break;
     }
-  if (book->n_pos==3)
+  if (book->n_pos==2)
     {
       book->n_pos = 0;
       book->accounts[book->n_account].n_tsct = 0;
       book->n_account = book->n_account + 1;
     }
-  else if (book->n_pos < 3)
+  else if (book->n_pos < 2)
     {
       book->n_pos = book->n_pos + 1;
     }
@@ -771,10 +766,10 @@ write_accounts (const char* file)
           fprintf(fp,"%s,", "liability");
           break;
         }
-      fprintf(fp, "%s,%f,%f\n",
+      fprintf(fp, "%s,%f\n",
               bal_book.accounts[i].name,
-              bal_book.accounts[i].ob,
-              bal_book.accounts[i].curr);
+              bal_book.accounts[i].ob);
+
     }
   fclose(fp);
   return 0;
@@ -994,22 +989,6 @@ bal_call (SCM func, SCM options)
             }
 
         }
-      else if (strcmp(type_c, "currency")==0)
-        {
-          opt = readline(name_c);
-          if (strcmp(opt,"")==0)
-            {
-              command = realloc(command,
-                                (strlen(command)+3)*sizeof(char));
-              strcat(command, "1");
-            }
-          else
-            {
-              command = realloc(command,
-                                (strlen(command)+strlen(opt)+3)*sizeof(char));
-              strcat(command, opt);
-            }
-        }
       else if (strcmp(type_c, "transaction")==0)
         {
           printf("%s\n", name_c);
@@ -1163,16 +1142,12 @@ bal_at (SCM account_name,
 SCM
 bal_aa (SCM name,
         SCM type,
-        SCM ob,
-        SCM currency)
+        SCM ob)
 {
-  if (SCM_UNBNDP(currency))
-    currency = scm_from_int (1);
   
   char* type_c = scm_to_locale_string (type);
   char* name_c = scm_to_locale_string (name);
   double ob_c = scm_to_double(ob);
-  double curr_c = scm_to_double(currency);
   account_type type_ac;
 
   if (bal_book.n_account == 0)
@@ -1211,7 +1186,6 @@ bal_aa (SCM name,
          name_c);
 
   bal_book.accounts[bal_book.n_account].ob = ob_c;
-  bal_book.accounts[bal_book.n_account].curr = curr_c;
 
   bal_book.n_account = bal_book.n_account + 1;
 
@@ -1501,10 +1475,7 @@ bal_get_all_accounts ()
   for (i=0; i < bal_book.n_account; i++)
     {
       ret = scm_append (scm_list_2(ret,
-                                   scm_list_1(scm_list_4(scm_from_locale_string(bal_book.accounts[i].name),
-                                                         scm_from_int (bal_book.accounts[i].type),
-                                                         scm_from_double (bal_book.accounts[i].curr),
-                                                         scm_from_int (bal_book.accounts[i].n_tsct)))));
+                                   scm_list_1(acct_to_scm(bal_book.accounts[i]))));
     }
   
   return ret;
@@ -1851,8 +1822,8 @@ bal_standard_func ()
               (list
                (cons "Account" "string")
                (cons "Type" "type")
-               (cons "Opening Balance" "real")
-               (cons "Currency [1]" "currency")))))
+               (cons "Opening Balance" "real")))))
+
 
            (define at
             (lambda ()
