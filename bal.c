@@ -1590,7 +1590,7 @@ bal_total_by_account_type ()
             (scm_list_2
              (ret,
               scm_list_1
-              (scm_cons(scm_from_locale_string("expense"),
+              (scm_cons(scm_from_locale_string("Expense"),
                         tmp))));
           break;
         case INCOME:
@@ -1598,7 +1598,7 @@ bal_total_by_account_type ()
             (scm_list_2
              (ret,
               scm_list_1
-              (scm_cons(scm_from_locale_string("income"),
+              (scm_cons(scm_from_locale_string("Income"),
                         tmp))));
           break;
         case ASSET:
@@ -1606,7 +1606,7 @@ bal_total_by_account_type ()
             (scm_list_2
              (ret,
               scm_list_1
-              (scm_cons(scm_from_locale_string("asset"),
+              (scm_cons(scm_from_locale_string("Asset"),
                         tmp))));
           break;
         case LIABILITY:
@@ -1614,7 +1614,7 @@ bal_total_by_account_type ()
             (scm_list_2
              (ret,
               scm_list_1
-              (scm_cons(scm_from_locale_string("liability"),
+              (scm_cons(scm_from_locale_string("Liability"),
                         tmp))));
           break;
         }
@@ -1626,7 +1626,7 @@ bal_total_by_account_type ()
     (scm_list_2
      (ret,
       scm_list_1
-      (scm_cons(scm_from_locale_string("total"),
+      (scm_cons(scm_from_locale_string("Worth"),
                 tmp))));
   
   tmp = scm_from_double(0.0);
@@ -1638,7 +1638,7 @@ bal_total_by_account_type ()
   
   ret = scm_append
     (scm_list_2
-     (ret, scm_list_1(scm_cons(scm_from_locale_string("balances"),
+     (ret, scm_list_1(scm_cons(scm_from_locale_string("Balances"),
                                tmp))));
   
   return ret;
