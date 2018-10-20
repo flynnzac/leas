@@ -1847,9 +1847,9 @@ bal_standard_func ()
                   (string-append
                    (number->string (list-ref x 2))
                    "-"
-                   (number->string (list-ref x 3))
+                   (format #f "~2,'0d" (list-ref x 3))
                    "-"
-                   (number->string (list-ref x 4))
+                   (format #f "~2,'0d" (list-ref x 4))
                    " "
                    (format #f (string-append
                                "~"
