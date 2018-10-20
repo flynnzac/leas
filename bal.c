@@ -1999,8 +1999,6 @@ bal_standard_func ()
             (lambda (to-account from-account amount desc day)
              (let ((to-type (list-ref (bal/get-account to-account) 1))
                    (from-type (list-ref (bal/get-account from-account) 1)))
-              (display (string-append "Amount: "
-                        (number->string amount) "\n"))
               (bal/at to-account amount desc day)
               (bal/at from-account (* -1 amount) desc day))))
 
