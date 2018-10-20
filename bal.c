@@ -114,6 +114,7 @@ SCM bal_cur_acct;
 int bal_prompton;
 SCM bal_cur_file;
 int bal_prompt_exit;
+int bal_select_tsct_num;
 
 /* utility functions */
 
@@ -331,7 +332,10 @@ bal_select_transaction (account* acct)
 
   maxlen = 0;
 
-  n = (acct->n_tsct - 19) >= 0 ? (acct->n_tsct - 19) : 0;
+
+  n = (acct->n_tsct - bal_select_tsct_num) >= 0 ?
+    (acct->n_tsct - bal_select_tsct_num) : 0;
+  
   ndigit = (acct->n_tsct / 10) + 1;
 
   for (i=n; i < acct->n_tsct; i++)
@@ -1724,8 +1728,16 @@ bal_get_current_file ()
   return bal_cur_file;
 }
 
-#define QUOTE(...) #__VA_ARGS__
+/* set number of transactions to print when selecting transact */
+SCM
+bal_set_select_transact_num (SCM num)
+{
+  bal_select_tsct_num = scm_to_int (num);
+  return num;
+}
 
+
+#define QUOTE(...) #__VA_ARGS__
 
 /* Register all functions */
 
@@ -1771,7 +1783,10 @@ register_guile_functions (void* data)
                      &bal_total_all_accounts);
   scm_c_define_gsubr("bal/total-by-account-type", 0, 0, 0,
                      &bal_total_by_account_type);
-  
+
+  /* Setting commands */
+  scm_c_define_gsubr("bal/set-select-transact-num", 1, 0, 0,
+                     &bal_set_select_transact_num);
 
   /* interface commands */
   scm_c_define_gsubr("q", 0, 0, 0, &bal_quit);
@@ -1854,7 +1869,8 @@ bal_standard_func ()
               (print-tscts tscts))))
            
            (define et
-            (lambda ()
+            (lambda* (#:optional n)
+             (if n (bal/set-select-transact-num n))
              (bal/call "bal/et"
               (list
                (cons "Transaction" "transaction")))))
@@ -2031,6 +2047,7 @@ main (int argc, char** argv)
   int k;
 
   bal_prompt_exit = 1;
+  bal_select_tsct_num = 19;
   
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func();

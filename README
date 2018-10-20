@@ -28,7 +28,9 @@ DESCRIPTION
 
        ea     rename account
 
-       et     edit transaction
+       et[n]  edit transaction, optionally setting how many of the  lat‐
+              est  transaction  numbers  to list (any transaction can be
+              chosen whether it is listed or not).
 
        da     delete account
 
