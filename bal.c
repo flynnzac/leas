@@ -301,8 +301,9 @@ create_tmp_dir ()
 char*
 bal_select_account (const char* prompt)
 {
-  int j;
+  int j, ndigit;
   char* c;
+
   if (bal_book.n_account==0)
     {
       printf("No account loaded.\n");
@@ -310,9 +311,11 @@ bal_select_account (const char* prompt)
     }
   else
     {
+      ndigit = (bal_book.n_account / 10) + 1;
+      printf("ndigit: %d\n", ndigit);
       for (j=0; j < bal_book.n_account; j++)
         {
-          printf("%d: %s\n", j, bal_book.accounts[j].name);
+          printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
         }
       c = readline(prompt);
 
@@ -323,17 +326,29 @@ bal_select_account (const char* prompt)
 int
 bal_select_transaction (account* acct)
 {
-  int i,n;
+  int i,n,ndigit,maxlen;
   char* option;
 
+  maxlen = 0;
+
   n = (acct->n_tsct - 19) >= 0 ? (acct->n_tsct - 19) : 0;
+  ndigit = (acct->n_tsct / 10) + 1;
 
   for (i=n; i < acct->n_tsct; i++)
     {
-      printf("%d: %u-%u-%u %s %f\n", i,
+      if (maxlen < strlen(acct->tscts[i].desc))
+        maxlen = strlen(acct->tscts[i].desc);
+    }
+  
+  for (i=n; i < acct->n_tsct; i++)
+    {
+      printf("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
+             ndigit,
+             i,
              acct->tscts[i].year,
              acct->tscts[i].month,
              acct->tscts[i].day,
+             maxlen+1,
              acct->tscts[i].desc,
              acct->tscts[i].amount);
     }
