@@ -1499,6 +1499,18 @@ bal_get_account_by_location (SCM acct_num)
   return acct_to_scm(bal_book.accounts[acct_c]);
 }
 
+/* TODO: Get transactions by date */
+SCM
+bal_get_transactions_by_date (SCM acct, SCM first_day, SCM last_day)
+{
+  char* acct_c = scm_to_locale_string(acct);
+  account* acct_p = find_account_in_book(&bal_book, acct_c);
+
+  
+
+  free(acct_c);
+}
+
 /* Get opening balances */
 SCM
 bal_opening_balances ()
