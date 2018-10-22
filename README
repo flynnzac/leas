@@ -1,24 +1,24 @@
-Man Page
----
+Man Page\n---\n
 
-
-bal(1)                   General Commands Manual                  bal(1)
+bal(1)                                                                      
+General Commands Manual                                                         
+             bal(1)
 
 NAME
-       bal  -  for  keeping accounts in order and studying past spending
-       habits
+       bal - for keeping accounts in order and studying past spending habits
 
 SYNOPSIS
        bal [-f FILE] [-l CODE] [-s] [COMMAND]
 
 DESCRIPTION
-       bal keeps track of personal accounts and spending.  It is  exten‐
-       sible using Guile Scheme, a full programming language, so that it
-       is easy to build arbitrary reports about your  past  transactions
-       and to script the program to automatically add or update transac‐
-       tions when arbitrary conditions are met (you could, say, write  a
-       piece  of  Scheme  code  that  fetches the latest stock price and
-       updates the current value of your shares).
+       bal  keeps  track  of  personal  accounts and spending.  It is 
+extensible using Guile Scheme, a full programming language, so that it is easy 
+to build arbitrary reports
+       about your past transactions and to script the program to automatically 
+add or update transactions when arbitrary conditions are met (you could, say, 
+write a  piece  of
+       Scheme code that fetches the latest stock price and updates the current 
+value of your shares).
 
        bal's main interactive commands are:
 
@@ -28,9 +28,9 @@ DESCRIPTION
 
        ea     rename account
 
-       et[n]  edit transaction, optionally setting how many of the  lat‐
-              est  transaction  numbers  to list (any transaction can be
-              chosen whether it is listed or not).
+       et[n]  edit transaction, optionally setting how many of the latest 
+transaction numbers to list (any transaction can be chosen whether it is listed 
+or not).
 
        da     delete account
 
@@ -40,17 +40,18 @@ DESCRIPTION
 
        la     list accounts and current totals
 
-       lt     list most recent transactions in current  account  (change
-              number  to  list  by modifying the variable bal/number-to-
-              quick-list)
+       lt     list most recent transactions in current account (change number 
+to list by modifying the variable bal/number-to-quick-list)
 
-       ltn    list most recent transactions in current  account,  prompt
-              for number to list
+       ltn    list most recent transactions in current account, prompt for 
+number to list
+
+       ltbd   list transactions in current account by day, prompting for the 
+first and last day to show
 
        bt     total accounts by type (income, expense, asset, liability)
 
-       re     list  transactions  in  current account matching a regular
-              expression
+       re     list transactions in current account matching a regular expression
 
        sa     set current account
 
@@ -66,8 +67,7 @@ DESCRIPTION
 
 OPTIONS
        -f FILE
-              load accounts from FILE where FILE omits the .btar  exten‐
-              sion
+              load accounts from FILE where FILE omits the .btar extension
 
        -l CODE
               execute Scheme code in file CODE
@@ -75,8 +75,7 @@ OPTIONS
        -s     do not prompt to save on exit
 
        COMMAND
-              execute  COMMAND  as if it was entered at bal's prompt and
-              then exit
+              execute COMMAND as if it was entered at bal's prompt and then exit
 
 FILES
        bal executes Scheme code in ~/.balrc.scm if the file is present.
@@ -86,10 +85,10 @@ BUGS
 AUTHOR
        Zach Flynn <zlflynn@gmail.com>
 
-                               2018-10-16                         bal(1)
-
----
-
+                                                                                
+   2018-10-16                                                                   
+         bal(1)
+\n---\n
 bal is an interactive and scriptable command line personal accounting program 
 to keep your books in order and to study past spending habits. It can be 
 scripted and extended using Guile, a simple programming language (a Scheme 

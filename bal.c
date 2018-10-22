@@ -1507,9 +1507,9 @@ bal_get_account_by_location (SCM acct_num)
   return acct_to_scm(bal_book.accounts[acct_c]);
 }
 
-/* Get transactions by date */
+/* Get transactions by day */
 SCM
-bal_get_transactions_by_date (SCM acct, SCM first_day, SCM last_day)
+bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
 {
   char* acct_c = scm_to_locale_string(acct);
   account* acct_p = find_account_in_book(&bal_book, acct_c);
@@ -1820,7 +1820,9 @@ register_guile_functions (void* data)
                      &bal_get_transactions_by_regex);
   scm_c_define_gsubr("bal/get-transaction-by-location", 2, 0, 0,
                      &bal_get_transaction_by_location);
-
+  scm_c_define_gsubr("bal/get-transactions-by-day", 3, 0, 0,
+                     &bal_get_transactions_by_day);
+  
   /* Get accounts */
   scm_c_define_gsubr("bal/get-account", 1, 0, 0, &bal_get_account);
   scm_c_define_gsubr("bal/get-all-accounts", 0, 0, 0,
@@ -2064,6 +2066,15 @@ bal_standard_func ()
                (cons "Amount" "real")
                (cons "Description" "string")
                (cons "Day" "day")))))
+
+	   (define ltbd
+	    (lambda ()
+	     (print-tscts
+	      (bal/call "bal/get-transactions-by-day"
+	       (list
+		(cons "Account" "current_account")
+		(cons "From Day" "day")
+		(cons "To Day" "day"))))))
 
            )); 
 }

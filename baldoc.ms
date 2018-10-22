@@ -67,7 +67,12 @@ so entering the following at the prompt will change the number to list:
 .CW "(ltn)"
 - The same as
 .CW "(lt)"
-except that it prompts for the number to list and for the account to list the transactions from.
+except that it prompts for the number to list and for the account to
+list the transactions from.
+.IP \(bu
+.CW "(ltbd)"
+- list transactions in current account by day, prompting for the first
+and last day to show.
 .IP \(bu
 .CW "(bt)"
 - List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
