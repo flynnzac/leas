@@ -134,6 +134,17 @@ anyalpha (const char* str)
   return any;
 }
 
+struct tm
+scm_day_to_tm (SCM day)
+{
+  char* day_c = scm_to_locale_string(day);
+  struct tm t;
+
+  strptime(day_c, "%Y-%m-%d", &t);
+  free(day_c);
+  return t;
+}
+  
 int
 sort_transactions (const void* a, const void* b)
 {
@@ -1102,11 +1113,9 @@ bal_at (SCM account_name,
   char* desc_c = scm_to_locale_string (desc);
   double amount_c = scm_to_double(amount);
   account* acct = find_account_in_book (&bal_book, account_c);
-  char* day_str_c = scm_to_locale_string (day);
   tsct t;
-  struct tm tm_c;
 
-  strptime(day_str_c, "%Y-%m-%d", &tm_c);
+  struct tm tm_c = scm_day_to_tm(day);
 
   t.year = tm_c.tm_year + 1900;
   t.month = tm_c.tm_mon + 1;
@@ -1133,7 +1142,6 @@ bal_at (SCM account_name,
   
   free(account_c);
   free(desc_c);
-  free(day_str_c);
 
   bal_cur_acct = account_name;
   return SCM_UNDEFINED;
@@ -1499,16 +1507,46 @@ bal_get_account_by_location (SCM acct_num)
   return acct_to_scm(bal_book.accounts[acct_c]);
 }
 
-/* TODO: Get transactions by date */
+/* Get transactions by date */
 SCM
 bal_get_transactions_by_date (SCM acct, SCM first_day, SCM last_day)
 {
   char* acct_c = scm_to_locale_string(acct);
   account* acct_p = find_account_in_book(&bal_book, acct_c);
 
-  
+  struct tm first_day_tm = scm_day_to_tm(first_day);
+  struct tm last_day_tm = scm_day_to_tm(last_day);
+  tsct first_day_t;
+  tsct last_day_t;
 
+  first_day_t.year = first_day_tm.tm_year + 1900;
+  first_day_t.month = first_day_tm.tm_mon + 1;
+  first_day_t.day = first_day_tm.tm_mday;
+
+  last_day_t.year = last_day_tm.tm_year + 1900;
+  last_day_t.month = last_day_tm.tm_mon + 1;
+  last_day_t.day = last_day_tm.tm_mday;
+  
+  SCM ret = SCM_EOL;
+  int i;
+
+  for (i=0; i < acct_p->n_tsct; i++)
+    {
+      if (sort_transactions(&last_day_t, &acct_p->tscts[i]) < 0)
+	break;
+
+      if (sort_transactions(&first_day_t, &acct_p->tscts[i]) <= 0)
+	{
+	  ret = scm_append
+	    (scm_list_2
+	     (ret,
+	      scm_list_1(tsct_to_scm(acct_p->tscts[i]))));
+	}
+
+    }
   free(acct_c);
+
+  return ret;
 }
 
 /* Get opening balances */
