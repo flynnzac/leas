@@ -1697,6 +1697,7 @@ bal_write (SCM file)
 SCM
 bal_read (SCM file)
 {
+
   char* file_c = scm_to_locale_string(file);
   int i;
   delete_book (&bal_book);
@@ -1715,6 +1716,7 @@ bal_read (SCM file)
                 sort_transactions);
         }
     }
+  bal_cur_file = file;
   return SCM_UNDEFINED;
 }
 
