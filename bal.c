@@ -865,11 +865,9 @@ write_out (char* base)
 
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+
                                 strlen(tmp_dir)+
-                                strlen(basename(base))+2));
+                                2));
   strcpy(rm_cmd, "rm -R ");
   strcat(rm_cmd, tmp_dir);
-  strcat(rm_cmd, "/");
-  strcat(rm_cmd, basename(base));
   system(rm_cmd);
   free(rm_cmd);
   free(tmp_dir);
@@ -1735,10 +1733,14 @@ bal_write (SCM file)
       free(file_c);
       file_c = scm_to_locale_string (bal_cur_file);
     }
+  else
+    {
+      bal_cur_file = file;
+    }
+  
   write_out(file_c);
   free(file_c);
 
-  bal_cur_file = file;
   return SCM_UNDEFINED;
 }
 
