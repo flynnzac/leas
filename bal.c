@@ -1032,7 +1032,7 @@ bal_call (SCM func, SCM options)
             }
           
         }
-      else if (strcmp(type_c, "day")==0)
+      else if (strcmp(type_c, "daystr")==0)
         {
 
           time(&curtime);
@@ -1055,8 +1055,25 @@ bal_call (SCM func, SCM options)
                   curtime_info->tm_mon,
                   curtime_info->tm_mday);
 
+        }
+      else if (strcmp(type_c,"day")==0)
+        {
+          time(&curtime);
+          curtime_info = localtime(&curtime);
+
+          printf("%s\n", name_c);
+
+          bal_select_day (curtime_info, year, month, day);
+
+          command = realloc(command,
+                            sizeof(char)*(strlen(command)+4+2+2+15));
+
           
-          
+          sprintf(command, "%s(list %d %d %d)", command,
+                  strcmp(*day,"")==0 ? curtime_info->tm_mday : atoi(*day),
+                  strcmp(*month,"")==0 ? (curtime_info->tm_mon+1) : atoi(*month),
+                  strcmp(*year,"")==0 ? (curtime_info->tm_year+1900) : atoi(*year));
+
         }
       else
         {
@@ -1067,7 +1084,8 @@ bal_call (SCM func, SCM options)
         }
 
 
-      if (strcmp(type_c,"day") != 0)
+      if ((strcmp(type_c,"day") != 0) &&
+          (strcmp(type_c,"daystr") != 0))
         {
           free(opt);
         }
@@ -1888,7 +1906,7 @@ bal_standard_func ()
                (cons "Account" "current_account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "day")))))
+               (cons "Day" "daystr")))))
 
 
            (define print-tscts
@@ -2067,7 +2085,7 @@ bal_standard_func ()
                (cons "From Account" "account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "day")))))
+               (cons "Day" "daystr")))))
 
 	   (define ltbd
 	    (lambda ()
@@ -2075,8 +2093,8 @@ bal_standard_func ()
 	      (bal/call "bal/get-transactions-by-day"
 	       (list
 		(cons "Account" "current_account")
-		(cons "From Day" "day")
-		(cons "To Day" "day"))))))
+		(cons "From Day" "daystr")
+		(cons "To Day" "daystr"))))))
 
            )); 
 }
