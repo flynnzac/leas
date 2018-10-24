@@ -1,15 +1,9 @@
 ;; bal standard library
 
 (use-modules (srfi srfi-19))
-
-
 (define bal-sl/amount-of-transacts
   (lambda (x)
     (map (lambda (y) (list-ref y 1)) x)))
-
-(define bal-sl/sum-transact
-  (lambda (x)
-    (apply + (bal-sl/amount-of-transacts x))))
 
 (define bal-sl/compare-tscts-to-day
   (lambda (tsct day)
@@ -42,6 +36,7 @@
     (let ((xdate (time-utc->date x 0)))
       (list (date-day xdate) (date-month xdate) (date-year xdate)))))
 
+
 (define bal-sl/seq-days
   (lambda (first-day last-day by)
     (let* ((first-time (date->time-utc (make-date 0 0 0 0
@@ -57,23 +52,20 @@
       (if (time>=? first-time last-time)
           (list first-day)
           (cons first-day (bal-sl/seq-days 
-                            (bal-sl/day-from-time
-                             (add-duration first-time
-                                           (make-time time-duration 0 (* 24 3600 by))))
-                            last-day
-                            by))))))
-  
+                           (bal-sl/day-from-time
+                            (add-duration first-time
+                                          (make-time time-duration 0 (* 24 3600 by))))
+                           last-day
+                           by))))))
 
-  
 (define bal-sl/sum-transact-over-sequence
   (lambda (x day-sequence)
     (if (= (length day-sequence) 2)
         (list (bal-sl/sum-transact-over-days x (list-ref day-sequence 0)
-                                      (list-ref day-sequence 1)))
+                                             (list-ref day-sequence 1)))
         (cons (bal-sl/sum-transact-over-days x (list-ref day-sequence 0)
-                                      (list-ref day-sequence 1))
+                                             (list-ref day-sequence 1))
               (bal-sl/sum-transact-over-sequence x (cdr day-sequence))))))
-
 
 (define bal-sl/total-transact-over-days
   (lambda (x first-day last-day)
@@ -120,11 +112,3 @@
            (format #f "~10,2f" (car x))
            "\n")))
        result))))
-    
-  
-
-
-
-
-
-

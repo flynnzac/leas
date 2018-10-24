@@ -1,6 +1,6 @@
 %!PS-Adobe-3.0
 %%Creator: groff version 1.22.3
-%%CreationDate: Tue Oct 23 02:39:14 2018
+%%CreationDate: Wed Oct 24 22:27:09 2018
 %%DocumentNeededResources: font Times-Bold
 %%+ font Times-Italic
 %%+ font Times-Roman
@@ -248,7 +248,7 @@ BP
 (rious Guile Scheme functions bal e).25 F 2.869(xposes. This)-.15 F .369
 (documentation can be freely modi\214ed)2.869 F(and redistrib)108 282 Q
 (uted under the terms of the GNU Free Documentation License.)-.2 E
-(23 October 2018)72 330 Q 0 Cg EP
+(24 October 2018)72 330 Q 0 Cg EP
 %%Page: 1 2
 %%BeginPageSetup
 BP
@@ -392,16 +392,19 @@ E 2.5(,I)-.65 G(ncome, Expense\).)-2.5 E 21.5<8374>72 573.6 S
 (ransaction - prompt to select an e)-21.5 E
 (xisting transaction, passed as a pair gi)-.15 E
 (ving the account number and)-.25 E(the transaction number)97 585.6 Q(.)
--.55 E 21.5<8364>72 604.8 S(ay - prompt to select a year)-21.5 E 2.5
+-.55 E 21.5<8364>72 604.8 S(aystr - prompt to select a year)-21.5 E 2.5
 (,am)-.4 G(onth, and a day)-2.5 E 2.5(,p)-.65 G
-(assed as a string in YYYY)-2.5 E(-MM-DD format.)-1.11 E 21.5<836f>72
-624 S(ther - passed e)-21.5 E(xactly as entered \(the user can enter an)
--.15 E 2.5(yS)-.15 G(cheme e)-2.5 E
-(xpression and it will just be copied)-.15 E(as an ar)97 636 Q
-(gument to the function\).)-.18 E F2(Example.)72 655.2 Q F0
+(assed as a string in YYYY)-2.5 E(-MM-DD format.)-1.11 E 21.5<8364>72
+624 S(ay - prompt to select a year)-21.5 E 2.5(,am)-.4 G
+(onth, and a day)-2.5 E 2.5(,p)-.65 G(assed as a list with three inte)
+-2.5 E(gers in the follo)-.15 E(wing)-.25 E(order: day)97 636 Q 2.5(,m)
+-.65 G(onth, year)-2.5 E(.)-.55 E 21.5<836f>72 655.2 S(ther - passed e)
+-21.5 E(xactly as entered \(the user can enter an)-.15 E 2.5(yS)-.15 G
+(cheme e)-2.5 E(xpression and it will just be copied)-.15 E(as an ar)97
+667.2 Q(gument to the function\).)-.18 E F2(Example.)72 686.4 Q F0
 (The interacti)5 E .3 -.15(ve f)-.25 H(unction).15 E F1(\(t\))2.5 E F0
 (creates a transfer from one account to another account.)2.5 E
-(It is writ-)5 E(ten in the follo)72 667.2 Q(wing w)-.25 E(ay)-.1 E(,)
+(It is writ-)5 E(ten in the follo)72 698.4 Q(wing w)-.25 E(ay)-.1 E(,)
 -.65 E 0 Cg EP
 %%Page: 3 4
 %%BeginPageSetup
@@ -412,7 +415,7 @@ BP
 120 Q(\(cons "To Account" "account"\))198 132 Q
 (\(cons "From Account" "account"\))198 144 Q(\(cons "Amount" "real"\))
 198 156 Q(\(cons "Description" "string"\))198 168 Q
-(\(cons "Day" "day"\)\)\)\)\))198 180 Q(bal/t)72 198 Q F0
+(\(cons "Day" "daystr"\)\)\)\)\))198 180 Q(bal/t)72 198 Q F0
 (is also a Scheme function. It adds a ne)2.5 E -.05(ga)-.15 G(ti).05 E
 .3 -.15(ve t)-.25 H(ransactions to the "from account" and a positi).15 E
 .3 -.15(ve t)-.25 H(rans-).15 E
@@ -422,8 +425,21 @@ BP
 252 Q(\(from-type \(list-ref \(bal/get-account from-account\) 1\)\)\))
 168 264 Q(\(bal/at to-account amount desc day\))144 276 Q
 (\(bal/at from-account \(* -1 amount\) desc day\)\)\)\))144 288 Q/F2 10
-/Times-Bold@0 SF 2.5(4. Non-interacti)72 330 R .2 -.1(ve f)-.1 H
-(unctions).1 E 0 Cg EP
+/Times-Bold@0 SF 2.5(4. Non-interacti)72 318 R .2 -.1(ve f)-.1 H
+(unctions).1 E F0<83>72 344.4 Q F1(\(bal/at account amount desc day\))
+21.5 E F0 2.5(-a)2.5 G(dds a transaction to an account where)-2.5 E F1
+(account)2.5 E F0(is the name of the account,)97 356.4 Q F1(amount)2.5 E
+F0(is the amount of the transaction,)2.5 E F1(desc)2.5 E F0
+(is a string describing the)2.5 E(transaction, and)97 368.4 Q F1(day)2.5
+E F0(gi)2.5 E -.15(ve)-.25 G 2.5(st).15 G
+(he day of the transaction in YYYY)-2.5 E(-MM-DD format.)-1.11 E<83>72
+387.6 Q F1(\(bal/aa name type ob\))21.5 E F0 2.5(-a)2.5 G(dds a ne)-2.5
+E 2.5(wa)-.25 G(ccount with name)-2.5 E F1(name)2.5 E F0(and)2.5 E F1
+(type)2.5 E F0(is one of)2.5 E(\("e)97 399.6 Q
+(xpense", "income", "asset", "liability"\) and gi)-.15 E -.15(ve)-.25 G
+2.5(st).15 G(he type of the account and)-2.5 E F1(ob)2.5 E F0(gi)2.5 E
+-.15(ve)-.25 G 2.5(st).15 G(he opening)-2.5 E(balance for the account.)
+97 411.6 Q 0 Cg EP
 %%Trailer
 end
 %%EOF

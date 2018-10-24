@@ -131,7 +131,9 @@ type - prompt to select an account type (Asset, Liability, Income, Expense).
 .IP \(bu
 transaction - prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
 .IP \(bu
-day - prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
+daystr - prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
+.IP \(bu
+day - prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
 .IP \(bu
 other - passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
 .LP
@@ -149,7 +151,7 @@ creates a transfer from one account to another account.  It is written in the fo
                (cons "From Account" "account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "day")))))
+               (cons "Day" "daystr")))))
 .DE
 .CW "bal/t"
 is also a Scheme function. It adds a negative transactions to the "from account" and a positive transaction to the "to account". Its source is,
@@ -162,8 +164,30 @@ is also a Scheme function. It adds a negative transactions to the "from account"
       (bal/at to-account amount desc day)
       (bal/at from-account (* -1 amount) desc day))))
 .DE
-
 .NH
 Non-interactive functions
+.LP
+.IP \(bu
+.CW "(bal/at account amount desc day)"
+- adds a transaction to an account where
+.CW account
+is the name of the account,
+.CW amount
+is the amount of the transaction,
+.CW desc
+is a string describing the transaction, and
+.CW day
+gives the day of the transaction in YYYY-MM-DD format.
+.IP \(bu
+.CW "(bal/aa name type ob)"
+- adds a new account with name
+.CW name
+and
+.CW type
+is one of ("expense", "income", "asset", "liability") and gives the type of the account and
+.CW ob
+gives the opening balance for the account.
+
+
 
 
