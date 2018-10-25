@@ -17,6 +17,8 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
+#define BAL_VERSION "0.0.1"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
@@ -1805,6 +1807,13 @@ bal_set_select_transact_num (SCM num)
   return num;
 }
 
+/* retrieve version number */
+SCM
+bal_v ()
+{
+  return scm_from_locale_string(BAL_VERSION);
+}
+
 
 #define QUOTE(...) #__VA_ARGS__
 
@@ -1873,6 +1882,9 @@ register_guile_functions (void* data)
   /* get opening balances for accounts */
   scm_c_define_gsubr("bal/opening-balances", 0, 0, 0,
                      &bal_opening_balances);
+
+  /* retrieve version */
+  scm_c_define_gsubr("bal/v", 0, 0, 0, &bal_v);
 
   /* generic method to create interactive commands */
   scm_c_define_gsubr("bal/call", 2, 0, 0, &bal_call);
@@ -2094,9 +2106,17 @@ bal_standard_func ()
 	       (list
 		(cons "Account" "current_account")
 		(cons "From Day" "daystr")
-		(cons "To Day" "daystr"))))))
+          (cons "To Day" "daystr"))))))
 
-           )); 
+           (define v
+            (lambda ()
+             (display
+              (string-append
+               "bal version: "
+               (bal/v)
+               "\n"))))
+            ));
+
 }
 
 void
@@ -2136,7 +2156,7 @@ main (int argc, char** argv)
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
   
-  while ((k = getopt(argc, argv, "f:l:s")) != -1)
+  while ((k = getopt(argc, argv, "f:l:sv")) != -1)
     {
       switch (k)
         {
@@ -2169,6 +2189,10 @@ main (int argc, char** argv)
                 free(fname);
               }
           }
+          break;
+        case 'v':
+          printf("bal version: %s\n", BAL_VERSION);
+
           break;
         case 's':
           bal_prompt_exit = 0;
