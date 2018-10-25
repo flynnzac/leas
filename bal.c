@@ -1551,15 +1551,15 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
   for (i=0; i < acct_p->n_tsct; i++)
     {
       if (sort_transactions(&last_day_t, &acct_p->tscts[i]) < 0)
-	break;
+        break;
 
       if (sort_transactions(&first_day_t, &acct_p->tscts[i]) <= 0)
-	{
-	  ret = scm_append
-	    (scm_list_2
-	     (ret,
-	      scm_list_1(tsct_to_scm(acct_p->tscts[i]))));
-	}
+        {
+          ret = scm_append
+            (scm_list_2
+             (ret,
+              scm_list_1(tsct_to_scm(acct_p->tscts[i]))));
+        }
 
     }
   free(acct_c);
@@ -1930,20 +1930,20 @@ bal_standard_func ()
                 (map-in-order
                  (lambda (x)
                   (display
-                  (string-append
-                   (number->string (list-ref x 2))
-                   "-"
-                   (format #f "~2,'0d" (list-ref x 3))
-                   "-"
-                   (format #f "~2,'0d" (list-ref x 4))
-                   " "
-                   (format #f (string-append
-                               "~"
-                               (number->string (+ len 5))
-                               "a") (list-ref x 0))
-                   " "
-                   (format #f "~10,2f" (list-ref x 1))
-                   "\n")))
+                   (string-append
+                    (number->string (list-ref x 2))
+                    "-"
+                    (format #f "~2,'0d" (list-ref x 3))
+                    "-"
+                    (format #f "~2,'0d" (list-ref x 4))
+                    " "
+                    (format #f (string-append
+                                "~"
+                                (number->string (+ len 5))
+                                "a") (list-ref x 0))
+                    " "
+                    (format #f "~10,2f" (list-ref x 1))
+                    "\n")))
                  k)))))
 
            
@@ -2014,7 +2014,7 @@ bal_standard_func ()
            (define bt
             (lambda ()
              (let* ((accts (bal/total-by-account-type))
-                   (len
+                    (len
                      (apply max
                       (map
                        (lambda (x) (string-length (car x))) accts))))
@@ -2099,14 +2099,14 @@ bal_standard_func ()
                (cons "Description" "string")
                (cons "Day" "daystr")))))
 
-	   (define ltbd
-	    (lambda ()
-	     (print-tscts
-	      (bal/call "bal/get-transactions-by-day"
-	       (list
-		(cons "Account" "current_account")
-		(cons "From Day" "daystr")
-          (cons "To Day" "daystr"))))))
+           (define ltbd
+            (lambda ()
+             (print-tscts
+              (bal/call "bal/get-transactions-by-day"
+               (list
+                (cons "Account" "current_account")
+                (cons "From Day" "daystr")
+                (cons "To Day" "daystr"))))))
 
            (define v
             (lambda ()
@@ -2115,7 +2115,7 @@ bal_standard_func ()
                "bal version: "
                (bal/v)
                "\n"))))
-            ));
+           ));
 
 }
 

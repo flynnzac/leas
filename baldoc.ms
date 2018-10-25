@@ -199,6 +199,30 @@ and
 is one of ("expense", "income", "asset", "liability") and gives the type of the account and
 .CW ob
 gives the opening balance for the account.
+.IP \(em
+.CW "(bal/et (cons account_number transaction_number))"
+- edits transaction located at
+.CW account_number
+and
+.CW transaction_number
+with interactive prompts for what to modify.  To programmatically modify transactions, delete and add the transaction with
+.CW bal/dt
+and
+.CW bal/at.
+.IP \(em
+.CW "(bal/ea current_account_name new_name)"
+- rename account from
+.CW current_account_name
+to
+.CW new_name.
+.IP \(em
+.CW "(bal/da account_name)"
+- delete account with name
+.CW account_name.
+.IP \(em
+.CW "(bal/dt (cons account_number transaction_number))"
+- delete transaction.
+
 
 .NH
 GNU Free Documentation License
