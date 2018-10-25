@@ -90,18 +90,19 @@
                            (format #f "~2,'0d" (list-ref cur-day 0))))
                     (jn-day (+ i 1)))))))))
 
-(define bal-sl/total-transact-in-current-account-over-days
-  (lambda (first-day last-day)
+(define bal-sl/total-transact-in-account-over-days
+  (lambda (account first-day last-day)
     (bal-sl/total-transact-over-days
-     (bal/get-all-transactions (bal/get-current-account))
+     (bal/get-all-transactions account)
      first-day
      last-day)))
 
 (define ttod
   (lambda ()
     (let ((result (bal/call
-                   "bal-sl/total-transact-in-current-account-over-days"
+                   "bal-sl/total-transact-in-account-over-days"
                    (list
+                    (cons "Account" "current_account")
                     (cons "First day" "day")
                     (cons "Last day" "day")))))
       (map-in-order
