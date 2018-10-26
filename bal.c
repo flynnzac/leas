@@ -2131,7 +2131,7 @@ main (int argc, char** argv)
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
   
-  while ((k = getopt(argc, argv, "f:l:sv")) != -1)
+  while ((k = getopt(argc, argv, "f:l:s")) != -1)
     {
       switch (k)
         {
@@ -2164,10 +2164,6 @@ main (int argc, char** argv)
                 free(fname);
               }
           }
-          break;
-        case 'v':
-          printf("bal version: %s\n", BAL_VERSION);
-
           break;
         case 's':
           bal_prompt_exit = 0;
