@@ -42,10 +42,23 @@ There are two data types in
 of interest to programming it in Scheme: the account
 and the transaction.  This brief section discusses the key concepts.
 .LP
+.I "Transaction and Account Numbers."
 Each transaction has a "coordinate" given by the pair (cons account_number transaction_number).  Transactions and accounts are numbered starting at 0, accounts are numbered in the order in which they were created, and transactions are in chronological order by day.  Transaction number is the element number in the list returned by
 .CW "(bal/get-all-transactions account_name)."
 Account number is the element number of the account in the list returned by
 .CW "(bal/get-all-accounts)."
+.LP
+.I "Accounts in Scheme."
+When Scheme functions return accounts they do so as a four-element list,
+.RS
+.CW "(account_name account_type number_of_transactions opening_balance)"
+.RE
+.LP
+.I "Transactions in Scheme."
+When Scheme functions return transactions they do so as a five-element list,
+.RS
+.CW "(description amount year month day)"
+.RE
 .NH
 Interactive functions
 .LP
