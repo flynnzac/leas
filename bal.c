@@ -1567,27 +1567,6 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
   return ret;
 }
 
-/* Get opening balances */
-SCM
-bal_opening_balances ()
-{
-  SCM ret = SCM_EOL;
-  int i;
-
-  for (i=0; i < bal_book.n_account; i++)
-    {
-      ret = scm_append
-        (scm_list_2
-         (ret,
-          scm_list_1
-          (scm_cons
-           (scm_from_locale_string(bal_book.accounts[i].name),
-            scm_from_double(bal_book.accounts[i].ob)))));
-    }
-
-  return ret;
-}
-
 /* Get total of an account by name */
 
 SCM
@@ -1878,10 +1857,6 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/set-account", 1, 0, 0, &bal_set_account);
   scm_c_define_gsubr("bal/write", 1, 0, 0, &bal_write);
   scm_c_define_gsubr("bal/read", 1, 0, 0, &bal_read);
-
-  /* get opening balances for accounts */
-  scm_c_define_gsubr("bal/opening-balances", 0, 0, 0,
-                     &bal_opening_balances);
 
   /* retrieve version */
   scm_c_define_gsubr("bal/v", 0, 0, 0, &bal_v);

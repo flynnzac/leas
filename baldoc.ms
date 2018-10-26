@@ -35,6 +35,18 @@ This document describes basic usage of
 .B bal
 using the built-in functions and gives a full reference manual to the functions that are available from Scheme to aid in writing your own code to automate whatever tasks your financial life needs automated (for example, a script to update the value of your stock or mutual fund holdings by fetching the latest prices from the internet).
 .NH
+Data types
+.LP
+There are two data types in
+.CW bal
+of interest to programming it in Scheme: the account
+and the transaction.  This brief section discusses the key concepts.
+.LP
+Each transaction has a "coordinate" given by the pair (cons account_number transaction_number).  Transactions and accounts are numbered starting at 0, accounts are numbered in the order in which they were created, and transactions are in chronological order by day.  Transaction number is the element number in the list returned by
+.CW "(bal/get-all-transactions account_name)."
+Account number is the element number of the account in the list returned by
+.CW "(bal/get-all-accounts)."
+.NH
 Interactive functions
 .LP
 The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" - functions that can be entered without arguments at the prompt and then prompt the user for options - available in
@@ -109,6 +121,11 @@ Utility functions
 .CW "(p X)"
 - Print the Scheme object
 .CW "X."
+.IP \(em
+.CW "(v)"
+- Print out the
+.CW bal
+version.
 .IP \(em
 .CW "(q)"
 - quit
@@ -222,19 +239,117 @@ to
 .IP \(em
 .CW "(bal/dt (cons account_number transaction_number))"
 - delete transaction.
-
-
+.IP \(em
+.CW "(bal/get-current-account)"
+- returns a string with the name of the current account.
+.IP \(em
+.CW "(bal/get-number-of-accounts)"
+- return the number of accounts.
+.IP \(em
+.CW "(bal/get-transactions account_name how_many)"
+- Return
+.CW how_many
+of the latest transactions from account with
+.CW account_name.
+.IP \(em
+.CW "(bal/get-all-transactions account_name)"
+- Return all transactions from
+.CW account_name.
+Each transaction is a five element list with elements (description, amount, year, month, day).
+.IP \(em
+.CW "(bal/get-transactions-by-regex account_name regex)"
+- Return all transactions from
+.CW account_name
+with descriptions that match
+.C regex.
+.IP \(em
+.CW "(bal/get-account account_name)"
+- Returns the account with name
+.CW account_name,
+a four element list, (name,type_of_account,number_transactions,opening_balance).
+.IP \(em
+.CW "(bal/get-all-accounts)"
+- Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
+.IP \(em
+.CW "(bal/get-transaction-by-location account_num transact_num)"
+- Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
+.IP \(em
+.CW "(bal/get-account-by-location account_num)"
+- Return account corresponding to
+.CW acocunt_num.
+.IP \(em
+.CW "(bal/get-transactions-by-day account_name first_day last_day)"
+- Return a list of transactions between the
+.CW first_day
+and
+.CW last_day
+within the account with name
+.CW account_name.  Both days are in YYYY-MM-DD format.
+.IP \(em
+.CW "(bal/total-account account_name)"
+- Returns the sum of all transactions within the account with name,
+.CW account_name.
+.IP \(em
+.CW "(bal/total-all-accounts)"
+- Returns a list of pairs where each pair has in its
+.CW car
+the name of the account and in its
+.CW cdr
+the sum of all transactions within that account.
+.IP \(em
+.CW "(bal/total-by-account-type)"
+- Returns a list of pairs which have in their
+.CW car
+the name of the account type (Income, Expense, Asset, Liability), "Worth" (Assets + Liabilities), and "Balances" (for total opening balances) and in its
+.CW cdr
+the total sum of transactions within each account type.
+.IP \(em
+.CW "(bal/set-account account_name)"
+- Sets the current account to
+.CW account_name.
+.IP \(em
+.CW "(bal/write file)"
+- Writes all accounts to
+.CW file.
+.IP \(em
+.CW "(bal/read file)"
+- Read in accounts from
+.CW file.
+.IP \(em
+.CW "(bal/get-current-file)"
+- Returns the name of the current default save file.
+.IP \(em
+.CW "(bal/set-select-transact-number num)"
+- Sets number of transactions to show when selecting a transaction to
+.CW num.
+On any transaction selection screen you can enter any transaction number whether it is displayed.
+.IP \(em
+.CW "(bal/v)"
+- Returns a string giving the version of
+.CW bal.
+.IP \(em
+.CW "(bal/t to_account from_account amount desc day)"
+- Transfers from
+.CW from_account
+to
+.CW to_account
+a transaction in
+.CW amount
+with description
+.CW desc
+on day (in YYYY-MM-DD format)
+.CW day.
 .NH
 GNU Free Documentation License
 .LP
+.ce 2
                 GNU Free Documentation License
                  Version 1.3, 3 November 2008
+.ce 0
 
-
- Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <https://fsf.org/>
- Everyone is permitted to copy and distribute verbatim copies
- of this license document, but changing it is not allowed.
+Copyright (C) 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
+Everyone is permitted to copy and distribute verbatim copies
+of this license document, but changing it is not allowed.
 
 0. PREAMBLE
 
@@ -413,65 +528,64 @@ Version filling the role of the Document, thus licensing distribution
 and modification of the Modified Version to whoever possesses a copy
 of it.  In addition, you must do these things in the Modified Version:
 
-A. Use in the Title Page (and on the covers, if any) a title distinct
-   from that of the Document, and from those of previous versions
-   (which should, if there were any, be listed in the History section
-   of the Document).  You may use the same title as a previous version
-   if the original publisher of that version gives permission.
+A. Use in the Title Page (and on the covers, if any) a title distinct from that of the Document, and from those of previous versions
+(which should, if there were any, be listed in the History section
+of the Document).  You may use the same title as a previous version
+if the original publisher of that version gives permission.
    
 B. List on the Title Page, as authors, one or more persons or entities
-   responsible for authorship of the modifications in the Modified
-   Version, together with at least five of the principal authors of the
-   Document (all of its principal authors, if it has fewer than five),
-   unless they release you from this requirement.
+responsible for authorship of the modifications in the Modified
+Version, together with at least five of the principal authors of the
+Document (all of its principal authors, if it has fewer than five),
+unless they release you from this requirement.
    
 C. State on the Title page the name of the publisher of the
-   Modified Version, as the publisher.
+Modified Version, as the publisher.
    
 D. Preserve all the copyright notices of the Document.
 
 E. Add an appropriate copyright notice for your modifications
-   adjacent to the other copyright notices.
+adjacent to the other copyright notices.
    
 F. Include, immediately after the copyright notices, a license notice
-   giving the public permission to use the Modified Version under the
-   terms of this License, in the form shown in the Addendum below.
+giving the public permission to use the Modified Version under the
+terms of this License, in the form shown in the Addendum below.
    
 G. Preserve in that license notice the full lists of Invariant Sections
-   and required Cover Texts given in the Document's license notice.
+and required Cover Texts given in the Document's license notice.
    
 H. Include an unaltered copy of this License.
 
 I. Preserve the section Entitled "History", Preserve its Title, and add
-   to it an item stating at least the title, year, new authors, and
-   publisher of the Modified Version as given on the Title Page.  If
-   there is no section Entitled "History" in the Document, create one
-   stating the title, year, authors, and publisher of the Document as
-   given on its Title Page, then add an item describing the Modified
-   Version as stated in the previous sentence.
+to it an item stating at least the title, year, new authors, and
+publisher of the Modified Version as given on the Title Page.  If
+there is no section Entitled "History" in the Document, create one
+stating the title, year, authors, and publisher of the Document as
+given on its Title Page, then add an item describing the Modified
+Version as stated in the previous sentence.
    
 J. Preserve the network location, if any, given in the Document for
-   public access to a Transparent copy of the Document, and likewise
-   the network locations given in the Document for previous versions
-   it was based on.  These may be placed in the "History" section.
-   You may omit a network location for a work that was published at
-   least four years before the Document itself, or if the original
-   publisher of the version it refers to gives permission.
+public access to a Transparent copy of the Document, and likewise
+the network locations given in the Document for previous versions
+it was based on.  These may be placed in the "History" section.
+You may omit a network location for a work that was published at
+least four years before the Document itself, or if the original
+publisher of the version it refers to gives permission.
    
 K. For any section Entitled "Acknowledgements" or "Dedications",
-   Preserve the Title of the section, and preserve in the section all
-   the substance and tone of each of the contributor acknowledgements
-   and/or dedications given therein.
+Preserve the Title of the section, and preserve in the section all
+the substance and tone of each of the contributor acknowledgements
+and/or dedications given therein.
    
 L. Preserve all the Invariant Sections of the Document,
-   unaltered in their text and in their titles.  Section numbers
-   or the equivalent are not considered part of the section titles.
+unaltered in their text and in their titles.  Section numbers
+or the equivalent are not considered part of the section titles.
    
 M. Delete any section Entitled "Endorsements".  Such a section
-   may not be included in the Modified Version.
+may not be included in the Modified Version.
    
 N. Do not retitle any existing section to be Entitled "Endorsements"
-   or to conflict in title with any Invariant Section.
+or to conflict in title with any Invariant Section.
    
 O. Preserve any Warranty Disclaimers.
 
