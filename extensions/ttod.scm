@@ -1,4 +1,4 @@
-;; bal standard library
+;; get day-by-day transaction totals
 
 (use-modules (srfi srfi-19))
 (define bal-sl/amount-of-transacts
