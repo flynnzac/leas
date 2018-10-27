@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.3 -->
-<!-- CreationDate: Sat Oct 27 17:24:00 2018 -->
+<!-- CreationDate: Sat Oct 27 18:10:59 2018 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -126,9 +126,10 @@ month day)</i></p>
 <p style="margin-top: 1em">The command prompt is a Scheme
 interpreter except that the outer-most S expression should
 not be enclosed in parenthesis to save on typing. This
-section describes the &quot;interactive functions&quot;
-&ndash; functions that can be entered without arguments at
-the prompt and then prompt the user for options &ndash;
+section describes the &quot;interactive functions&quot; .br
+<br>
+functions that can be entered without arguments at the
+prompt and then prompt the user for options .br <br>
 available in <i>bal.</i></p>
 
 <h3>3.1. Functions to add accounts and transactions
@@ -136,281 +137,132 @@ available in <i>bal.</i></p>
 </h3>
 
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(aa)</i>
+<br>
+Add account. Prompts for the name of the account, the kind
+of account it is, and its opening balance.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(at)</i>
+<br>
+Add transaction. Prompts for the account to add the
+transaction to, the amount of the transaction, a description
+of the transaction, and when the transaction was made.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(aa)</i> &ndash; Add account.
-Prompts for the name of the account, the kind of account it
-is, and its opening balance.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(at)</i> &ndash; Add
-transaction. Prompts for the account to add the transaction
-to, the amount of the transaction, a description of the
-transaction, and when the transaction was made.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(t)</i> &ndash; Add a
-transfer between accounts. This is the most commonly-used
-command because most financial events involve a transaction
-taking money from one account and another transaction
-putting money in the other. Prompts for the &quot;from&quot;
-and &quot;to&quot; accounts, the amount of the transfer, a
-description of the transaction, and when the transaction
-took place.</p></td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em"><i>(t)</i> <br>
+Add a transfer between accounts. This is the most
+commonly-used command because most financial events involve
+a transaction taking money from one account and another
+transaction putting money in the other. Prompts for the
+&quot;from&quot; and &quot;to&quot; accounts, the amount of
+the transfer, a description of the transaction, and when the
+transaction took place.</p>
 
 <h3>3.2. Functions to edit accounts transactions
 <a name="3.2. Functions to edit accounts transactions"></a>
 </h3>
 
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(ea)</i>
+<br>
+Rename account.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(et [n])</i>
+<br>
+Edit transaction. Prompts for the transaction to edit and
+all the various properties of a transaction as if you were
+adding the transaction anew. Entering nothing for a cateogry
+leaves it unchanged. Optionally, include a different number
+of transactions than the default to show when prompting for
+the transaction (any transaction number can be entered even
+if it is not displayed in the menu; the menu is just a
+convenience).</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(da)</i>
+<br>
+Delete account.</p>
 
-
-<p style="margin-top: 1em"><i>(ea)</i> &ndash; Rename
-account.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(et [n])</i> &ndash; Edit
-transaction. Prompts for the transaction to edit and all the
-various properties of a transaction as if you were adding
-the transaction anew. Entering nothing for a cateogry leaves
-it unchanged. Optionally, include a different number of
-transactions than the default to show when prompting for the
-transaction (any transaction number can be entered even if
-it is not displayed in the menu; the menu is just a
-convenience).</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(da)</i> &ndash; Delete
-account.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(dt)</i> &ndash; Delete
-transaction.</p> </td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em"><i>(dt)</i>
+<br>
+Delete transaction.</p>
 
 <h3>3.3. Functions to print account and transaction information
 <a name="3.3. Functions to print account and transaction information"></a>
 </h3>
 
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(la)</i>
+<br>
+Lists all accounts and their present and future
+balances.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(lt)</i>
+<br>
+Lists the most recent transaction in the current account.
+The number of transactions to list is set by the Scheme
+variable <i>bal/number-to-quick-list</i> so entering the
+following at the prompt will change the number to list:
+<i>set! bal/number-to-quick-list NUM</i></p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(ltn)</i>
+<br>
+The same as <i>(lt)</i> except that it prompts for the
+number to list and for the account to list the transactions
+from.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(ltbd)</i>
+<br>
+list transactions in current account by day, prompting for
+the first and last day to show.</p>
 
-<p style="margin-top: 1em"><i>(la)</i> &ndash; Lists all
-accounts and their present and future balances.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bt)</i>
+<br>
+List total balances in Expense, Income, Asset, and Liability
+accounts and total Worth (Asset+Liability) versus Opening
+Balances for all accounts.</p>
 
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(lt)</i> &ndash; Lists the
-most recent transaction in the current account. The number
-of transactions to list is set by the Scheme variable
-<i>bal/number-to-quick-list</i> so entering the following at
-the prompt will change the number to list: <i>set!
-bal/number-to-quick-list NUM</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(ltn)</i> &ndash; The same as
-<i>(lt)</i> except that it prompts for the number to list
-and for the account to list the transactions from.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(ltbd)</i> &ndash; list
-transactions in current account by day, prompting for the
-first and last day to show.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bt)</i> &ndash; List total
-balances in Expense, Income, Asset, and Liability accounts
-and total Worth (Asset+Liability) versus Opening Balances
-for all accounts.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(re)</i> &ndash; Search for
-transactions in the current account with a description that
-matches a regular expression (prompted for).</p></td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em"><i>(re)</i>
+<br>
+Search for transactions in the current account with a
+description that matches a regular expression (prompted
+for).</p>
 
 <h3>3.4. Utility functions
 <a name="3.4. Utility functions"></a>
 </h3>
 
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(sa)</i>
+<br>
+Set current account.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(ca)</i>
+<br>
+Print current account.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(w)</i> <br>
+Write account to file (prompted for name).</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(r)</i> <br>
+Read saved accounts from file.</p>
 
-<p style="margin-top: 1em"><i>(sa)</i> &ndash; Set current
-account.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(p X)</i>
+<br>
+Print the Scheme object <i>X.</i></p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(v)</i> <br>
+Print out the <i>bal</i> version.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(sd)</i>
+<br>
+Set current day. <i>(bt)</i> and <i>(la)</i> will now total
+transactions before and after this day.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(cd)</i>
+<br>
+Print current day in YYYY-MM-DD format.</p>
 
-<p style="margin-top: 1em"><i>(ca)</i> &ndash; Print
-current account.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(w)</i> &ndash; Write account
-to file (prompted for name).</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(r)</i> &ndash; Read saved
-accounts from file.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(p X)</i> &ndash; Print the
-Scheme object <i>X.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(v)</i> &ndash; Print out the
-<i>bal</i> version.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(q)</i> &ndash; quit
-<i>bal</i></p> </td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em"><i>(q)</i> <br>
+quit <i>bal</i></p>
 
 <h2>4. Creating interactive functions
 <a name="4. Creating interactive functions"></a>
@@ -429,103 +281,42 @@ pairs containing (in its car) the prompt to give the user
 and the type of the argument to require (in its cdr). The
 following types are recognized in <b>bal.</b></p>
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em">string &mdash;
+the option will be treated as a string in the function
+call</p>
+
+<p style="margin-left:10%; margin-top: 1em">account &mdash;
+the option will be to select an <i>existing</i> account (the
+name of which will be passed as a string to the function
+call).</p>
 
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em">current_account
+&mdash; the name of the current account will be passed as a
+string (the user will not see a prompt for this option).</p>
 
+<p style="margin-left:10%; margin-top: 1em">type &mdash;
+prompt to select an account type (Asset, Liability, Income,
+Expense).</p>
 
-<p style="margin-top: 1em">string &ndash; the option will
-be treated as a string in the function call</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em">transaction
+&mdash; prompt to select an existing transaction, passed as
+a pair giving the account number and the transaction
+number.</p>
 
+<p style="margin-left:10%; margin-top: 1em">daystr &mdash;
+prompt to select a year, a month, and a day, passed as a
+string in YYYY-MM-DD format.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em">day &mdash;
+prompt to select a year, a month, and a day, passed as a
+list with three integers in the following order: day, month,
+year.</p>
 
-
-<p style="margin-top: 1em">account &ndash; the option will
-be to select an <i>existing</i> account (the name of which
-will be passed as a string to the function call).</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">current_account &ndash; the name
-of the current account will be passed as a string (the user
-will not see a prompt for this option).</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">type &ndash; prompt to select an
-account type (Asset, Liability, Income, Expense).</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">transaction &ndash; prompt to
-select an existing transaction, passed as a pair giving the
-account number and the transaction number.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">daystr &ndash; prompt to select
-a year, a month, and a day, passed as a string in YYYY-MM-DD
-format.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">day &ndash; prompt to select a
-year, a month, and a day, passed as a list with three
-integers in the following order: day, month, year.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em">other &ndash; passed exactly as
-entered (the user can enter any Scheme expression and it
-will just be copied as an argument to the function).</p></td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em">other &mdash;
+passed exactly as entered (the user can enter any Scheme
+expression and it will just be copied as an argument to the
+function).</p>
 
 <p style="margin-top: 1em"><b>Example.</b> The interactive
 function <i>(t)</i> creates a transfer from one account to
@@ -562,345 +353,160 @@ bal/t <br>
 </h2>
 
 
-<table width="100%" border="0" rules="none" frame="void"
-       cellspacing="0" cellpadding="0">
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/at
+account amount desc day)</i> <br>
+adds a transaction to an account where <i>account</i> is the
+name of the account, <i>amount</i> is the amount of the
+transaction, <i>desc</i> is a string describing the
+transaction, and <i>day</i> gives the day of the transaction
+in YYYY-MM-DD format.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/aa name
+type ob)</i> <br>
+adds a new account with name <i>name</i> and <i>type</i> is
+one of (&quot;expense&quot;, &quot;income&quot;,
+&quot;asset&quot;, &quot;liability&quot;) and gives the type
+of the account and <i>ob</i> gives the opening balance for
+the account.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/et
+(cons account_number transaction_number))</i> <br>
+edits transaction located at <i>account_number</i> and
+<i>transaction_number</i> with interactive prompts for what
+to modify. To programmatically modify transactions, delete
+and add the transaction with <i>bal/dt</i> and
+<i>bal/at.</i></p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/ea
+current_account_name new_name)</i> <br>
+rename account from <i>current_account_name</i> to
+<i>new_name.</i></p>
 
-<p style="margin-top: 1em"><i>(bal/at account amount desc
-day)</i> &ndash; adds a transaction to an account where
-<i>account</i> is the name of the account, <i>amount</i> is
-the amount of the transaction, <i>desc</i> is a string
-describing the transaction, and <i>day</i> gives the day of
-the transaction in YYYY-MM-DD format.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/da
+account_name)</i> <br>
+delete account with name <i>account_name.</i></p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/dt
+(cons account_number transaction_number))</i> <br>
+delete transaction.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-current-account)</i>
+<br>
+returns a string with the name of the current account.</p>
 
-<p style="margin-top: 1em"><i>(bal/aa name type ob)</i>
-&ndash; adds a new account with name <i>name</i> and
-<i>type</i> is one of (&quot;expense&quot;,
-&quot;income&quot;, &quot;asset&quot;,
-&quot;liability&quot;) and gives the type of the account and
-<i>ob</i> gives the opening balance for the account.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-number-of-accounts)</i>
+<br>
+return the number of accounts.</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-transactions
+account_name how_many)</i> <br>
+Return <i>how_many</i> of the latest transactions from
+account with <i>account_name.</i></p>
 
-<p style="margin-top: 1em"><i>(bal/et (cons account_number
-transaction_number))</i> &ndash; edits transaction located
-at <i>account_number</i> and <i>transaction_number</i> with
-interactive prompts for what to modify. To programmatically
-modify transactions, delete and add the transaction with
-<i>bal/dt</i> and <i>bal/at.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-all-transactions
+account_name)</i> <br>
+Return all transactions from <i>account_name.</i> Each
+transaction is a five element list with elements
+(description, amount, year, month, day).</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-transactions-by-regex
+account_name regex)</i> <br>
+Return all transactions from <i>account_name</i> with
+descriptions that match</p>
 
-<p style="margin-top: 1em"><i>(bal/ea current_account_name
-new_name)</i> &ndash; rename account from
-<i>current_account_name</i> to <i>new_name.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-account
+account_name)</i> <br>
+Returns the account with name <i>account_name,</i> a four
+element list,
+(name,type_of_account,number_transactions,opening_balance).</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-all-accounts)</i>
+<br>
+Returns a list of all the accounts where each account is a
+four element list,
+(name,type_of_account,number_transactions,opening_balance).</p>
 
-<p style="margin-top: 1em"><i>(bal/da account_name)</i>
-&ndash; delete account with name <i>account_name.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-transaction-by-location
+account_num transact_num)</i> <br>
+Returns the transaction at account number and transaction
+number, a five-element list (description, amount, year,
+month, day).</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-account-by-location
+account_num)</i> <br>
+Return account corresponding to <i>acocunt_num.</i></p>
 
-<p style="margin-top: 1em"><i>(bal/dt (cons account_number
-transaction_number))</i> &ndash; delete transaction.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-transactions-by-day
+account_name first_day last_day)</i> <br>
+Return a list of transactions between the <i>first_day</i>
+and <i>last_day</i> within the account with name
+days<i>account_name.</i>Both</p>
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
 
-
-
-<p style="margin-top: 1em"><i>(bal/get-current-account)</i>
-&ndash; returns a string with the name of the current
-account.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-
-<p style="margin-top: 1em"><i>(bal/get-number-of-accounts)</i>
-&ndash; return the number of accounts.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-transactions
-account_name how_many)</i> &ndash; Return <i>how_many</i> of
-the latest transactions from account with
-<i>account_name.</i></p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-all-transactions
-account_name)</i> &ndash; Return all transactions from
-<i>account_name.</i> Each transaction is a five element list
-with elements (description, amount, year, month, day).</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-
-<p style="margin-top: 1em"><i>(bal/get-transactions-by-regex
-account_name regex)</i> &ndash; Return all transactions from
-<i>account_name</i> with descriptions that match</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-account
-account_name)</i> &ndash; Returns the account with name
-<i>account_name,</i> a four element list,
-(name,type_of_account,number_transactions,opening_balance).</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-all-accounts)</i>
-&ndash; Returns a list of all the accounts where each
-account is a four element list,
-(name,type_of_account,number_transactions,opening_balance).</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-
-<p style="margin-top: 1em"><i>(bal/get-transaction-by-location
-account_num transact_num)</i> &ndash; Returns the
-transaction at account number and transaction number, a
-five-element list (description, amount, year, month,
-day).</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-account-by-location
-account_num)</i> &ndash; Return account corresponding to
-<i>acocunt_num.</i></p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-transactions-by-day
-account_name first_day last_day)</i> &ndash; Return a list
-of transactions between the <i>first_day</i> and
-<i>last_day</i> within the account with name
-days<i>account_name.</i>Both</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/total-account
-account_name)</i> &ndash; Returns the sum of all
-transactions within the account with name,
-<i>account_name.</i></p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/total-all-accounts)</i>
-&ndash; Returns a list of pairs where each pair has in its
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/total-account
+account_name)</i> <br>
+Returns the sum of all transactions within the account with
+name, <i>account_name.</i></p>
+
+
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/total-all-accounts)</i>
+<br>
+Returns a list of pairs where each pair has in its
 <i>car</i> the name of the account and in its <i>cdr</i> the
-sum of all transactions within that account.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+sum of all transactions within that account.</p>
 
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/total-by-account-type)</i>
+<br>
+Returns a list of pairs which have in their <i>car</i> the
+name of the account type (Income, Expense, Asset,
+Liability), &quot;Worth&quot; (Assets + Liabilities), and
+&quot;Balances&quot; (for total opening balances) and in its
+<i>cdr</i> the total sum of transactions within each account
+type.</p>
 
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/set-account
+account_name)</i> <br>
+Sets the current account to <i>account_name.</i></p>
 
-<p style="margin-top: 1em"><i>(bal/total-by-account-type)</i>
-&ndash; Returns a list of pairs which have in their
-<i>car</i> the name of the account type (Income, Expense,
-Asset, Liability), &quot;Worth&quot; (Assets + Liabilities),
-and &quot;Balances&quot; (for total opening balances) and in
-its <i>cdr</i> the total sum of transactions within each
-account type.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/write
+file)</i> <br>
+Writes all accounts to <i>file.</i></p>
 
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/read
+file)</i> <br>
+Read in accounts from <i>file.</i></p>
 
 
-<p style="margin-top: 1em"><i>(bal/set-account
-account_name)</i> &ndash; Sets the current account to
-<i>account_name.</i></p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/get-current-file)</i>
+<br>
+Returns the name of the current default save file.</p>
 
 
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/set-select-transact-number
+num)</i> <br>
+Sets number of transactions to show when selecting a
+transaction to <i>num.</i> On any transaction selection
+screen you can enter any transaction number whether it is
+displayed.</p>
 
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/v)</i>
+<br>
+Returns a string giving the version of <i>bal.</i></p>
 
-<p style="margin-top: 1em"><i>(bal/write file)</i> &ndash;
-Writes all accounts to <i>file.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/read file)</i> &ndash;
-Read in accounts from <i>file.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/get-current-file)</i>
-&ndash; Returns the name of the current default save
-file.</p> </td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-
-<p style="margin-top: 1em"><i>(bal/set-select-transact-number
-num)</i> &ndash; Sets number of transactions to show when
-selecting a transaction to <i>num.</i> On any transaction
-selection screen you can enter any transaction number
-whether it is displayed.</p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/v)</i> &ndash; Returns a
-string giving the version of <i>bal.</i></p></td></tr>
-<tr valign="top" align="left">
-<td width="2%">
-
-
-<p style="margin-top: 1em">&mdash;</p></td>
-<td width="4%"></td>
-<td width="94%">
-
-
-<p style="margin-top: 1em"><i>(bal/t to_account
-from_account amount desc day)</i></p></td></tr>
-</table>
+<p style="margin-left:10%; margin-top: 1em"><i>(bal/t
+to_account from_account amount desc day)</i></p>
 
 <p style="margin-left:10%; margin-top: 1em">Transfers from
 <i>from_account</i> to <i>to_account</i> a transaction in

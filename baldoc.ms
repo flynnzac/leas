@@ -61,86 +61,120 @@ When Scheme functions return transactions they do so as a five-element list,
 .NH
 Interactive functions
 .LP
-The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" \(en functions that can be entered without arguments at the prompt and then prompt the user for options \(en available in
+The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" .br
+ functions that can be entered without arguments at the prompt and then prompt the user for options .br
+ available in
 .I bal.
 .NH 2
 Functions to add accounts and transactions
-.IP \(em 3n
+.IP  
 .I "(aa)"
-\(en Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
-.IP \(em
+.br
+ Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
+.IP 
 .I "(at)"
-\(en Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
-.IP \(em
+.br
+ Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
+.IP 
 .I "(t)"
-\(en Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
+.br
+ Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
 Functions to edit accounts transactions
-.IP \(em 3n
+.IP  
 .I "(ea)"
-\(en Rename account.
-.IP \(em
+.br
+ Rename account.
+.IP 
 .I "(et [n])"
-\(en Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
-.IP \(em
+.br
+ Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
+.IP 
 .I "(da)"
-\(en Delete account.
-.IP \(em
+.br
+ Delete account.
+.IP 
 .I "(dt)"
-\(en Delete transaction.
+.br
+ Delete transaction.
 .NH 2
 Functions to print account and transaction information
-.IP \(em 3n
+.IP  
 .I "(la)"
-\(en Lists all accounts and their present and future balances.
-.IP \(em
+.br
+ Lists all accounts and their present and future balances.
+.IP 
 .I "(lt)"
-\(en Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
+.br
+ Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
 .I bal/number-to-quick-list
 so entering the following at the prompt will change the number to list:
 .I "set! bal/number-to-quick-list NUM"
-.IP \(em
+.IP 
 .I "(ltn)"
-\(en The same as
+.br
+ The same as
 .I "(lt)"
 except that it prompts for the number to list and for the account to
 list the transactions from.
-.IP \(em
+.IP 
 .I "(ltbd)"
-\(en list transactions in current account by day, prompting for the first
+.br
+ list transactions in current account by day, prompting for the first
 and last day to show.
-.IP \(em
+.IP 
 .I "(bt)"
-\(en List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
-.IP \(em
+.br
+ List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
+.IP 
 .I "(re)"
-\(en Search for transactions in the current account with a description that matches a regular expression (prompted for).
+.br
+ Search for transactions in the current account with a description that matches a regular expression (prompted for).
 .NH 2
 Utility functions
-.IP \(em 3n
+.IP  
 .I "(sa)"
-\(en Set current account.
-.IP \(em
+.br
+ Set current account.
+.IP 
 .I "(ca)"
-\(en Print current account.
-.IP \(em
+.br
+ Print current account.
+.IP 
 .I "(w)"
-\(en Write account to file (prompted for name).
-.IP \(em
+.br
+ Write account to file (prompted for name).
+.IP 
 .I "(r)"
-\(en Read saved accounts from file.
-.IP \(em
+.br
+ Read saved accounts from file.
+.IP 
 .I "(p X)"
-\(en Print the Scheme object
+.br
+ Print the Scheme object
 .I "X."
-.IP \(em
+.IP 
 .I "(v)"
-\(en Print out the
+.br
+ Print out the
 .I bal
 version.
-.IP \(em
+.IP 
+.I "(sd)"
+.br
+ Set current day.
+.I "(bt)"
+and
+.I "(la)"
+will now total transactions before and after this day.
+.IP 
+.I "(cd)"
+.br
+ Print current day in YYYY-MM-DD format.
+.IP 
 .I "(q)"
-\(en quit
+.br
+ quit
 .I bal
 .NH
 Creating interactive functions
@@ -158,25 +192,25 @@ is a string giving the function name to call, and
 .I options
 is a list of pairs containing (in its car) the prompt to give the user and the type of the argument to require (in its cdr).  The following types are recognized in
 .B bal.
-.IP \(em 3n
-string \(en the option will be treated as a string in the function call
-.IP \(em
-account \(en the option will be to select an
+.IP  
+string \(em the option will be treated as a string in the function call
+.IP 
+account \(em the option will be to select an
 .I existing
 account (the name of which will be passed as a string to the function
 call).
-.IP \(em
-current_account \(en the name of the current account will be passed as a string (the user will not see a prompt for this option).
-.IP \(em
-type \(en prompt to select an account type (Asset, Liability, Income, Expense).
-.IP \(em
-transaction \(en prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
-.IP \(em
-daystr \(en prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
-.IP \(em
-day \(en prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
-.IP \(em
-other \(en passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
+.IP 
+current_account \(em the name of the current account will be passed as a string (the user will not see a prompt for this option).
+.IP 
+type \(em prompt to select an account type (Asset, Liability, Income, Expense).
+.IP 
+transaction \(em prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
+.IP 
+daystr \(em prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
+.IP 
+day \(em prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
+.IP 
+other \(em passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
 .LP
 .B Example.
 The interactive function
@@ -208,9 +242,10 @@ is also a Scheme function. It adds a negative transactions to the "from account"
 .NH
 Non-interactive functions
 .LP
-.IP \(em 3n
+.IP  
 .I "(bal/at account amount desc day)"
-\(en adds a transaction to an account where
+.br
+ adds a transaction to an account where
 .I account
 is the name of the account,
 .I amount
@@ -219,18 +254,20 @@ is the amount of the transaction,
 is a string describing the transaction, and
 .I day
 gives the day of the transaction in YYYY-MM-DD format.
-.IP \(em
+.IP 
 .I "(bal/aa name type ob)"
-\(en adds a new account with name
+.br
+ adds a new account with name
 .I name
 and
 .I type
 is one of ("expense", "income", "asset", "liability") and gives the type of the account and
 .I ob
 gives the opening balance for the account.
-.IP \(em
+.IP 
 .I "(bal/et (cons account_number transaction_number))"
-\(en edits transaction located at
+.br
+ edits transaction located at
 .I account_number
 and
 .I transaction_number
@@ -238,108 +275,130 @@ with interactive prompts for what to modify.  To programmatically modify transac
 .I bal/dt
 and
 .I bal/at.
-.IP \(em
+.IP 
 .I "(bal/ea current_account_name new_name)"
-\(en rename account from
+.br
+ rename account from
 .I current_account_name
 to
 .I new_name.
-.IP \(em
+.IP 
 .I "(bal/da account_name)"
-\(en delete account with name
+.br
+ delete account with name
 .I account_name.
-.IP \(em
+.IP 
 .I "(bal/dt (cons account_number transaction_number))"
-\(en delete transaction.
-.IP \(em
+.br
+ delete transaction.
+.IP 
 .I "(bal/get-current-account)"
-\(en returns a string with the name of the current account.
-.IP \(em
+.br
+ returns a string with the name of the current account.
+.IP 
 .I "(bal/get-number-of-accounts)"
-\(en return the number of accounts.
-.IP \(em
+.br
+ return the number of accounts.
+.IP 
 .I "(bal/get-transactions account_name how_many)"
-\(en Return
+.br
+ Return
 .I how_many
 of the latest transactions from account with
 .I account_name.
-.IP \(em
+.IP 
 .I "(bal/get-all-transactions account_name)"
-\(en Return all transactions from
+.br
+ Return all transactions from
 .I account_name.
 Each transaction is a five element list with elements (description, amount, year, month, day).
-.IP \(em
+.IP 
 .I "(bal/get-transactions-by-regex account_name regex)"
-\(en Return all transactions from
+.br
+ Return all transactions from
 .I account_name
 with descriptions that match
 .C regex.
-.IP \(em
+.IP 
 .I "(bal/get-account account_name)"
-\(en Returns the account with name
+.br
+ Returns the account with name
 .I account_name,
 a four element list, (name,type_of_account,number_transactions,opening_balance).
-.IP \(em
+.IP 
 .I "(bal/get-all-accounts)"
-\(en Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
-.IP \(em
+.br
+ Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
+.IP 
 .I "(bal/get-transaction-by-location account_num transact_num)"
-\(en Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
-.IP \(em
+.br
+ Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
+.IP 
 .I "(bal/get-account-by-location account_num)"
-\(en Return account corresponding to
+.br
+ Return account corresponding to
 .I acocunt_num.
-.IP \(em
+.IP 
 .I "(bal/get-transactions-by-day account_name first_day last_day)"
-\(en Return a list of transactions between the
+.br
+ Return a list of transactions between the
 .I first_day
 and
 .I last_day
 within the account with name
 .I account_name.  Both days are in YYYY-MM-DD format.
-.IP \(em
+.IP 
 .I "(bal/total-account account_name)"
-\(en Returns the sum of all transactions within the account with name,
+.br
+ Returns the sum of all transactions within the account with name,
 .I account_name.
-.IP \(em
+.IP 
 .I "(bal/total-all-accounts)"
-\(en Returns a list of pairs where each pair has in its
+.br
+ Returns a list of pairs where each pair has in its
 .I car
 the name of the account and in its
 .I cdr
 the sum of all transactions within that account.
-.IP \(em
+.IP 
 .I "(bal/total-by-account-type)"
-\(en Returns a list of pairs which have in their
+.br
+ Returns a list of pairs which have in their
 .I car
 the name of the account type (Income, Expense, Asset, Liability), "Worth" (Assets + Liabilities), and "Balances" (for total opening balances) and in its
 .I cdr
 the total sum of transactions within each account type.
-.IP \(em
+.IP 
 .I "(bal/set-account account_name)"
-\(en Sets the current account to
+.br
+ Sets the current account to
 .I account_name.
-.IP \(em
+.IP 
 .I "(bal/write file)"
-\(en Writes all accounts to
+.br
+ Writes all accounts to
 .I file.
-.IP \(em
+.IP 
 .I "(bal/read file)"
-\(en Read in accounts from
+.br
+ Read in accounts from
 .I file.
-.IP \(em
+.IP 
 .I "(bal/get-current-file)"
-\(en Returns the name of the current default save file.
-.IP \(em
+.br
+ Returns the name of the current default save file.
+.IP 
 .I "(bal/set-select-transact-number num)"
-\(en Sets number of transactions to show when selecting a transaction to
+.br
+ Sets number of transactions to show when selecting a transaction to
 .I num.
 On any transaction selection screen you can enter any transaction number whether it is displayed.
-.IP \(em
+.IP 
 .I "(bal/v)"
-\(en Returns a string giving the version of
+.br
+ Returns a string giving the version of
 .I bal.
-.IP \(em
+.IP 
 .I "(bal/t to_account from_account amount desc day)"
 .QP
 Transfers from
