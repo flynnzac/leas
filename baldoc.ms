@@ -7,7 +7,6 @@ The
 .I bal
 manual
 .AU
-Zach Flynn
 .AB no
 .I bal
 is an extensible tool for keeping accounts in order and studying past spending habits. This manual gives a basic overview of the package and provides a full reference manual to the various Guile Scheme functions
