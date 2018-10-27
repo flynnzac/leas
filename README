@@ -120,6 +120,30 @@ description output to some CSV to be plotted in R).
 
 ---
 
+To compile bal, type:
+
+$ make
+
+You can install to /usr/local/ with
+
+# make install
+
+which just copies the bal executable to /usr/local/bin and the man page to 
+/usr/local/share/man/man1/.
+
+bal depends on libreadline, libcsv, libguile, and libgc to compile.
+
+bal expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has 
+only been tested with the GNU versions of these utilities.  Let me know if I 
+accidently used something non-portable to BSD or similar, and I will fix it.  
+
+---
+
+See baldoc.pdf for full documentation (eventually).  See below for some bits 
+and pieces of useful info.
+
+---
+
 At the prompt, any Scheme function can be entered (except that the usual 
 outside parenthesis should be omitted; for example - display "hello, world" - 
 is translated into the Scheme command - (display "hello, world") - and prints 
@@ -174,15 +198,6 @@ the same with your modified version.  See COPYING for details.
 
 ---
 
-To compile bal, type: make
-
-bal depends on libreadline, libcsv, libguile, and libgc to compile.
-
-bal expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has 
-only been tested with the GNU versions of these utilities.  Let me know if I 
-accidently used something non-portable to BSD or similar, and I will fix it.  
-
----
 
 It would be possible to write another user interface for bal in Scheme (a more 
 graphical interface) that calls the core functions in the background.  The way 
