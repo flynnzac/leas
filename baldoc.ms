@@ -65,7 +65,7 @@ The command prompt is a Scheme interpreter except that the outer-most S expressi
 .I bal.
 .NH 2
 Functions to add accounts and transactions
-.IP \(em
+.IP \(em 3n
 .I "(aa)"
 \(en Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
 .IP \(em
@@ -76,7 +76,7 @@ Functions to add accounts and transactions
 \(en Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
 Functions to edit accounts transactions
-.IP \(em
+.IP \(em 3n
 .I "(ea)"
 \(en Rename account.
 .IP \(em
@@ -90,7 +90,7 @@ Functions to edit accounts transactions
 \(en Delete transaction.
 .NH 2
 Functions to print account and transaction information
-.IP \(em
+.IP \(em 3n
 .I "(la)"
 \(en Lists all accounts and their present and future balances.
 .IP \(em
@@ -117,7 +117,7 @@ and last day to show.
 \(en Search for transactions in the current account with a description that matches a regular expression (prompted for).
 .NH 2
 Utility functions
-.IP \(em
+.IP \(em 3n
 .I "(sa)"
 \(en Set current account.
 .IP \(em
@@ -158,7 +158,7 @@ is a string giving the function name to call, and
 .I options
 is a list of pairs containing (in its car) the prompt to give the user and the type of the argument to require (in its cdr).  The following types are recognized in
 .B bal.
-.IP \(em
+.IP \(em 3n
 string \(en the option will be treated as a string in the function call
 .IP \(em
 account \(en the option will be to select an
@@ -208,7 +208,7 @@ is also a Scheme function. It adds a negative transactions to the "from account"
 .NH
 Non-interactive functions
 .LP
-.IP \(em
+.IP \(em 3n
 .I "(bal/at account amount desc day)"
 \(en adds a transaction to an account where
 .I account
