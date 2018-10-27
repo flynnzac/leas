@@ -116,6 +116,7 @@ int bal_prompton;
 SCM bal_cur_file;
 int bal_prompt_exit;
 int bal_select_tsct_num;
+struct tm* bal_curtime;
 
 /* utility functions */
 
@@ -258,20 +259,15 @@ total_transactions (const account* acct)
   int i;
   double total = acct->ob;
   double total_cur = acct->ob;
-  struct tm* curtime;
-  time_t curtime_time;
-
-  time(&curtime_time);
-  curtime = localtime(&curtime_time);
 
   for (i=0; i < acct->n_tsct; i++)
     {
-      if (((curtime->tm_year+1900) > (acct->tscts[i].year)) ||
-          (((curtime->tm_mon+1) > (acct->tscts[i].month)) &&
-           ((curtime->tm_year+1900) == (acct->tscts[i].year))) ||
-          ((curtime->tm_mday >= acct->tscts[i].day) &&
-           (curtime->tm_year+1900) == acct->tscts[i].year &&
-           (curtime->tm_mon+1) == acct->tscts[i].month))
+      if (((bal_curtime->tm_year+1900) > (acct->tscts[i].year)) ||
+          (((bal_curtime->tm_mon+1) > (acct->tscts[i].month)) &&
+           ((bal_curtime->tm_year+1900) == (acct->tscts[i].year))) ||
+          ((bal_curtime->tm_mday >= acct->tscts[i].day) &&
+           (bal_curtime->tm_year+1900) == acct->tscts[i].year &&
+           (bal_curtime->tm_mon+1) == acct->tscts[i].month))
         {
           total_cur = total_cur + acct->tscts[i].amount;
         }
@@ -1048,14 +1044,13 @@ bal_call (SCM func, SCM options)
                             sizeof(char)*(strlen(command)+4+2+2+10));
 
           
-          curtime_info->tm_year = strcmp(*year,"")==0 ? (curtime_info->tm_year+1900) : atoi(*year);
-          curtime_info->tm_mon = strcmp(*month,"")==0 ? (curtime_info->tm_mon+1) : atoi(*month);
-          curtime_info->tm_mday = strcmp(*day,"")==0 ? curtime_info->tm_mday : atoi(*day);
-          
           sprintf(command, "%s\"%d-%d-%d\"", command,
-                  curtime_info->tm_year,
-                  curtime_info->tm_mon,
-                  curtime_info->tm_mday);
+                  strcmp(*year,"")==0 ? (curtime_info->tm_year+1900) :
+                  atoi(*year),
+                  strcmp(*month,"")==0 ? (curtime_info->tm_mon+1) :
+                  atoi(*month),
+                  strcmp(*day,"")==0 ? curtime_info->tm_mday :
+                  atoi(*day));
 
         }
       else if (strcmp(type_c,"day")==0)
@@ -1793,6 +1788,28 @@ bal_v ()
   return scm_from_locale_string(BAL_VERSION);
 }
 
+/* set the day to be the dividing day between "past" and "future" */
+SCM
+bal_set_current_day (SCM dmy)
+{
+  bal_curtime->tm_mday = scm_to_int
+    (scm_list_ref(dmy,scm_from_int(0)));
+  bal_curtime->tm_mon = scm_to_int
+    (scm_list_ref(dmy,scm_from_int(1))) - 1;
+  bal_curtime->tm_year = scm_to_int
+    (scm_list_ref(dmy,scm_from_int(2))) - 1900;
+  return dmy;
+}
+
+/* get the current day */
+SCM
+bal_get_current_day ()
+{
+  return scm_list_3
+    (scm_from_int(bal_curtime->tm_mday),
+     scm_from_int(bal_curtime->tm_mon + 1),
+     scm_from_int(bal_curtime->tm_year + 1900));
+}
 
 #define QUOTE(...) #__VA_ARGS__
 
@@ -1850,6 +1867,12 @@ register_guile_functions (void* data)
   /* Setting commands */
   scm_c_define_gsubr("bal/set-select-transact-num", 1, 0, 0,
                      &bal_set_select_transact_num);
+
+  /* Get and set the current day */
+  scm_c_define_gsubr("bal/set-current-day", 1, 0, 0,
+                     &bal_set_current_day);
+  scm_c_define_gsubr("bal/get-current-day", 0, 0, 0,
+                     &bal_get_current_day);
 
   /* interface commands */
   scm_c_define_gsubr("q", 0, 0, 0, &bal_quit);
@@ -2090,6 +2113,23 @@ bal_standard_func ()
                "bal version: "
                (bal/v)
                "\n"))))
+
+           (define sd
+            (lambda ()
+             (bal/call "bal/set-current-day"
+              (list
+               (cons "Current Day" "day")))))
+           
+           (define cd
+            (lambda ()
+             (let ((current-day (bal/get-current-day)))
+              (display (string-append
+                        (number->string (list-ref current-day 2))
+                        "-"
+                        (format #f "~2,'0d" (list-ref current-day 1))
+                        "-"
+                        (format #f "~2,'0d" (list-ref current-day 0))
+                        "\n")))))
            ));
 
 }
@@ -2122,6 +2162,10 @@ main (int argc, char** argv)
   char* fname;
   int i;
   int k;
+  time_t curtime_time;
+
+  time(&curtime_time);
+  bal_curtime = localtime(&curtime_time);
 
   bal_prompt_exit = 1;
   bal_select_tsct_num = 19;
