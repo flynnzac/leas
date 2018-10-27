@@ -4,16 +4,16 @@
 .ND
 .TL
 The
-.CW bal
+.I bal
 manual
 .AU
 Zach Flynn
 .AB no
-.CW bal
+.I bal
 is an extensible tool for keeping accounts in order and studying past spending habits. This manual gives a basic overview of the package and provides a full reference manual to the various Guile Scheme functions
-.CW bal
+.I bal
 exposes.
-
+.LP
 Copyright (c) 2018 Zach Flynn.
 Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3
@@ -38,153 +38,153 @@ using the built-in functions and gives a full reference manual to the functions 
 Data types
 .LP
 There are two data types in
-.CW bal
+.I bal
 of interest to programming it in Scheme: the account
 and the transaction.  This brief section discusses the key concepts.
 .LP
 .I "Transaction and Account Numbers."
 Each transaction has a "coordinate" given by the pair (cons account_number transaction_number).  Transactions and accounts are numbered starting at 0, accounts are numbered in the order in which they were created, and transactions are in chronological order by day.  Transaction number is the element number in the list returned by
-.CW "(bal/get-all-transactions account_name)."
+.I "(bal/get-all-transactions account_name)."
 Account number is the element number of the account in the list returned by
-.CW "(bal/get-all-accounts)."
+.I "(bal/get-all-accounts)."
 .LP
 .I "Accounts in Scheme."
 When Scheme functions return accounts they do so as a four-element list,
 .RS
-.CW "(account_name account_type number_of_transactions opening_balance)"
+.I "(account_name account_type number_of_transactions opening_balance)"
 .RE
 .LP
 .I "Transactions in Scheme."
 When Scheme functions return transactions they do so as a five-element list,
 .RS
-.CW "(description amount year month day)"
+.I "(description amount year month day)"
 .RE
 .NH
 Interactive functions
 .LP
-The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" - functions that can be entered without arguments at the prompt and then prompt the user for options - available in
-.CW bal.
+The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" \(en functions that can be entered without arguments at the prompt and then prompt the user for options \(en available in
+.I bal.
 .NH 2
 Functions to add accounts and transactions
 .IP \(em
-.CW "(aa)"
-- Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
+.I "(aa)"
+\(en Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
 .IP \(em
-.CW "(at)"
-- Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
+.I "(at)"
+\(en Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
 .IP \(em
-.CW "(t)"
-- Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
+.I "(t)"
+\(en Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
 Functions to edit accounts transactions
 .IP \(em
-.CW "(ea)"
-- Rename account.
+.I "(ea)"
+\(en Rename account.
 .IP \(em
-.CW "(et [n])"
-- Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
+.I "(et [n])"
+\(en Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
 .IP \(em
-.CW "(da)"
-- Delete account.
+.I "(da)"
+\(en Delete account.
 .IP \(em
-.CW "(dt)"
-- Delete transaction.
+.I "(dt)"
+\(en Delete transaction.
 .NH 2
 Functions to print account and transaction information
 .IP \(em
-.CW "(la)"
-- Lists all accounts and their present and future balances.
+.I "(la)"
+\(en Lists all accounts and their present and future balances.
 .IP \(em
-.CW "(lt)"
-- Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
-.CW bal/number-to-quick-list
+.I "(lt)"
+\(en Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
+.I bal/number-to-quick-list
 so entering the following at the prompt will change the number to list:
-.CW "set! bal/number-to-quick-list NUM"
+.I "set! bal/number-to-quick-list NUM"
 .IP \(em
-.CW "(ltn)"
-- The same as
-.CW "(lt)"
+.I "(ltn)"
+\(en The same as
+.I "(lt)"
 except that it prompts for the number to list and for the account to
 list the transactions from.
 .IP \(em
-.CW "(ltbd)"
-- list transactions in current account by day, prompting for the first
+.I "(ltbd)"
+\(en list transactions in current account by day, prompting for the first
 and last day to show.
 .IP \(em
-.CW "(bt)"
-- List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
+.I "(bt)"
+\(en List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
 .IP \(em
-.CW "(re)"
-- Search for transactions in the current account with a description that matches a regular expression (prompted for).
+.I "(re)"
+\(en Search for transactions in the current account with a description that matches a regular expression (prompted for).
 .NH 2
 Utility functions
 .IP \(em
-.CW "(sa)"
-- Set current account.
+.I "(sa)"
+\(en Set current account.
 .IP \(em
-.CW "(ca)"
-- Print current account.
+.I "(ca)"
+\(en Print current account.
 .IP \(em
-.CW "(w)"
-- Write account to file (prompted for name).
+.I "(w)"
+\(en Write account to file (prompted for name).
 .IP \(em
-.CW "(r)"
-- Read saved accounts from file.
+.I "(r)"
+\(en Read saved accounts from file.
 .IP \(em
-.CW "(p X)"
-- Print the Scheme object
-.CW "X."
+.I "(p X)"
+\(en Print the Scheme object
+.I "X."
 .IP \(em
-.CW "(v)"
-- Print out the
-.CW bal
+.I "(v)"
+\(en Print out the
+.I bal
 version.
 .IP \(em
-.CW "(q)"
-- quit
-.CW bal
+.I "(q)"
+\(en quit
+.I bal
 .NH
 Creating interactive functions
 .LP
 To create interactive functions, use the Scheme function
 .LP
 .DS C
-.ft CW
+.ft I
 (bal/call func options)
 .DE
 .LP
 .ad l
-.CW func
+.I func
 is a string giving the function name to call, and
-.CW options
+.I options
 is a list of pairs containing (in its car) the prompt to give the user and the type of the argument to require (in its cdr).  The following types are recognized in
 .B bal.
 .IP \(em
-string - the option will be treated as a string in the function call
+string \(en the option will be treated as a string in the function call
 .IP \(em
-account - the option will be to select an
+account \(en the option will be to select an
 .I existing
 account (the name of which will be passed as a string to the function
 call).
 .IP \(em
-current_account - the name of the current account will be passed as a string (the user will not see a prompt for this option).
+current_account \(en the name of the current account will be passed as a string (the user will not see a prompt for this option).
 .IP \(em
-type - prompt to select an account type (Asset, Liability, Income, Expense).
+type \(en prompt to select an account type (Asset, Liability, Income, Expense).
 .IP \(em
-transaction - prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
+transaction \(en prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
 .IP \(em
-daystr - prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
+daystr \(en prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
 .IP \(em
-day - prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
+day \(en prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
 .IP \(em
-other - passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
+other \(en passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
 .LP
 .B Example.
 The interactive function
-.CW "(t)"
+.I "(t)"
 creates a transfer from one account to another account.  It is written in the following way,
 .DS I
-.ft CW
+.ft I
 (define t
   (lambda ()
     (bal/call "bal/t"
@@ -195,10 +195,10 @@ creates a transfer from one account to another account.  It is written in the fo
                (cons "Description" "string")
                (cons "Day" "daystr")))))
 .DE
-.CW "bal/t"
+.I "bal/t"
 is also a Scheme function. It adds a negative transactions to the "from account" and a positive transaction to the "to account". Its source is,
 .DS I
-.ft CW
+.ft I
 (define bal/t
   (lambda (to-account from-account amount desc day)
     (let ((to-type (list-ref (bal/get-account to-account) 1))
@@ -210,148 +210,149 @@ is also a Scheme function. It adds a negative transactions to the "from account"
 Non-interactive functions
 .LP
 .IP \(em
-.CW "(bal/at account amount desc day)"
-- adds a transaction to an account where
-.CW account
+.I "(bal/at account amount desc day)"
+\(en adds a transaction to an account where
+.I account
 is the name of the account,
-.CW amount
+.I amount
 is the amount of the transaction,
-.CW desc
+.I desc
 is a string describing the transaction, and
-.CW day
+.I day
 gives the day of the transaction in YYYY-MM-DD format.
 .IP \(em
-.CW "(bal/aa name type ob)"
-- adds a new account with name
-.CW name
+.I "(bal/aa name type ob)"
+\(en adds a new account with name
+.I name
 and
-.CW type
+.I type
 is one of ("expense", "income", "asset", "liability") and gives the type of the account and
-.CW ob
+.I ob
 gives the opening balance for the account.
 .IP \(em
-.CW "(bal/et (cons account_number transaction_number))"
-- edits transaction located at
-.CW account_number
+.I "(bal/et (cons account_number transaction_number))"
+\(en edits transaction located at
+.I account_number
 and
-.CW transaction_number
+.I transaction_number
 with interactive prompts for what to modify.  To programmatically modify transactions, delete and add the transaction with
-.CW bal/dt
+.I bal/dt
 and
-.CW bal/at.
+.I bal/at.
 .IP \(em
-.CW "(bal/ea current_account_name new_name)"
-- rename account from
-.CW current_account_name
+.I "(bal/ea current_account_name new_name)"
+\(en rename account from
+.I current_account_name
 to
-.CW new_name.
+.I new_name.
 .IP \(em
-.CW "(bal/da account_name)"
-- delete account with name
-.CW account_name.
+.I "(bal/da account_name)"
+\(en delete account with name
+.I account_name.
 .IP \(em
-.CW "(bal/dt (cons account_number transaction_number))"
-- delete transaction.
+.I "(bal/dt (cons account_number transaction_number))"
+\(en delete transaction.
 .IP \(em
-.CW "(bal/get-current-account)"
-- returns a string with the name of the current account.
+.I "(bal/get-current-account)"
+\(en returns a string with the name of the current account.
 .IP \(em
-.CW "(bal/get-number-of-accounts)"
-- return the number of accounts.
+.I "(bal/get-number-of-accounts)"
+\(en return the number of accounts.
 .IP \(em
-.CW "(bal/get-transactions account_name how_many)"
-- Return
-.CW how_many
+.I "(bal/get-transactions account_name how_many)"
+\(en Return
+.I how_many
 of the latest transactions from account with
-.CW account_name.
+.I account_name.
 .IP \(em
-.CW "(bal/get-all-transactions account_name)"
-- Return all transactions from
-.CW account_name.
+.I "(bal/get-all-transactions account_name)"
+\(en Return all transactions from
+.I account_name.
 Each transaction is a five element list with elements (description, amount, year, month, day).
 .IP \(em
-.CW "(bal/get-transactions-by-regex account_name regex)"
-- Return all transactions from
-.CW account_name
+.I "(bal/get-transactions-by-regex account_name regex)"
+\(en Return all transactions from
+.I account_name
 with descriptions that match
 .C regex.
 .IP \(em
-.CW "(bal/get-account account_name)"
-- Returns the account with name
-.CW account_name,
+.I "(bal/get-account account_name)"
+\(en Returns the account with name
+.I account_name,
 a four element list, (name,type_of_account,number_transactions,opening_balance).
 .IP \(em
-.CW "(bal/get-all-accounts)"
-- Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
+.I "(bal/get-all-accounts)"
+\(en Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
 .IP \(em
-.CW "(bal/get-transaction-by-location account_num transact_num)"
-- Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
+.I "(bal/get-transaction-by-location account_num transact_num)"
+\(en Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
 .IP \(em
-.CW "(bal/get-account-by-location account_num)"
-- Return account corresponding to
-.CW acocunt_num.
+.I "(bal/get-account-by-location account_num)"
+\(en Return account corresponding to
+.I acocunt_num.
 .IP \(em
-.CW "(bal/get-transactions-by-day account_name first_day last_day)"
-- Return a list of transactions between the
-.CW first_day
+.I "(bal/get-transactions-by-day account_name first_day last_day)"
+\(en Return a list of transactions between the
+.I first_day
 and
-.CW last_day
+.I last_day
 within the account with name
-.CW account_name.  Both days are in YYYY-MM-DD format.
+.I account_name.  Both days are in YYYY-MM-DD format.
 .IP \(em
-.CW "(bal/total-account account_name)"
-- Returns the sum of all transactions within the account with name,
-.CW account_name.
+.I "(bal/total-account account_name)"
+\(en Returns the sum of all transactions within the account with name,
+.I account_name.
 .IP \(em
-.CW "(bal/total-all-accounts)"
-- Returns a list of pairs where each pair has in its
-.CW car
+.I "(bal/total-all-accounts)"
+\(en Returns a list of pairs where each pair has in its
+.I car
 the name of the account and in its
-.CW cdr
+.I cdr
 the sum of all transactions within that account.
 .IP \(em
-.CW "(bal/total-by-account-type)"
-- Returns a list of pairs which have in their
-.CW car
+.I "(bal/total-by-account-type)"
+\(en Returns a list of pairs which have in their
+.I car
 the name of the account type (Income, Expense, Asset, Liability), "Worth" (Assets + Liabilities), and "Balances" (for total opening balances) and in its
-.CW cdr
+.I cdr
 the total sum of transactions within each account type.
 .IP \(em
-.CW "(bal/set-account account_name)"
-- Sets the current account to
-.CW account_name.
+.I "(bal/set-account account_name)"
+\(en Sets the current account to
+.I account_name.
 .IP \(em
-.CW "(bal/write file)"
-- Writes all accounts to
-.CW file.
+.I "(bal/write file)"
+\(en Writes all accounts to
+.I file.
 .IP \(em
-.CW "(bal/read file)"
-- Read in accounts from
-.CW file.
+.I "(bal/read file)"
+\(en Read in accounts from
+.I file.
 .IP \(em
-.CW "(bal/get-current-file)"
-- Returns the name of the current default save file.
+.I "(bal/get-current-file)"
+\(en Returns the name of the current default save file.
 .IP \(em
-.CW "(bal/set-select-transact-number num)"
-- Sets number of transactions to show when selecting a transaction to
-.CW num.
+.I "(bal/set-select-transact-number num)"
+\(en Sets number of transactions to show when selecting a transaction to
+.I num.
 On any transaction selection screen you can enter any transaction number whether it is displayed.
 .IP \(em
-.CW "(bal/v)"
-- Returns a string giving the version of
-.CW bal.
+.I "(bal/v)"
+\(en Returns a string giving the version of
+.I bal.
 .IP \(em
-.CW "(bal/t to_account from_account amount desc day)"
-- Transfers from
-.CW from_account
+.I "(bal/t to_account from_account amount desc day)"
+.QP
+Transfers from
+.I from_account
 to
-.CW to_account
+.I to_account
 a transaction in
-.CW amount
+.I amount
 with description
-.CW desc
+.I desc
 on day (in YYYY-MM-DD format)
-.CW day.
+.I day.
 .NH
 GNU Free Documentation License
 .LP

@@ -3,8 +3,7 @@ bal: bal.c
 
 doc: bal.1 ABOUT
 	(echo "Man Page\n---\n" && man -P cat -l bal.1 && echo "\n---\n" && cat ABOUT) | fold -s - > README
-	groff -ms -e baldoc.ms > baldoc.ps
-	ps2pdf baldoc.ps
+	groff -mspdf -Tpdf -e baldoc.ms > baldoc.pdf
 
 install: bal bal.1
 	mkdir -p /usr/local/share/man/man1/

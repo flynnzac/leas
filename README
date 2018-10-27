@@ -198,7 +198,6 @@ the same with your modified version.  See COPYING for details.
 
 ---
 
-
 It would be possible to write another user interface for bal in Scheme (a more 
 graphical interface) that calls the core functions in the background.  The way 
 you would hook it in would be something like:
