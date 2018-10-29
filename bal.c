@@ -332,7 +332,6 @@ bal_select_account (const char* prompt)
   else
     {
       ndigit = (bal_book.n_account / 10) + 1;
-      printf("ndigit: %d\n", ndigit);
       for (j=0; j < bal_book.n_account; j++)
         {
           printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
