@@ -1526,18 +1526,22 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
   char* acct_c = scm_to_locale_string(acct);
   account* acct_p = find_account_in_book(&bal_book, acct_c);
 
-  struct tm first_day_tm = scm_day_to_tm(first_day);
-  struct tm last_day_tm = scm_day_to_tm(last_day);
   tsct first_day_t;
   tsct last_day_t;
 
-  first_day_t.year = first_day_tm.tm_year + 1900;
-  first_day_t.month = first_day_tm.tm_mon + 1;
-  first_day_t.day = first_day_tm.tm_mday;
+  first_day_t.year = scm_to_int
+    (scm_list_ref(first_day,scm_from_int(2)));
+  first_day_t.month = scm_to_int
+    (scm_list_ref(first_day,scm_from_int(1)));
+  first_day_t.day = scm_to_int
+    (scm_list_ref(first_day,scm_from_int(0)));
 
-  last_day_t.year = last_day_tm.tm_year + 1900;
-  last_day_t.month = last_day_tm.tm_mon + 1;
-  last_day_t.day = last_day_tm.tm_mday;
+  last_day_t.year = scm_to_int
+    (scm_list_ref(last_day,scm_from_int(2)));
+  last_day_t.month = scm_to_int
+    (scm_list_ref(last_day,scm_from_int(1)));
+  last_day_t.day = scm_to_int
+    (scm_list_ref(last_day,scm_from_int(0)));
   
   SCM ret = SCM_EOL;
   int i;
@@ -1961,11 +1965,15 @@ bal_standard_func ()
 
            (define lt
             (lambda ()
-             (let ((tscts (bal/get-transactions
-                           (bal/get-current-account)
-                           bal/number-to-quick-list)))
-              (if (list? tscts)
-                (print-tscts tscts)))))
+             (let* ((tscts (bal/get-transactions-by-day
+                            (bal/get-current-account)
+                            (list 0 0 0)
+                            (bal/get-current-day)))
+                    (final-tsct (list-tail tscts
+                                 (- (length tscts)
+                                  bal/number-to-quick-list))))
+              (if (list? final-tsct)
+                (print-tscts final-tsct)))))
       
            (define ea
             (lambda ()
@@ -2102,8 +2110,8 @@ bal_standard_func ()
               (bal/call "bal/get-transactions-by-day"
                (list
                 (cons "Account" "current_account")
-                (cons "From Day" "daystr")
-                (cons "To Day" "daystr"))))))
+                (cons "From Day" "day")
+                (cons "To Day" "day"))))))
 
            (define v
             (lambda ()
