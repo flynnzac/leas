@@ -1185,78 +1185,7 @@ bal_aa (SCM name,
   return SCM_UNDEFINED;
 }
 
-/* Edit existing transactions and accounts */
-/* TODO: Make bal/et more like the other functions; this is straightforward to do */
-SCM
-bal_et (SCM at_pair)
-{
-  SCM account = scm_car (at_pair);
-  SCM ts = scm_cdr (at_pair);
-  
-  int k = scm_to_int (account);
-  int j = scm_to_int (ts);
-  tsct* t;
-
-  if (j < bal_book.accounts[k].n_tsct)
-    {
-      t = &bal_book.accounts[k].tscts[j];
-    }
-  else
-    {
-      return SCM_UNDEFINED;
-    }
-    
-  char* option1;
-  char* option2;
-  char** year = malloc(sizeof(char*));
-  char** month = malloc(sizeof(char*));
-  char** day = malloc(sizeof(char*));
-
-  struct tm tm;
-
-  tm.tm_year = t->year-1900;
-  tm.tm_mon = t->month - 1;
-  tm.tm_mday = t->day;
-
-  option1 = readline ("Amount: ");
-  if (strcmp(option1,"") != 0)
-    {
-      t->amount = atof(option1);
-    }
-
-  bal_select_day (&tm, year, month, day);
-
-  if (strcmp(*year,"") != 0)
-    {
-      t->year = atoi(*year);
-    }
-
-  if (strcmp(*month,"") != 0)
-    {
-      t->month = atoi(*month);
-    }
-
-  if (strcmp(*day,"") != 0)
-    {
-      t->day = atoi(*day);
-    }
-
-  option2 = readline("Description: ");
-
-  if (strcmp(option2, "") != 0)
-    {
-      free(t->desc);
-      t->desc = malloc(sizeof(char)*(strlen(option2)+1));
-      strcpy(t->desc, option2);
-    }
-
-  free(option2);
-  free(year);
-  free(month);
-  free(day);
-  
-  return SCM_UNDEFINED;
-}
+/* Rename existing account */
 
 SCM
 bal_ea (SCM cur_name,
@@ -1795,7 +1724,6 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/aa", 3, 0, 0, &bal_aa);
 
   /* Editing functions */
-  scm_c_define_gsubr("bal/et", 1, 0, 0, &bal_et);
   scm_c_define_gsubr("bal/ea", 2, 0, 0, &bal_ea);
 
   /* Deleting functions */
@@ -1916,7 +1844,6 @@ bal_standard_func ()
                     "\n")))
                  k)))))
 
-           
            (define ltn
             (lambda ()
              (let ((tscts (bal/call "bal/get-transactions"
@@ -1924,13 +1851,30 @@ bal_standard_func ()
                             (cons "Account" "current_account")
                             (cons "How many?" "integer")))))
               (print-tscts tscts))))
-           
+
+	   (define bal/edit-transact
+	    (lambda (tsct day amount desc)
+	     (let ((tsct-attr (bal/get-transaction-by-location
+			       (car tsct) (cdr tsct))))
+	      (bal/dt tsct)
+	      (bal/at (car (bal/get-account-by-location (car tsct)))
+	       (if (string-null? amount)
+		 (list-ref tsct-attr 1)
+		   (string->number amount))
+	       (if (string-null? desc)
+		 (list-ref tsct-attr 0)
+		   desc)
+	       day))))
+
            (define et
             (lambda* (#:optional n)
              (if n (bal/set-select-transact-num n))
-             (bal/call "bal/et"
+             (bal/call "bal/edit-transact"
               (list
-               (cons "Transaction" "transaction")))))
+               (cons "Transaction" "transaction")
+	       (cons "Day (default is current day)" "day")
+	       (cons "Amount" "string")
+	       (cons "Description" "string")))))
 
            (define lt
             (lambda ()
