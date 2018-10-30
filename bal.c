@@ -1186,7 +1186,7 @@ bal_aa (SCM name,
 }
 
 /* Edit existing transactions and accounts */
-
+/* TODO: Make bal/et more like the other functions; this is straightforward to do */
 SCM
 bal_et (SCM at_pair)
 {
