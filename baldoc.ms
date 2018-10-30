@@ -18,7 +18,6 @@ Permission is granted to copy, distribute and/or modify this document
 under the terms of the FreeBSD Documentation License. A copy of the license is included in the section entitled "FreeBSD
 Documentation License".
 .AE
-
 .NH
 Introduction
 .LP

@@ -1970,8 +1970,9 @@ bal_standard_func ()
                             (list 0 0 0)
                             (bal/get-current-day)))
                     (final-tsct (list-tail tscts
-                                 (- (length tscts)
-                                  bal/number-to-quick-list))))
+                                 (max (- (length tscts)
+                                       bal/number-to-quick-list)
+                                  0))))
               (if (list? final-tsct)
                 (print-tscts final-tsct)))))
       
