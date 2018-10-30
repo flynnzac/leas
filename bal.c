@@ -2138,8 +2138,205 @@ bal_standard_func ()
                         "-"
                         (format #f "~2,'0d" (list-ref current-day 0))
                         "\n")))))
-           ));
+           (use-modules (srfi srfi-19))
 
+           (define bal/day-from-time
+            (lambda (x)
+             (let ((xdate (time-utc->date x 0)))
+              (list (date-day xdate) (date-month xdate) (date-year xdate)))))
+
+           (define bal/seq-days
+            (lambda (first-day last-day by)
+             (let ((first-time (date->time-utc (make-date 0 0 0 0
+                                                (list-ref first-day 0)
+                                                (list-ref first-day 1)
+                                                (list-ref first-day 2)
+                                                0)))
+                   (last-time (date->time-utc (make-date 0 0 0 0
+                                               (list-ref last-day 0)
+                                               (list-ref last-day 1)
+                                               (list-ref last-day 2)
+                                               0))))
+              (if (time>=? first-time last-time)
+                (list first-day)
+                  (cons first-day (bal/seq-days 
+                                   (bal/day-from-time
+                                    (add-duration first-time
+                                     (make-time time-duration 0 (* 24 3600 by))))
+                                   last-day
+                                   by))))))
+
+           (define bal/balance-account-on-days
+            (lambda (first-day last-day by account)
+             (let ((days (bal/seq-days first-day last-day by))
+                   (current-day (bal/get-current-day)))
+              (let loop-day ((i 0))
+               (if (< i (length days))
+                 (begin
+                  (bal/set-current-day (list-ref days i))
+                  (cons (cons (list-ref days i)
+                         (list-ref (bal/total-account account) 1))
+                   (loop-day (+ i 1))))
+                   (begin
+                    (bal/set-current-day current-day)
+                    (list)))))))
+
+           (define bal/total-transact-in-account-between-days
+            (lambda (first-day last-day by account)
+             (let ((balance (bal/balance-account-on-days
+                             first-day last-day by account))
+                   (current-day (bal/get-current-day)))
+              (let loop-day ((i 0))
+               (if (< i (- (length balance) 1))
+                 (begin
+                  (bal/set-current-day
+                   (car (list-ref balance i)))
+                  (cons (cons (car (list-ref balance i))
+                         (- (cdr (list-ref balance (+ i 1)))
+                          (cdr (list-ref balance i))))
+                   (loop-day (+ i 1))))
+                   (begin
+                    (bal/set-current-day current-day)
+                    (list)))))))
+
+           (define bal/output-by-day
+            (lambda (day amount)
+             (display
+              (string-append
+               (number->string (list-ref day 2))
+               "-"
+               (format #f "~2,'0d" (list-ref day 1))
+               "-"
+               (format #f "~2,'0d" (list-ref day 0))
+               " "
+               (format #f "~10,2f" amount)
+               "\n"))))
+
+           (define baod
+            (lambda ()
+             (let ((result (bal/call "bal/balance-account-on-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")
+                             (cons "Account" "current_account")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define bal/get-by-type-over-days
+            (lambda (first-day last-day by num)
+             (let ((days (bal/seq-days first-day last-day by))
+                   (current-day (bal/get-current-day)))
+              (let loop-day ((i 0))
+               (if (< i (length days))
+                 (begin
+                  (bal/set-current-day (list-ref days i))
+                  (cons (cons (list-ref days i)
+                         (list-ref
+                          (list-ref (bal/total-by-account-type) num)
+                          1))
+                   (loop-day (+ i 1))))
+                   (begin
+                    (bal/set-current-day current-day)
+                    (list)))))))
+
+           (define bal/expenses-over-days
+            (lambda (first-day last-day by)
+             (bal/get-by-type-over-days first-day last-day by 0)))
+
+           (define bal/income-over-days
+            (lambda (first-day last-day by)
+             (bal/get-by-type-over-days first-day last-day by 1)))
+
+           (define bal/assets-over-days
+            (lambda (first-day last-day by)
+             (bal/get-by-type-over-days first-day last-day by 2)))
+
+           (define bal/liability-over-days
+            (lambda (first-day last-day by)
+             (bal/get-by-type-over-days first-day last-day by 3)))
+
+           (define bal/worth-over-days
+            (lambda (first-day last-day by)
+             (bal/get-by-type-over-days first-day last-day by 4)))
+
+           (define exod
+            (lambda ()
+             (let ((result (bal/call "bal/expenses-over-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define inod
+            (lambda ()
+             (let ((result (bal/call "bal/income-over-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define asod
+            (lambda ()
+             (let ((result (bal/call "bal/assets-over-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define liod
+            (lambda ()
+             (let ((result (bal/call "bal/liability-over-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+
+           (define wood
+            (lambda ()
+             (let ((result (bal/call "bal/worth-over-days"
+                            (list
+                             (cons "First Day" "day")
+                             (cons "Last Day" "day")
+                             (cons "By" "number")))))
+              (map-in-order
+               (lambda (x) (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define ttbd
+            (lambda ()
+             (let ((result (bal/call
+                            "bal/total-transact-in-account-between-days"
+                            (list
+                             (cons "First day" "day")
+                             (cons "Last day" "day")
+                             (cons "By" "number")
+                             (cons "Account" "current_account")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           ));
 }
 
 void
