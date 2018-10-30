@@ -1063,6 +1063,7 @@ bal_call (SCM func, SCM options)
 
     }
 
+  printf("command: %s\n", command);
   SCM ret = scm_c_catch (SCM_BOOL_T,
                          exec_string_safe,
                          command,
@@ -2147,86 +2148,48 @@ bal_standard_func ()
 		(list-ref (bal/total-by-account-type) num)
 		1)))))
 
-           (define bal/expenses-over-days
-            (lambda (first-day last-day by)
-             (bal/get-by-type-over-days first-day last-day by 0)))
+	   (define bal/get-by-type-over-days-for-type
+	    (lambda (n)
+	     (lambda (first-day last-day by)
+	      (bal/get-by-type-over-days first-day last-day by n))))
 
-           (define bal/income-over-days
-            (lambda (first-day last-day by)
-             (bal/get-by-type-over-days first-day last-day by 1)))
+	   (define-syntax over-day-cmd
+	    (syntax-rules ()
+	     ((over-day-cmd val)
+	      (let ((result (bal/call
+			     (string-append
+			      "(bal/get-by-type-over-days-for-type "
+			      (number->string val)
+			      ")")
+			     (list
+			      (cons "First Day" "day")
+			      (cons "Last Day" "day")
+			      (cons "By" "number")))))
+	       (map-in-order
+		(lambda (x)
+		 (bal/output-by-day (car x) (cdr x)))
+		result)))))
 
-           (define bal/assets-over-days
-            (lambda (first-day last-day by)
-             (bal/get-by-type-over-days first-day last-day by 2)))
+	   (define exod
+	    (lambda ()
+	     (over-day-cmd 0)))
 
-           (define bal/liability-over-days
-            (lambda (first-day last-day by)
-             (bal/get-by-type-over-days first-day last-day by 3)))
+	   (define inod
+	    (lambda ()
+	     (over-day-cmd 1)))
 
-           (define bal/worth-over-days
-            (lambda (first-day last-day by)
-             (bal/get-by-type-over-days first-day last-day by 4)))
+	   (define asod
+	    (lambda ()
+	     (over-day-cmd 2)))
 
-           (define exod
-            (lambda ()
-             (let ((result (bal/call "bal/expenses-over-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")))))
-              (map-in-order
-               (lambda (x)
-                (bal/output-by-day (car x) (cdr x)))
-               result))))
+	   (define liod
+	    (lambda ()
+	     (over-day-cmd 3)))
 
-           (define inod
-            (lambda ()
-             (let ((result (bal/call "bal/income-over-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")))))
-              (map-in-order
-               (lambda (x)
-                (bal/output-by-day (car x) (cdr x)))
-               result))))
-
-           (define asod
-            (lambda ()
-             (let ((result (bal/call "bal/assets-over-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")))))
-              (map-in-order
-               (lambda (x)
-                (bal/output-by-day (car x) (cdr x)))
-               result))))
-
-           (define liod
-            (lambda ()
-             (let ((result (bal/call "bal/liability-over-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")))))
-              (map-in-order
-               (lambda (x)
-                (bal/output-by-day (car x) (cdr x)))
-               result))))
-
-
-           (define wood
-            (lambda ()
-             (let ((result (bal/call "bal/worth-over-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")))))
-              (map-in-order
-               (lambda (x) (bal/output-by-day (car x) (cdr x)))
-               result))))
-
+	   (define wood
+	    (lambda ()
+	     (over-day-cmd 4)))
+	   
            (define ttbd
             (lambda ()
              (let ((result (bal/call
