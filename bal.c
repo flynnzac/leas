@@ -136,17 +136,6 @@ anyalpha (const char* str)
     }
   return any;
 }
-
-struct tm
-scm_day_to_tm (SCM day)
-{
-  char* day_c = scm_to_locale_string(day);
-  struct tm t;
-
-  strptime(day_c, "%Y-%m-%d", &t);
-  free(day_c);
-  return t;
-}
   
 int
 sort_transactions (const void* a, const void* b)
@@ -1029,29 +1018,6 @@ bal_call (SCM func, SCM options)
             }
           
         }
-      else if (strcmp(type_c, "daystr")==0)
-        {
-
-          time(&curtime);
-          curtime_info = localtime(&curtime);
-
-          printf("%s\n", name_c);
-
-          bal_select_day (curtime_info, year, month, day);
-
-          command = realloc(command,
-                            sizeof(char)*(strlen(command)+4+2+2+10));
-
-          
-          sprintf(command, "%s\"%d-%d-%d\"", command,
-                  strcmp(*year,"")==0 ? (curtime_info->tm_year+1900) :
-                  atoi(*year),
-                  strcmp(*month,"")==0 ? (curtime_info->tm_mon+1) :
-                  atoi(*month),
-                  strcmp(*day,"")==0 ? curtime_info->tm_mday :
-                  atoi(*day));
-
-        }
       else if (strcmp(type_c,"day")==0)
         {
           time(&curtime);
@@ -1080,8 +1046,7 @@ bal_call (SCM func, SCM options)
         }
 
 
-      if ((strcmp(type_c,"day") != 0) &&
-          (strcmp(type_c,"daystr") != 0))
+      if (strcmp(type_c,"day") != 0)
         {
           free(opt);
         }
