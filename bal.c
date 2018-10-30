@@ -2107,6 +2107,7 @@ bal_standard_func ()
                         "-"
                         (format #f "~2,'0d" (list-ref current-day 0))
                         "\n")))))
+
            (use-modules (srfi srfi-19))
 
            (define bal/day-from-time
@@ -2134,39 +2135,36 @@ bal_standard_func ()
                                      (make-time time-duration 0 (* 24 3600 by))))
                                    last-day
                                    by))))))
+	   (define-syntax loop-days
+	    (syntax-rules ()
+	     ((loop-days lit lit* val exp)
+	      (let loop-day ((i 0))
+	       (if (< i val)
+		 (begin
+		  (bal/set-current-day (list-ref lit i))
+		  (cons (cons (list-ref lit i)
+			 (exp i))
+		   (loop-day (+ i 1))))
+		   (begin
+		    (bal/set-current-day lit*)
+		    (list)))))))
 
            (define bal/balance-account-on-days
             (lambda (first-day last-day by account)
              (let ((days (bal/seq-days first-day last-day by))
                    (current-day (bal/get-current-day)))
-              (let loop-day ((i 0))
-               (if (< i (length days))
-                 (begin
-                  (bal/set-current-day (list-ref days i))
-                  (cons (cons (list-ref days i)
-                         (list-ref (bal/total-account account) 1))
-                   (loop-day (+ i 1))))
-                   (begin
-                    (bal/set-current-day current-day)
-                    (list)))))))
-
+	      (loop-days days current-day (length days)
+	       (lambda (i) (list-ref (bal/total-account account) 1))))))
+	   
            (define bal/total-transact-in-account-between-days
             (lambda (first-day last-day by account)
-             (let ((balance (bal/balance-account-on-days
-                             first-day last-day by account))
-                   (current-day (bal/get-current-day)))
-              (let loop-day ((i 0))
-               (if (< i (- (length balance) 1))
-                 (begin
-                  (bal/set-current-day
-                   (car (list-ref balance i)))
-                  (cons (cons (car (list-ref balance i))
-                         (- (cdr (list-ref balance (+ i 1)))
-                          (cdr (list-ref balance i))))
-                   (loop-day (+ i 1))))
-                   (begin
-                    (bal/set-current-day current-day)
-                    (list)))))))
+             (let* ((balance (bal/balance-account-on-days
+			      first-day last-day by account))
+		    (current-day (bal/get-current-day))
+		    (days (map car balance)))
+	      (loop-days days current-day (- (length balance) 1)
+	       (lambda (i) (- (cdr (list-ref balance (+ i 1)))
+			    (cdr (list-ref balance i))))))))
 
            (define bal/output-by-day
             (lambda (day amount)
@@ -2198,18 +2196,10 @@ bal_standard_func ()
             (lambda (first-day last-day by num)
              (let ((days (bal/seq-days first-day last-day by))
                    (current-day (bal/get-current-day)))
-              (let loop-day ((i 0))
-               (if (< i (length days))
-                 (begin
-                  (bal/set-current-day (list-ref days i))
-                  (cons (cons (list-ref days i)
-                         (list-ref
+	      (loop-days days current-day (length days)
+	       (lambda (i) (list-ref
                           (list-ref (bal/total-by-account-type) num)
-                          1))
-                   (loop-day (+ i 1))))
-                   (begin
-                    (bal/set-current-day current-day)
-                    (list)))))))
+			    1))))))
 
            (define bal/expenses-over-days
             (lambda (first-day last-day by)
