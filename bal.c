@@ -1127,11 +1127,15 @@ bal_at (SCM account_name,
   account* acct = find_account_in_book (&bal_book, account_c);
   tsct t;
 
-  struct tm tm_c = scm_day_to_tm(day);
-
-  t.year = tm_c.tm_year + 1900;
-  t.month = tm_c.tm_mon + 1;
-  t.day = tm_c.tm_mday;
+  t.year = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(2)));
+  t.month = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(1)));
+  t.day = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(0)));
   t.amount = amount_c;
   t.desc = malloc(sizeof(char)*(strlen(desc_c)+1));
   strcpy(t.desc, desc_c);
@@ -1919,7 +1923,7 @@ bal_standard_func ()
                (cons "Account" "current_account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "daystr")))))
+               (cons "Day" "day")))))
 
 
            (define print-tscts
@@ -2103,7 +2107,7 @@ bal_standard_func ()
                (cons "From Account" "account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "daystr")))))
+               (cons "Day" "day")))))
 
            (define ltbd
             (lambda ()
