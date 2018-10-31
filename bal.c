@@ -310,7 +310,7 @@ create_tmp_dir ()
 char*
 bal_select_account (const char* prompt)
 {
-  int j, ndigit, ci;
+  int j, ndigit;
   char* c;
 
   if (bal_book.n_account==0)
