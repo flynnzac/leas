@@ -1189,15 +1189,25 @@ bal_aa (SCM name,
 
 SCM
 bal_ea (SCM cur_name,
-        SCM name)
+        SCM name,
+        SCM ob)
 {
   char* cur_name_c = scm_to_locale_string (cur_name);
   char* name_c = scm_to_locale_string (name);
+  char* ob_c = scm_to_locale_string(ob);
   account* acct = find_account_in_book(&bal_book, cur_name_c);
 
-  free(acct->name);
-  acct->name = malloc(sizeof(char)*(strlen(name_c)+1));
-  strcpy(acct->name, name_c);
+  if (strcmp(name_c,"") != 0)
+    {
+      free(acct->name);
+      acct->name = malloc(sizeof(char)*(strlen(name_c)+1));
+      strcpy(acct->name, name_c);
+    }
+
+  if (strcmp(ob_c,"") != 0)
+    {
+      acct->ob = atof(ob_c);
+    }
 
   char* current_account = scm_to_locale_string (bal_cur_acct);
 
@@ -1206,6 +1216,7 @@ bal_ea (SCM cur_name,
       bal_cur_acct = name;
     }
 
+  free(ob_c);
   free(cur_name_c);
   free(name_c);
   free(current_account);
@@ -1724,7 +1735,7 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/aa", 3, 0, 0, &bal_aa);
 
   /* Editing functions */
-  scm_c_define_gsubr("bal/ea", 2, 0, 0, &bal_ea);
+  scm_c_define_gsubr("bal/ea", 3, 0, 0, &bal_ea);
 
   /* Deleting functions */
   scm_c_define_gsubr("bal/da", 1, 0, 0, &bal_da);
@@ -1798,7 +1809,7 @@ bal_standard_func ()
 {
   scm_c_eval_string
     (QUOTE(
-           (define bal/number-to-quick-list 10)
+           (define bal/number-to-quick-list 20)
            (use-modules (ice-9 format))
            (define aa
             (lambda ()
@@ -1894,7 +1905,8 @@ bal_standard_func ()
              (bal/call "bal/ea"
               (list
                (cons "Account" "account")
-               (cons "New account name" "string")))))
+               (cons "New account name" "string")
+               (cons "Opening balance" "string")))))
 
            (define da
             (lambda ()
