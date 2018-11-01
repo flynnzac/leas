@@ -326,14 +326,14 @@ bal_select_account (const char* prompt)
     {
       ndigit = (bal_book.n_account / 10) + 1;
       do
-	{
-	  for (j=0; j < bal_book.n_account; j++)
-	    {
-	      printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
-	    }
-	  c = readline(prompt);
-	} while (anyalpha(c) || atoi(c) < 0 ||
-		 atoi(c) >= bal_book.n_account);
+        {
+          for (j=0; j < bal_book.n_account; j++)
+            {
+              printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
+            }
+          c = readline(prompt);
+        } while (anyalpha(c) || atoi(c) < 0 ||
+                 atoi(c) >= bal_book.n_account);
 
       return c;
     }
@@ -362,21 +362,21 @@ bal_select_transaction (account* acct)
   do
     {
       for (i=n; i < acct->n_tsct; i++)
-	{
-	  printf("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
-		 ndigit,
-		 i,
-		 acct->tscts[i].year,
-		 acct->tscts[i].month,
-		 acct->tscts[i].day,
-		 maxlen+1,
-		 acct->tscts[i].desc,
-		 acct->tscts[i].amount);
-	}
+        {
+          printf("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
+                 ndigit,
+                 i,
+                 acct->tscts[i].year,
+                 acct->tscts[i].month,
+                 acct->tscts[i].day,
+                 maxlen+1,
+                 acct->tscts[i].desc,
+                 acct->tscts[i].amount);
+        }
 
       option = readline ("Transaction #: ");
     } while (anyalpha(option) || atoi(option) < 0 ||
-	     atoi(option) >= acct->n_tsct);
+             atoi(option) >= acct->n_tsct);
   i = atoi(option);
   free(option);
   return i;
@@ -1834,7 +1834,7 @@ bal_standard_func ()
                (cons "Day" "day")))))
 
 
-           (define print-tscts
+           (define bal/print-tscts
             (lambda (k)
              (if (list? k)
                (let ((len (apply max
@@ -1865,21 +1865,21 @@ bal_standard_func ()
                            (list
                             (cons "Account" "current_account")
                             (cons "How many?" "integer")))))
-              (print-tscts tscts))))
+              (bal/print-tscts tscts))))
 
-	   (define bal/edit-transact
-	    (lambda (tsct day amount desc)
-	     (let ((tsct-attr (bal/get-transaction-by-location
-			       (car tsct) (cdr tsct))))
-	      (bal/dt tsct)
-	      (bal/at (car (bal/get-account-by-location (car tsct)))
-	       (if (string-null? amount)
-		 (list-ref tsct-attr 1)
-		   (string->number amount))
-	       (if (string-null? desc)
-		 (list-ref tsct-attr 0)
-		   desc)
-	       day))))
+           (define bal/edit-transact
+            (lambda (tsct day amount desc)
+             (let ((tsct-attr (bal/get-transaction-by-location
+                               (car tsct) (cdr tsct))))
+              (bal/dt tsct)
+              (bal/at (car (bal/get-account-by-location (car tsct)))
+               (if (string-null? amount)
+                 (list-ref tsct-attr 1)
+                   (string->number amount))
+               (if (string-null? desc)
+                 (list-ref tsct-attr 0)
+                   desc)
+               day))))
 
            (define et
             (lambda* (#:optional n)
@@ -1887,9 +1887,9 @@ bal_standard_func ()
              (bal/call "bal/edit-transact"
               (list
                (cons "Transaction" "transaction")
-	       (cons "Day (default is current day)" "day")
-	       (cons "Amount" "string")
-	       (cons "Description" "string")))))
+               (cons "Day (default is current day)" "day")
+               (cons "Amount" "string")
+               (cons "Description" "string")))))
 
            (define lt
             (lambda ()
@@ -1902,7 +1902,7 @@ bal_standard_func ()
                                        bal/number-to-quick-list)
                                   0))))
               (if (list? final-tsct)
-                (print-tscts final-tsct)))))
+                (bal/print-tscts final-tsct)))))
       
            (define ea
             (lambda ()
@@ -1979,7 +1979,7 @@ bal_standard_func ()
 
            (define re
             (lambda ()
-             (print-tscts
+             (bal/print-tscts
               (bal/call "bal/get-transactions-by-regex"
                (list
                 (cons "Account" "current_account")
@@ -2036,7 +2036,7 @@ bal_standard_func ()
 
            (define ltbd
             (lambda ()
-             (print-tscts
+             (bal/print-tscts
               (bal/call "bal/get-transactions-by-day"
                (list
                 (cons "Account" "current_account")
@@ -2095,38 +2095,38 @@ bal_standard_func ()
                                      (make-time time-duration 0 (* 24 3600 by))))
                                    last-day
                                    by))))))
-	   (define-syntax loop-days
-	    (lambda (x)
-	     (syntax-case x ()
-	      ((_ days current-day val exp)
-	       (with-syntax ((i (datum->syntax x (quote i))))
-		(syntax (let loop-day ((i 0))
-			 (if (< i val)
-			   (begin
-			    (bal/set-current-day (list-ref days i))
-			    (cons (cons (list-ref days i)
-				   exp)
-			     (loop-day (+ i 1))))
-			     (begin
-			      (bal/set-current-day current-day)
-			      (list))))))))))
+           (define-syntax bal/loop-days
+            (lambda (x)
+             (syntax-case x ()
+              ((_ days current-day val exp)
+               (with-syntax ((i (datum->syntax x (quote i))))
+                (syntax (let loop-day ((i 0))
+                         (if (< i val)
+                           (begin
+                            (bal/set-current-day (list-ref days i))
+                            (cons (cons (list-ref days i)
+                                   exp)
+                             (loop-day (+ i 1))))
+                             (begin
+                              (bal/set-current-day current-day)
+                              (list))))))))))
 
            (define bal/balance-account-on-days
             (lambda (first-day last-day by account)
              (let ((days (bal/seq-days first-day last-day by))
                    (current-day (bal/get-current-day)))
-	      (loop-days days current-day (length days)
-	       (list-ref (bal/total-account account) 1)))))
+              (bal/loop-days days current-day (length days)
+               (list-ref (bal/total-account account) 1)))))
 	   
            (define bal/total-transact-in-account-between-days
             (lambda (first-day last-day by account)
              (let* ((balance (bal/balance-account-on-days
-			      first-day last-day by account))
-		    (current-day (bal/get-current-day))
-		    (days (map car balance)))
-	      (loop-days days current-day (- (length balance) 1)
-	       (- (cdr (list-ref balance (+ i 1)))
-		(cdr (list-ref balance i)))))))
+                              first-day last-day by account))
+                    (current-day (bal/get-current-day))
+                    (days (map car balance)))
+              (bal/loop-days days current-day (- (length balance) 1)
+               (- (cdr (list-ref balance (+ i 1)))
+                (cdr (list-ref balance i)))))))
 
            (define bal/output-by-day
             (lambda (day amount)
@@ -2158,52 +2158,52 @@ bal_standard_func ()
             (lambda (first-day last-day by num)
              (let ((days (bal/seq-days first-day last-day by))
                    (current-day (bal/get-current-day)))
-	      (loop-days days current-day (length days)
-	       (list-ref
-		(list-ref (bal/total-by-account-type) num)
-		1)))))
+              (bal/loop-days days current-day (length days)
+               (list-ref
+                (list-ref (bal/total-by-account-type) num)
+                1)))))
 
-	   (define bal/get-by-type-over-days-for-type
-	    (lambda (n)
-	     (lambda (first-day last-day by)
-	      (bal/get-by-type-over-days first-day last-day by n))))
+           (define bal/get-by-type-over-days-for-type
+            (lambda (n)
+             (lambda (first-day last-day by)
+              (bal/get-by-type-over-days first-day last-day by n))))
 
-	   (define-syntax over-day-cmd
-	    (syntax-rules ()
-	     ((over-day-cmd val)
-	      (let ((result (bal/call
-			     (string-append
-			      "(bal/get-by-type-over-days-for-type "
-			      (number->string val)
-			      ")")
-			     (list
-			      (cons "First Day" "day")
-			      (cons "Last Day" "day")
-			      (cons "By" "number")))))
-	       (map-in-order
-		(lambda (x)
-		 (bal/output-by-day (car x) (cdr x)))
-		result)))))
+           (define-syntax over-day-cmd
+            (syntax-rules ()
+             ((over-day-cmd val)
+              (let ((result (bal/call
+                             (string-append
+                              "(bal/get-by-type-over-days-for-type "
+                              (number->string val)
+                              ")")
+                             (list
+                              (cons "First Day" "day")
+                              (cons "Last Day" "day")
+                              (cons "By" "number")))))
+               (map-in-order
+                (lambda (x)
+                 (bal/output-by-day (car x) (cdr x)))
+                result)))))
 
-	   (define exod
-	    (lambda ()
-	     (over-day-cmd 0)))
+           (define exod
+            (lambda ()
+             (over-day-cmd 0)))
 
-	   (define inod
-	    (lambda ()
-	     (over-day-cmd 1)))
+           (define inod
+            (lambda ()
+             (over-day-cmd 1)))
 
-	   (define asod
-	    (lambda ()
-	     (over-day-cmd 2)))
+           (define asod
+            (lambda ()
+             (over-day-cmd 2)))
 
-	   (define liod
-	    (lambda ()
-	     (over-day-cmd 3)))
+           (define liod
+            (lambda ()
+             (over-day-cmd 3)))
 
-	   (define wood
-	    (lambda ()
-	     (over-day-cmd 4)))
+           (define wood
+            (lambda ()
+             (over-day-cmd 4)))
 	   
            (define ttbd
             (lambda ()

@@ -61,99 +61,123 @@ The command prompt is a Scheme interpreter except that the outer-most S expressi
 .CW bal.
 .NH 2
 Functions to add accounts and transactions
-.IP  
+.IP \~ 2n  
 .CW "(aa)"
 .QP
 Add account. Prompts for the name of the account, the kind of account it is, and its opening balance.
-.IP 
+.IP \~ 2n 
 .CW "(at)"
 .QP
 Add transaction.  Prompts for the account to add the transaction to, the amount of the transaction, a description of the transaction, and when the transaction was made.
-.IP 
+.IP \~ 2n 
 .CW "(t)"
 .QP
 Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
 .NH 2
 Functions to edit accounts transactions
-.IP  
+.IP \~ 2n  
 .CW "(ea)"
 .QP
 Rename account.
-.IP 
+.IP \~ 2n 
 .CW "(et [n])"
 .QP
 Edit transaction.  Prompts for the transaction to edit and all the various properties of a transaction as if you were adding the transaction anew.  Entering nothing for a cateogry leaves it unchanged.  Optionally, include a different number of transactions than the default to show when prompting for the transaction (any transaction number can be entered even if it is not displayed in the menu; the menu is just a convenience).
-.IP 
+.IP \~ 2n 
 .CW "(da)"
 .QP
 Delete account.
-.IP 
+.IP \~ 2n 
 .CW "(dt)"
 .QP
 Delete transaction.
 .NH 2
 Functions to print account and transaction information
-.IP  
+.IP \~ 2n  
 .CW "(la)"
 .QP
 Lists all accounts and their present and future balances.
-.IP 
+.IP \~ 2n 
 .CW "(lt)"
 .QP
 Lists the most recent transaction in the current account.  The number of transactions to list is set by the Scheme variable
 .CW bal/number-to-quick-list
 so entering the following at the prompt will change the number to list:
 .CW "set! bal/number-to-quick-list NUM"
-.IP 
+.IP \~ 2n 
 .CW "(ltn)"
 .QP
 The same as
 .CW "(lt)"
 except that it prompts for the number to list and for the account to
 list the transactions from.
-.IP 
+.IP \~ 2n 
 .CW "(ltbd)"
 .QP
 list transactions in current account by day, prompting for the first
 and last day to show.
-.IP 
+.IP \~ 2n 
 .CW "(bt)"
 .QP
 List total balances in Expense, Income, Asset, and Liability accounts and total Worth (Asset+Liability) versus Opening Balances for all accounts.
-.IP 
+.IP \~ 2n 
 .CW "(re)"
 .QP
 Search for transactions in the current account with a description that matches a regular expression (prompted for).
+.IP \~ 2n
+.CW "(baod)"
+.QP
+Show account balance on different days for the current account.  Prompts for a first and last day to show and at what frequency to show the balance in days (for example, specify 7 for weekly).
+.IP \~ 2n
+.CW "(exod)"
+.QP
+Show the total balance across all expense accounts over days.
+.IP \~ 2n
+.CW "(inod)"
+.QP
+Show the total balance across all income accounts over days.
+.IP \~ 2n
+.CW "(liod)"
+.QP
+Show the total balance across all liability accounts over days.
+.IP \~ 2n
+.CW "(wood)"
+.QP
+Show net worth (Assets+Liabilities) over days.
+.IP \~ 2n
+.CW "(ttbd)"
+.QP
+Total all transactions in the current account between a first and last day (split into intervals of a given size). 
 .NH 2
 Utility functions
-.IP  
+.IP \~ 2n  
 .CW "(sa)"
 .QP
 Set current account.
-.IP 
+.IP \~ 2n 
 .CW "(ca)"
 .QP
 Print current account.
-.IP 
+.IP \~ 2n 
 .CW "(w)"
 .QP
 Write account to file (prompted for name).
-.IP 
+.IP \~ 2n 
 .CW "(r)"
 .QP
 Read saved accounts from file.
-.IP 
+.IP \~ 2n 
 .CW "(p X)"
 .QP
 Print the Scheme object
 .CW "X."
-.IP 
+.IP \~ 2n 
 .CW "(v)"
 .QP
 Print out the
 .CW bal
 version.
-.IP 
+.IP \~ 2n 
 .CW "(sd)"
 .QP
 Set current day.
@@ -161,11 +185,11 @@ Set current day.
 and
 .CW "(la)"
 will now total transactions before and after this day.
-.IP 
+.IP \~ 2n 
 .CW "(cd)"
 .QP
 Print current day in YYYY-MM-DD format.
-.IP 
+.IP \~ 2n 
 .CW "(q)"
 .QP
 quit
@@ -200,8 +224,6 @@ type \(em prompt to select an account type (Asset, Liability, Income, Expense).
 .IP 
 transaction \(em prompt to select an existing transaction, passed as a pair giving the account number and the transaction number.
 .IP 
-daystr \(em prompt to select a year, a month, and a day, passed as a string in YYYY-MM-DD format.
-.IP 
 day \(em prompt to select a year, a month, and a day, passed as a list with three integers in the following order: day, month, year.
 .IP 
 other \(em passed exactly as entered (the user can enter any Scheme expression and it will just be copied as an argument to the function).
@@ -220,7 +242,7 @@ creates a transfer from one account to another account.  It is written in the fo
                (cons "From Account" "account")
                (cons "Amount" "real")
                (cons "Description" "string")
-               (cons "Day" "daystr")))))
+               (cons "Day" "day")))))
 .DE
 .CW "bal/t"
 is also a Scheme function. It adds a negative transactions to the "from account" and a positive transaction to the "to account". Its source is,
@@ -236,7 +258,7 @@ is also a Scheme function. It adds a negative transactions to the "from account"
 .NH
 Non-interactive functions
 .LP
-.IP  
+.IP \~ 2n  
 .CW "(bal/at account amount desc day)"
 .QP
 adds a transaction to an account where
@@ -248,7 +270,7 @@ is the amount of the transaction,
 is a string describing the transaction, and
 .CW day
 gives the day of the transaction in YYYY-MM-DD format.
-.IP 
+.IP \~ 2n 
 .CW "(bal/aa name type ob)"
 .QP
 adds a new account with name
@@ -258,81 +280,70 @@ and
 is one of ("expense", "income", "asset", "liability") and gives the type of the account and
 .I ob
 gives the opening balance for the account.
-.IP 
-.CW "(bal/et (cons account_number transaction_number))"
-.QP
-edits transaction located at
-.CW account_number
-and
-.CW transaction_number
-with interactive prompts for what to modify.  To programmatically modify transactions, delete and add the transaction with
-.CW bal/dt
-and
-.CW bal/at.
-.IP 
+.IP \~ 2n 
 .CW "(bal/ea current_account_name new_name)"
 .QP
 rename account from
 .CW current_account_name
 to
 .CW new_name.
-.IP 
+.IP \~ 2n 
 .CW "(bal/da account_name)"
 .QP
 delete account with name
 .CW account_name.
-.IP 
+.IP \~ 2n 
 .CW "(bal/dt (cons account_number transaction_number))"
 .QP
 delete transaction.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-current-account)"
 .QP
 returns a string with the name of the current account.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-number-of-accounts)"
 .QP
 return the number of accounts.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-transactions account_name how_many)"
 .QP
 Return
 .QP how_many
 of the latest transactions from account with
 .QP account_name.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-all-transactions account_name)"
 .QP
 Return all transactions from
 .CW account_name.
 Each transaction is a five element list with elements (description, amount, year, month, day).
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-transactions-by-regex account_name regex)"
 .QP
 Return all transactions from
 .CW account_name
 with descriptions that match
 .CW regex.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-account account_name)"
 .QP
 Returns the account with name
 .CW account_name,
 a four element list, (name,type_of_account,number_transactions,opening_balance).
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-all-accounts)"
 .QP
 Returns a list of all the accounts where each account is a four element list, (name,type_of_account,number_transactions,opening_balance).
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-transaction-by-location account_num transact_num)"
 .QP
 Returns the transaction at account number and transaction number, a five-element list (description, amount, year, month, day).
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-account-by-location account_num)"
 .QP
 Return account corresponding to
 .CW acocunt_num.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-transactions-by-day account_name first_day last_day)"
 .QP
 Return a list of transactions between the
@@ -341,20 +352,20 @@ and
 .CW last_day
 within the account with name
 .CW account_name.  Both days are in YYYY-MM-DD format.
-.IP 
+.IP \~ 2n 
 .CW "(bal/total-account account_name)"
 .QP
 Returns the sum of all transactions within the account with name,
 .CW account_name.
-.IP 
+.IP \~ 2n 
 .CW "(bal/total-all-accounts)"
-.br
+.QP
  Returns a list of pairs where each pair has in its
 .CW car
 the name of the account and in its
 .CW cdr
 the sum of all transactions within that account.
-.IP 
+.IP \~ 2n 
 .CW "(bal/total-by-account-type)"
 .QP
 Returns a list of pairs which have in their
@@ -362,37 +373,37 @@ Returns a list of pairs which have in their
 the name of the account type (Income, Expense, Asset, Liability), "Worth" (Assets + Liabilities), and "Balances" (for total opening balances) and in its
 .CW cdr
 the total sum of transactions within each account type.
-.IP 
+.IP \~ 2n 
 .CW "(bal/set-account account_name)"
 .QP
 Sets the current account to
 .CW account_name.
-.IP 
+.IP \~ 2n 
 .CW "(bal/write file)"
 .QP
 Writes all accounts to
 .CW file.
-.IP 
+.IP \~ 2n 
 .CW "(bal/read file)"
 .QP
 Read in accounts from
 .CW file.
-.IP 
+.IP \~ 2n 
 .CW "(bal/get-current-file)"
 .QP
 Returns the name of the current default save file.
-.IP 
+.IP \~ 2n 
 .CW "(bal/set-select-transact-number num)"
 .QP
 Sets number of transactions to show when selecting a transaction to
 .CW num.
 On any transaction selection screen you can enter any transaction number whether it is displayed.
-.IP 
+.IP \~ 2n 
 .CW "(bal/v)"
 .QP
 Returns a string giving the version of
 .CW bal.
-.IP 
+.IP \~ 2n 
 .CW "(bal/t to_account from_account amount desc day)"
 .QP
 Transfers from
@@ -405,20 +416,87 @@ with description
 .CW desc
 on day (in YYYY-MM-DD format)
 .CW day.
-.IP
+.IP \~ 2n
 .CW "(bal/set-current-day (list day month year))"
 .QP
 Sets the current day to the year, month, and day provided as arguments.  The function returns the list passed to it, unaltered.
-.IP
+.IP \~ 2n
 .CW "(bal/get-current-day)"
 .QP
 Returns a three element list,
 .CW "(list day month year),"
 giving the current day, month, and year.
+.IP \~ 2n
+.CW "(bal/prompt)"
+.QP
+Returns a string which is used as the prompt.  Can be redefined to customize the prompt.
+.IP \~ 2n
+.CW "(bal/print-tscts x)"
+.QP
+Print a list of transactions (where transactions are in Scheme format as returned by
+.CW "(bal/get...transactions...)"
+).
+.IP \~ 2n
+.CW "(bal/edit-transact loc day amount desc)"
+.QP
+Edit the transaction at location
+.CW loc
+to be on
+.CW day
+for
+.CW amount
+and be described by
+.CW desc.
+Note that the location of the transaction may change after this command.
+.IP \~ 2n
+.CW "(bal/day-from-time x)"
+.QP
+Return a day object (a list with elements day, month, year) from a Scheme
+.CW "time-utc"
+object.
+.IP \~ 2n
+.CW "(bal/seq-days first-day last-day by)"
+.QP
+Return a list of days between first-day and last-day going by
+.CW by
+days at a time.
+.IP \~ 2n
+.CW "(bal/balance-account-on-days first-day last-day by account)"
+.QP
+Like
+.CW baod
+but returns the data as a list of pairs with the day in its
+.CW car
+and the values in its
+.CW cdr.
+.IP \~ 2n
+.CW "(bal/total-transact-in-account-between-days first-day last-day by account)"
+.QP
+Like
+.CW ttbd
+but allows another account name besides the current account to be specified and it returns its results as a list of pairs with day in the
+.CW car
+and the values in the
+.CW cdr.
+.IP \~ 2n
+.CW "(bal/output-by-day day amount)"
+Output formatted output for a given day and an amount.  Used to produce output for the on-,over-,between-days class of commands.
+.IP \~ 2n
+.CW "(bal/get-by-type-over-days first-day last-day by num)"
+.QP
+Return a list of pairs with the day in the
+.CW car
+and the total balance for row
+.CW num
+(starting at row 0) of 
+.CW "(bt)"
+output in the
+.CW cdr
+over the date range given by first-day, last-day, and by.
 .NH
 FreeBSD Documentation License
 .LP
-Copyright 1994-2018 The FreeBSD Project. All rights reserved.
+Copyright 2018 Zach Flynn. All rights reserved.
 
 Redistribution and use in source (Groff) and 'compiled' forms (SGML, HTML, PDF, PostScript, RTF and so forth) with or without modification, are permitted provided that the following conditions are met:
 
