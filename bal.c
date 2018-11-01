@@ -32,8 +32,8 @@
 #include <ctype.h>
 #include <string.h>
 #include <libgen.h>
-/* transaction, account, and book types */
 
+/* transaction, account, and book types */
 struct tsct
 {
   double amount;
@@ -88,7 +88,7 @@ struct book
 {
   account* accounts;
   int n_account;
-  int n_pos; /* for use in reading data */
+  int n_pos; /* used in reading data */
 };
 
 int
@@ -242,32 +242,6 @@ acct_to_scm (const account a)
   return scm_list_4(name,type,ntsct,ob);
 }
 
-SCM
-total_transactions (const account* acct)
-{
-  int i;
-  double total = acct->ob;
-  double total_cur = acct->ob;
-
-  for (i=0; i < acct->n_tsct; i++)
-    {
-      if (((bal_curtime->tm_year+1900) > (acct->tscts[i].year)) ||
-          (((bal_curtime->tm_mon+1) > (acct->tscts[i].month)) &&
-           ((bal_curtime->tm_year+1900) == (acct->tscts[i].year))) ||
-          ((bal_curtime->tm_mday >= acct->tscts[i].day) &&
-           (bal_curtime->tm_year+1900) == acct->tscts[i].year &&
-           (bal_curtime->tm_mon+1) == acct->tscts[i].month))
-        {
-          total_cur = total_cur + acct->tscts[i].amount;
-        }
-      total = total +
-        acct->tscts[i].amount;
-    }
-
-  return scm_cons(scm_from_double(total_cur),
-                  scm_from_double(total));
-}
-
 char*
 create_tmp_dir ()
 {
@@ -304,6 +278,36 @@ create_tmp_dir ()
 
   return tmp_dir;
 }
+
+
+/* function to add up transactions */
+
+SCM
+total_transactions (const account* acct)
+{
+  int i;
+  double total = acct->ob;
+  double total_cur = acct->ob;
+
+  for (i=0; i < acct->n_tsct; i++)
+    {
+      if (((bal_curtime->tm_year+1900) > (acct->tscts[i].year)) ||
+          (((bal_curtime->tm_mon+1) > (acct->tscts[i].month)) &&
+           ((bal_curtime->tm_year+1900) == (acct->tscts[i].year))) ||
+          ((bal_curtime->tm_mday >= acct->tscts[i].day) &&
+           (bal_curtime->tm_year+1900) == acct->tscts[i].year &&
+           (bal_curtime->tm_mon+1) == acct->tscts[i].month))
+        {
+          total_cur = total_cur + acct->tscts[i].amount;
+        }
+      total = total +
+        acct->tscts[i].amount;
+    }
+
+  return scm_cons(scm_from_double(total_cur),
+                  scm_from_double(total));
+}
+
 
 /* selection functions */
 
@@ -555,6 +559,7 @@ read_book_accounts_from_csv (struct book* book,
 
   book->n_account = 0;
   book->n_pos = 0;
+
   /* Make accounts from account_file */
 
   error = csv_init (&p, 0);
@@ -1185,7 +1190,7 @@ bal_aa (SCM name,
   return SCM_UNDEFINED;
 }
 
-/* Rename existing account */
+/* Rename existing accounts and adjust opening balances */
 
 SCM
 bal_ea (SCM cur_name,
@@ -1279,7 +1284,7 @@ bal_da (SCM account)
 /* Get the current account name */
 
 SCM
-bal_get_current_acct ()
+bal_get_current_account ()
 {
   return bal_cur_acct;
 }
@@ -1743,7 +1748,7 @@ register_guile_functions (void* data)
 
   /* Get global variables */
   scm_c_define_gsubr("bal/get-current-account", 0, 0, 0,
-                     &bal_get_current_acct);
+                     &bal_get_current_account);
   scm_c_define_gsubr("bal/get-current-file", 0, 0, 0,
                      &bal_get_current_file);
 
@@ -1802,7 +1807,6 @@ register_guile_functions (void* data)
 }
 
 /* main scheme functions to build the command-line interface */
-
 
 void
 bal_standard_func ()
@@ -2214,7 +2218,6 @@ bal_standard_func ()
                (lambda (x)
                 (bal/output-by-day (car x) (cdr x)))
                result))))
-
            ));
 }
 
