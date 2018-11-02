@@ -59,6 +59,9 @@ Interactive functions
 .LP
 The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" \(em functions that can be entered without arguments at the prompt and then prompt the user for options \(em available in
 .CW bal.
+.LP
+When entering dollar amounts and other argument options (besides strings), Scheme expressions can be entered.  For example, the "amount" of a transaction could be entered as:
+.CW "(+ 2.99 1.43)."
 .NH 2
 Functions to add accounts and transactions
 .IP \~ 2n  
