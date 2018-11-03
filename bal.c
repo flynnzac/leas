@@ -2172,7 +2172,9 @@ bal_standard_func ()
            (define bal/get-by-type-over-days-for-type
             (lambda (n)
              (lambda (first-day last-day by)
-              (bal/get-by-type-over-days first-day last-day by n))))
+              (if (string=? by "")
+                (bal/get-by-type-over-days first-day last-day 7 n)
+                  (bal/get-by-type-over-days first-day last-day (string->number by) n)))))
 
            (define-syntax over-day-cmd
             (syntax-rules ()
@@ -2185,7 +2187,7 @@ bal_standard_func ()
                              (list
                               (cons "First Day" "day")
                               (cons "Last Day" "day")
-                              (cons "By" "number")))))
+                              (cons "By [7]" "string")))))
                (map-in-order
                 (lambda (x)
                  (bal/output-by-day (car x) (cdr x)))
