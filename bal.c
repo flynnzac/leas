@@ -332,8 +332,8 @@ bal_select_account (const char* prompt)
               printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
             }
           c = readline(prompt);
-        } while (anyalpha(c) || atoi(c) < 0 ||
-                 atoi(c) >= bal_book.n_account);
+        } while (strcmp(c,"")  && (anyalpha(c) || atoi(c) < 0 ||
+                                   atoi(c) >= bal_book.n_account));
 
       return c;
     }
@@ -375,11 +375,16 @@ bal_select_transaction (account* acct)
         }
 
       option = readline ("Transaction #: ");
-    } while (anyalpha(option) || atoi(option) < 0 ||
-             atoi(option) >= acct->n_tsct);
-  i = atoi(option);
-  free(option);
-  return i;
+    } while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
+                                   atoi(option) >= acct->n_tsct));
+  if (strcmp(option,"")==0)
+    return -1;
+  else
+    {
+      i = atoi(option);
+      free(option);
+      return i;
+    }
 }
 
 int
@@ -923,7 +928,7 @@ bal_call (SCM func, SCM options)
       else if (strcmp(type_c, "account")==0)
         {
           opt = bal_select_account(name_c);
-          if (anyalpha(opt) == 0)
+          if (strcmp(opt,"") && anyalpha(opt) == 0)
             {
               k = atoi(opt);
               command = realloc (command,
@@ -994,7 +999,8 @@ bal_call (SCM func, SCM options)
           printf("%s\n", name_c);
           opt = bal_select_account("Account: ");
 
-          if (opt==NULL) return SCM_UNDEFINED;
+          if (opt==NULL || strcmp(opt,"")==0)
+            return SCM_UNDEFINED;
 
           if (anyalpha(opt) == 0)
             {
