@@ -1905,9 +1905,9 @@ bal_standard_func ()
                             (bal/get-current-day)))
                     (final-tsct (list-tail tscts
                                  (max (- (length tscts)
-                                       bal/number-to-quick-list)
-                                  0))))
-              (if (list? final-tsct)
+                                       bal/number-to-quick-list) 0))))
+              (if (and (list? final-tsct)
+                   (not (null? final-tsct)))
                 (bal/print-tscts final-tsct)))))
       
            (define ea
