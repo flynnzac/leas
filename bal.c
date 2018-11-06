@@ -32,6 +32,7 @@
 #include <ctype.h>
 #include <string.h>
 #include <libgen.h>
+#include <signal.h>
 
 /* transaction, account, and book types */
 struct tsct
@@ -878,7 +879,7 @@ write_out (char* base)
 SCM
 bal_call (SCM func, SCM options)
 {
-
+  
   int i,j,k;
   SCM pair;
   SCM name, type;
@@ -903,8 +904,13 @@ bal_call (SCM func, SCM options)
 
   free(func_c);
 
+  bal_prompton = 2;
+
   for (i=0; i < len; i++)
     {
+      if (bal_prompton != 2)
+        break;
+
       pair = scm_list_ref (options, scm_from_int(i));
 
       name = scm_car(pair);
@@ -1074,19 +1080,26 @@ bal_call (SCM func, SCM options)
 
     }
 
-  SCM ret = scm_c_catch (SCM_BOOL_T,
-                         exec_string_safe,
-                         command,
-                         handle_error,
-                         command,
-                         NULL,
-                         NULL);
+  if (bal_prompton == 2)
+    {
+      SCM ret = scm_c_catch (SCM_BOOL_T,
+                             exec_string_safe,
+                             command,
+                             handle_error,
+                             command,
+                             NULL,
+                             NULL);
+      return ret;
+    }
   free(year);
   free(month);
   free(day);
-
   free(command);
-  return ret;
+
+  bal_prompton = 1;
+
+  return SCM_UNDEFINED;
+
 }
 
 /* Add transactions and accounts */
@@ -2249,6 +2262,15 @@ bal_exit (int exit_code)
 }
 
 int
+bal_rl_break (int count, int key)
+{
+  rl_replace_line("",0);
+  if (bal_prompton==2)
+    bal_prompton = 1;
+  return (*rl_named_function("accept-line"))(count,'\n');
+}
+
+int
 main (int argc, char** argv)
 {
   SCM ret;
@@ -2269,6 +2291,8 @@ main (int argc, char** argv)
   bal_standard_func();
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
+
+  rl_bind_key(7, bal_rl_break);
   
   while ((k = getopt(argc, argv, "f:l:s")) != -1)
     {
