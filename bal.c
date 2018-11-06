@@ -2262,12 +2262,17 @@ bal_exit (int exit_code)
 }
 
 int
-bal_rl_break (int count, int key)
+dummy_event ()
+{
+}
+
+void
+handler (int status)
 {
   rl_replace_line("",0);
   if (bal_prompton==2)
     bal_prompton = 1;
-  return (*rl_named_function("accept-line"))(count,'\n');
+  rl_done = 1;
 }
 
 int
@@ -2292,7 +2297,9 @@ main (int argc, char** argv)
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
 
-  rl_bind_key(7, bal_rl_break);
+  rl_event_hook = dummy_event;
+
+  signal(SIGINT,handler);
   
   while ((k = getopt(argc, argv, "f:l:s")) != -1)
     {
