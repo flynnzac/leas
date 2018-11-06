@@ -2298,7 +2298,6 @@ main (int argc, char** argv)
   bal_cur_file = scm_from_locale_string ("_");
 
   rl_event_hook = dummy_event;
-
   signal(SIGINT,handler);
   
   while ((k = getopt(argc, argv, "f:l:s")) != -1)

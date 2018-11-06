@@ -21,6 +21,13 @@ bal \- for keeping accounts in order and studying past spending habits
 .B bal
 keeps track of personal accounts and spending.  It is extensible using Guile Scheme, a full programming language, so that it is easy to build custom reports about your past transactions and to script the program to automatically add or update transactions when certain conditions are met (you could, say, write a piece of Scheme code that fetches the latest stock price and updates the current value of your shares).
 
+.LP
+Text entry at the
+.B bal
+console follows standard line editor conventions (it has Emacs-like
+key bindings, uses the GNU readline library). To cancel a
+command, type: Control-C.
+
 .B bal's
 main interactive commands are:
 
@@ -95,6 +102,24 @@ will now show before and after this day.
 .TP
 .BR cd
 print current day out in YYYY-MM-DD format
+.TP
+.BR baod
+prints account balance over a sequence of days
+.TP
+.BR exod
+prints total expenses as of a sequence of days
+.TP
+.BR inod
+prints total income as of a sequence of days
+.TP
+.BR liod
+prints total liabilities as of a sequence of days
+.TP
+.BR wood
+prints net worth as of a sequence of days
+.TP
+.BR ttbd
+prints total of all transactions between a sequence of days
 .SH OPTIONS
 .TP
 .BR \-f " " FILE
