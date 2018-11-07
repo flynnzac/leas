@@ -280,6 +280,17 @@ create_tmp_dir ()
   return tmp_dir;
 }
 
+/* function to check whether transact after current time */
+int
+tsct_before_today (const tsct t)
+{
+  return (((bal_curtime->tm_year+1900) > (t.year)) ||
+	  (((bal_curtime->tm_mon+1) > (t.month)) &&
+	   ((bal_curtime->tm_year+1900) == (t.year))) ||
+	  ((bal_curtime->tm_mday >= t.day) &&
+	   (bal_curtime->tm_year+1900) == t.year &&
+	   (bal_curtime->tm_mon+1) == t.month));
+}
 
 /* function to add up transactions */
 
@@ -292,12 +303,7 @@ total_transactions (const account* acct)
 
   for (i=0; i < acct->n_tsct; i++)
     {
-      if (((bal_curtime->tm_year+1900) > (acct->tscts[i].year)) ||
-          (((bal_curtime->tm_mon+1) > (acct->tscts[i].month)) &&
-           ((bal_curtime->tm_year+1900) == (acct->tscts[i].year))) ||
-          ((bal_curtime->tm_mday >= acct->tscts[i].day) &&
-           (bal_curtime->tm_year+1900) == acct->tscts[i].year &&
-           (bal_curtime->tm_mon+1) == acct->tscts[i].month))
+      if (tsct_before_today(acct->tscts[i]))
         {
           total_cur = total_cur + acct->tscts[i].amount;
         }
@@ -343,18 +349,21 @@ bal_select_account (const char* prompt)
 int
 bal_select_transaction (account* acct)
 {
-  int i,n,ndigit,maxlen;
+  int i,n,ndigit,maxlen,end;
   char* option;
 
   maxlen = 0;
+  end = 0;
+  while ((end < acct->n_tsct) && tsct_before_today(acct->tscts[end]))
+    end++;
+  
 
-
-  n = (acct->n_tsct - bal_select_tsct_num) >= 0 ?
-    (acct->n_tsct - bal_select_tsct_num) : 0;
+  n = (end - bal_select_tsct_num) >= 0 ?
+    (end - bal_select_tsct_num) : 0;
   
   ndigit = (acct->n_tsct / 10) + 1;
 
-  for (i=n; i < acct->n_tsct; i++)
+  for (i=n; i < end; i++)
     {
       if (maxlen < strlen(acct->tscts[i].desc))
         maxlen = strlen(acct->tscts[i].desc);
@@ -362,7 +371,7 @@ bal_select_transaction (account* acct)
 
   do
     {
-      for (i=n; i < acct->n_tsct; i++)
+      for (i=n; i < end; i++)
         {
           printf("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
                  ndigit,
