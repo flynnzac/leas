@@ -1,29 +1,29 @@
-bal's website: http://zflynn.com/bal\nMan Page\n---\n
+bal's website: http://zflynn.com/bal
+Man Page
+---
 
-bal(1)                                                                      
-General Commands Manual                                                         
-             bal(1)
+
+bal(1)                   General Commands Manual                  bal(1)
 
 NAME
-       bal - for keeping accounts in order and studying past spending habits
+       bal  -  for  keeping accounts in order and studying past spending
+       habits
 
 SYNOPSIS
        bal [-f FILE] [-l CODE] [-s] [COMMAND]
 
 DESCRIPTION
-       bal  keeps  track of personal accounts and spending.  It is extensible 
-using Guile Scheme, a full programming language, so that it is easy to build 
-custom reports about
-       your past transactions and to script the program to automatically add or 
-update transactions when certain conditions are met (you could, say, write a  
-piece  of  Scheme
-       code that fetches the latest stock price and updates the current value 
-of your shares).
+       bal keeps track of personal accounts and spending.  It is  exten‐
+       sible using Guile Scheme, a full programming language, so that it
+       is easy to build custom reports about your past transactions  and
+       to script the program to automatically add or update transactions
+       when certain conditions are met (you could, say, write a piece of
+       Scheme  code  that fetches the latest stock price and updates the
+       current value of your shares).
 
-       Text  entry at the bal console follows standard line editor conventions 
-(it has Emacs-like key bindings, uses the GNU readline library). To cancel a 
-command, type: Con‐
-       trol-C.
+       Text entry at the bal console follows standard line  editor  con‐
+       ventions  (it  has Emacs-like key bindings, uses the GNU readline
+       library). To cancel a command, type: Control-C.
 
        bal's main interactive commands are:
 
@@ -33,9 +33,9 @@ command, type: Con‐
 
        ea     rename account
 
-       et [n] edit transaction, optionally setting how many of the latest 
-transaction numbers to list (any transaction can be chosen whether it is listed 
-or not).
+       et [n] edit transaction, optionally setting how many of the  lat‐
+              est  transaction  numbers  to list (any transaction can be
+              chosen whether it is listed or not).
 
        da     delete account
 
@@ -45,18 +45,20 @@ or not).
 
        la     list accounts and current totals
 
-       lt     list most recent transactions in current account (change number 
-to list by modifying the variable bal/number-to-quick-list)
+       lt     list most recent transactions in current  account  (change
+              number  to  list  by modifying the variable bal/number-to-
+              quick-list)
 
-       ltn    list most recent transactions in current account, prompt for 
-number to list
+       ltn    list most recent transactions in current  account,  prompt
+              for number to list
 
-       ltbd   list transactions in current account by day, prompting for the 
-first and last day to show
+       ltbd   list transactions in current account by day, prompting for
+              the first and last day to show
 
        bt     total accounts by type (income, expense, asset, liability)
 
-       re     list transactions in current account matching a regular expression
+       re     list transactions in current account  matching  a  regular
+              expression
 
        sa     set current account
 
@@ -72,9 +74,9 @@ first and last day to show
 
        v      print version
 
-       sd     set "current" day, changing it allows you to see how account 
-values have changed over time because bt and la will now show before and after 
-this day.
+       sd     set  "current"  day,  changing  it  allows  you to see how
+              account values have changed over time because  bt  and  la
+              will now show before and after this day.
 
        cd     print current day out in YYYY-MM-DD format
 
@@ -88,11 +90,13 @@ this day.
 
        wood   prints net worth as of a sequence of days
 
-       ttbd   prints total of all transactions between a sequence of days
+       ttbd   prints  total  of  all  transactions between a sequence of
+              days
 
 OPTIONS
        -f FILE
-              load accounts from FILE where FILE omits the .btar extension
+              load accounts from FILE where FILE omits the .btar  exten‐
+              sion
 
        -l CODE
               execute Scheme code in file CODE
@@ -100,21 +104,23 @@ OPTIONS
        -s     do not prompt to save on exit, will not save on exit
 
        COMMAND
-              execute COMMAND as if it was entered at bal's prompt and then exit
+              execute  COMMAND  as if it was entered at bal's prompt and
+              then exit
 
 FILES
        bal executes Scheme code in ~/.balrc.scm if the file is present.
 
 EXAMPLES
-       bal    start the bal interpreter and execute any Scheme code in 
-~/.balrc.scm (potentially including code to load data from a default file).
+       bal    start the bal interpreter and execute any Scheme  code  in
+              ~/.balrc.scm (potentially including code to load data from
+              a default file).
 
        bal -f myaccounts
               load the file myaccounts.btar from the current directory.
 
        bal -s v
-              quits and exists after displaying version number (without 
-prompting to save data).
+              quits and exists after displaying version number  (without
+              prompting to save data).
 
 SEE ALSO
 BUGS
@@ -123,10 +129,10 @@ BUGS
 AUTHOR
        Zach Flynn <zlflynn@gmail.com>
 
-                                                                                
-   2018-10-26                                                                   
-         bal(1)
-\n---\n
+                               2018-10-26                         bal(1)
+
+---
+
 bal is an interactive and scriptable command line personal accounting program 
 to keep your books in order and to study past spending habits. It can be 
 scripted and extended using Guile, a simple programming language (a Scheme 
