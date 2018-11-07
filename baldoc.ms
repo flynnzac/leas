@@ -9,9 +9,9 @@ manual
 .AU
 .AB no
 .CW bal
-is an extensible tool for keeping accounts in order and studying past spending habits. This manual gives a basic overview of the package and provides a full reference manual to the various Guile Scheme functions
+is an extensible tool for keeping accounts in order and studying past spending habits. It is an interactive tool to enter transactions into accounts. This manual gives a basic overview of the package and provides a full reference manual to the various Guile Scheme functions
 .CW bal
-exposes.
+exposes.  I think the writing is bad currently, but hopefully, I will get the time to clean up the writing (I am also accepting editing contributions!).
 .LP
 Copyright (c) 2018 Zach Flynn.
 Permission is granted to copy, distribute and/or modify this document
@@ -19,17 +19,39 @@ under the terms of the FreeBSD Documentation License. A copy of the license is i
 Documentation License".
 .AE
 .NH
-Introduction
+What
+.CW bal
+is
 .LP
 .B bal
-is an extensible personal account manager, recording all the good, bad, terrible, and mundane financial decisions you make and helping you plan for the future. It is extensible because its prompt is simply a Guile Scheme interpreter (where you don't enclose the outer S-expression in parenthesis) so it can execute arbitrary code on your transactions. It has a built-in function for making Scheme functions interactive that allows you to specify that the function takes "accounts" or "transactions" (which are simply Scheme lists with certain values) as arguments and have the user select the account or transaction from a menu.
+is an interactive, extensible personal account manager, recording all the good, bad, terrible, and mundane financial decisions you make and helping you plan for the future. It is extensible because its prompt is simply a Guile Scheme interpreter (where you don't enclose the outer S-expression in parenthesis) so it can execute arbitrary code on your transactions. It has a built-in function for making Scheme functions interactive that allows you to specify that the function takes "accounts" or "transactions" (which are simply Scheme lists with certain values) as arguments and have the user select the account or transaction from a menu.
 .LP
 The main interface is a command prompt interface using the Scheme interpreter with some built-in C functions that can be called from Scheme, but of course, other interfaces could be developed by running Scheme code at the interpreter.
 .LP
 This document describes basic usage of
 .B bal
 using the built-in functions and gives a full reference manual to the functions that are available from Scheme to aid in writing your own code to automate whatever tasks your financial life needs automated (for example, a script to update the value of your stock or mutual fund holdings by fetching the latest prices from the internet).
+.NH 
+Why
+.CW bal
+?
+.LP
+I wrote
+.CW bal
+because, well, there was not a Free Software solution to manage personal finances on GNU/Linux that had what I wanted in a personal finance program.  I wanted a program that was (1) interactive, (2) command-line oriented (for my low RAM laptop), and (3) easy to extend \(en so I wrote one.
+.LP
+The interactive programs were large GUI programs that were not easy-to-extend.  The lightweight programs were non-interactive command line programs that generated reports from plain-text files.  So I wrote
+.CW bal
+to be the interactive, lightweight, and highly-extensible personal finance manager I was looking for.  I use it for managing all my personal finances, and I am hopeful that it will be a useful contribution to the Free Software world as well.  Let me know if you find it useful or would find any additions useful.
 .NH
+Basic usage
+.LP
+This section will describe basic usage of built-in commands.
+.NH
+Extending
+.CW bal
+in Scheme
+.NH 2
 Data types
 .LP
 There are two data types in
@@ -54,7 +76,7 @@ When Scheme functions return transactions they do so as a five-element list,
 .RS
 .CW "(description amount year month day)"
 .RE
-.NH
+.NH 2
 Interactive functions
 .LP
 The command prompt is a Scheme interpreter except that the outer-most S expression should not be enclosed in parenthesis to save on typing.  This section describes the "interactive functions" \(em functions that can be entered without arguments at the prompt and then prompt the user for options \(em available in
@@ -62,7 +84,7 @@ The command prompt is a Scheme interpreter except that the outer-most S expressi
 .LP
 When entering dollar amounts and other argument options (besides strings), Scheme expressions can be entered.  For example, the "amount" of a transaction could be entered as:
 .CW "(+ 2.99 1.43)."
-.NH 2
+.NH 3
 Functions to add accounts and transactions
 .IP \~ 2n  
 .CW "(aa)"
@@ -76,7 +98,7 @@ Add transaction.  Prompts for the account to add the transaction to, the amount 
 .CW "(t)"
 .QP
 Add a transfer between accounts.  This is the most commonly-used command because most financial events involve a transaction taking money from one account and another transaction putting money in the other.  Prompts for the "from" and "to" accounts, the amount of the transfer, a description of the transaction, and when the transaction took place.
-.NH 2
+.NH 3
 Functions to edit accounts transactions
 .IP \~ 2n  
 .CW "(ea)"
@@ -94,7 +116,7 @@ Delete account.
 .CW "(dt)"
 .QP
 Delete transaction.
-.NH 2
+.NH 3
 Functions to print account and transaction information
 .IP \~ 2n  
 .CW "(la)"
@@ -151,7 +173,7 @@ Show net worth (Assets+Liabilities) over days.
 .CW "(ttbd)"
 .QP
 Total all transactions in the current account between a first and last day (split into intervals of a given size). 
-.NH 2
+.NH 3
 Utility functions
 .IP \~ 2n  
 .CW "(sa)"
@@ -197,7 +219,7 @@ Print current day in YYYY-MM-DD format.
 .QP
 quit
 .CW bal
-.NH
+.NH 2
 Creating interactive functions
 .LP
 To create interactive functions, use the Scheme function
@@ -258,7 +280,7 @@ is also a Scheme function. It adds a negative transactions to the "from account"
       (bal/at to-account amount desc day)
       (bal/at from-account (* -1 amount) desc day))))
 .DE
-.NH
+.NH 2
 Non-interactive functions
 .LP
 .IP \~ 2n  
