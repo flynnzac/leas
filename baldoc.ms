@@ -42,12 +42,18 @@ because, well, there was not a Free Software solution to manage personal finance
 .LP
 The interactive programs were large GUI programs that were not easy-to-extend.  The lightweight programs were non-interactive command line programs that generated reports from plain-text files.  So I wrote
 .CW bal
-to be the interactive, lightweight, and highly-extensible personal finance manager I was looking for.  I use it for managing all my personal finances, and I am hopeful that it will be a useful contribution to the Free Software world as well.  Let me know if you find it useful or would find any additions useful.
+to be the interactive, lightweight, and extensible personal finance manager I was looking for.  I use it for managing all my personal finances, and I am hopeful that it will be a useful contribution to the Free Software world as well.  Let me know if you find it useful or would find any additions useful.
 .NH
-Basic usage
+Usage
+.NH 2
+Creating accounts
+.NH 2
+Transferring between accounts
+.NH 2
+Browsing by date
+.NH 2
+Browsing by pattern
 .LP
-This section will describe basic usage of built-in commands.
-.NH
 Extending
 .CW bal
 in Scheme
