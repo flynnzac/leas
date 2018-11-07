@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.3 -->
-<!-- CreationDate: Wed Nov  7 10:19:58 2018 -->
+<!-- CreationDate: Wed Nov  7 10:34:26 2018 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -25,16 +25,17 @@
 <a href="#3. Usage">3. Usage</a><br>
 <a href="#3.1. Creating accounts">3.1. Creating accounts</a><br>
 <a href="#3.2. Transferring between accounts">3.2. Transferring between accounts</a><br>
-<a href="#3.3. Browsing by date">3.3. Browsing by date</a><br>
-<a href="#3.4. Browsing by pattern">3.4. Browsing by pattern</a><br>
-<a href="#3.5. Data types">3.5. Data types</a><br>
-<a href="#3.6. Interactive functions">3.6. Interactive functions</a><br>
-<a href="#3.6.1. Functions to add accounts and transactions">3.6.1. Functions to add accounts and transactions</a><br>
-<a href="#3.6.2. Functions to edit accounts transactions">3.6.2. Functions to edit accounts transactions</a><br>
-<a href="#3.6.3. Functions to print account and transactioninformation">3.6.3. Functions to print account and transactioninformation</a><br>
-<a href="#3.6.4. Utility functions">3.6.4. Utility functions</a><br>
-<a href="#3.7. Creating interactive functions">3.7. Creating interactive functions</a><br>
-<a href="#3.8. Non-interactive functions">3.8. Non-interactive functions</a><br>
+<a href="#3.3. Listing transactions and checking account balancesover time">3.3. Listing transactions and checking account balancesover time</a><br>
+<a href="#3.4. Browsing by date">3.4. Browsing by date</a><br>
+<a href="#3.5. Browsing by pattern">3.5. Browsing by pattern</a><br>
+<a href="#3.6. Data types">3.6. Data types</a><br>
+<a href="#3.7. Interactive functions">3.7. Interactive functions</a><br>
+<a href="#3.7.1. Functions to add accounts and transactions">3.7.1. Functions to add accounts and transactions</a><br>
+<a href="#3.7.2. Functions to edit accounts transactions">3.7.2. Functions to edit accounts transactions</a><br>
+<a href="#3.7.3. Functions to print account and transactioninformation">3.7.3. Functions to print account and transactioninformation</a><br>
+<a href="#3.7.4. Utility functions">3.7.4. Utility functions</a><br>
+<a href="#3.8. Creating interactive functions">3.8. Creating interactive functions</a><br>
+<a href="#3.9. Non-interactive functions">3.9. Non-interactive functions</a><br>
 <a href="#4. FreeBSD Documentation License">4. FreeBSD Documentation License</a><br>
 
 <hr>
@@ -127,21 +128,36 @@ find any additions useful.</p>
 </h3>
 
 
-<h3>3.3. Browsing by date
-<a name="3.3. Browsing by date"></a>
+<h3>3.3. Listing transactions and checking account balancesover time
+<a name="3.3. Listing transactions and checking account balancesover time"></a>
 </h3>
 
 
-<h3>3.4. Browsing by pattern
-<a name="3.4. Browsing by pattern"></a>
+<h3>3.4. Browsing by date
+<a name="3.4. Browsing by date"></a>
+</h3>
+
+
+<p style="margin-top: 1em">The current day in <tt>bal</tt>
+affects how many commands operate. The current day can be
+set with the command <tt>sd</tt> and the command to print
+the current day is <tt>cd.</tt> For example, the current day
+determines what <tt>la</tt> and <tt>bt</tt> display as the
+current and future balances. It affects which transactions
+are considered the latest for <tt>lt</tt> and <tt>et.</tt>
+You can use <tt>sd</tt> to browse transactions and to see
+what your account balances will be on certain days.</p>
+
+<h3>3.5. Browsing by pattern
+<a name="3.5. Browsing by pattern"></a>
 </h3>
 
 
 <p style="margin-top: 1em">Extending <tt>bal</tt> in
 Scheme</p>
 
-<h3>3.5. Data types
-<a name="3.5. Data types"></a>
+<h3>3.6. Data types
+<a name="3.6. Data types"></a>
 </h3>
 
 
@@ -176,8 +192,8 @@ five-element list,</p>
 <p style="margin-left:10%;"><tt>(description amount year
 month day)</tt></p>
 
-<h3>3.6. Interactive functions
-<a name="3.6. Interactive functions"></a>
+<h3>3.7. Interactive functions
+<a name="3.7. Interactive functions"></a>
 </h3>
 
 
@@ -194,8 +210,8 @@ other argument options (besides strings), Scheme expressions
 can be entered. For example, the &quot;amount&quot; of a
 transaction could be entered as: <tt>(+ 2.99 1.43).</tt></p>
 
-<h4>3.6.1. Functions to add accounts and transactions
-<a name="3.6.1. Functions to add accounts and transactions"></a>
+<h4>3.7.1. Functions to add accounts and transactions
+<a name="3.7.1. Functions to add accounts and transactions"></a>
 </h4>
 
 
@@ -253,8 +269,8 @@ in the other. Prompts for the &quot;from&quot; and
 description of the transaction, and when the transaction
 took place.</p>
 
-<h4>3.6.2. Functions to edit accounts transactions
-<a name="3.6.2. Functions to edit accounts transactions"></a>
+<h4>3.7.2. Functions to edit accounts transactions
+<a name="3.7.2. Functions to edit accounts transactions"></a>
 </h4>
 
 
@@ -325,8 +341,8 @@ account.</p>
 <p style="margin-left:10%; margin-top: 1em">Delete
 transaction.</p>
 
-<h4>3.6.3. Functions to print account and transactioninformation
-<a name="3.6.3. Functions to print account and transactioninformation"></a>
+<h4>3.7.3. Functions to print account and transactioninformation
+<a name="3.7.3. Functions to print account and transactioninformation"></a>
 </h4>
 
 
@@ -523,8 +539,8 @@ balance across all liability accounts over days.</p>
 transactions in the current account between a first and last
 day (split into intervals of a given size).</p>
 
-<h4>3.6.4. Utility functions
-<a name="3.6.4. Utility functions"></a>
+<h4>3.7.4. Utility functions
+<a name="3.7.4. Utility functions"></a>
 </h4>
 
 
@@ -664,8 +680,8 @@ day in YYYY-MM-DD format.</p>
 <p style="margin-left:10%; margin-top: 1em">quit
 <tt>bal</tt></p>
 
-<h3>3.7. Creating interactive functions
-<a name="3.7. Creating interactive functions"></a>
+<h3>3.8. Creating interactive functions
+<a name="3.8. Creating interactive functions"></a>
 </h3>
 
 
@@ -742,8 +758,8 @@ account&quot;. Its source is,</p>
       (bal/at from-account (* -1 amount) desc day))))</pre>
 
 
-<h3>3.8. Non-interactive functions
-<a name="3.8. Non-interactive functions"></a>
+<h3>3.9. Non-interactive functions
+<a name="3.9. Non-interactive functions"></a>
 </h3>
 
 

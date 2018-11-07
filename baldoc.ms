@@ -46,11 +46,31 @@ to be the interactive, lightweight, and extensible personal finance manager I wa
 .NH
 Usage
 .NH 2
-Creating accounts
+Creating accounts 
 .NH 2
 Transferring between accounts
 .NH 2
+Listing transactions and checking account balances over time
+.NH 2
 Browsing by date
+.LP
+The current day in
+.CW bal
+affects how many commands operate.  The current day can be set with the command
+.CW sd
+and the command to print the current day is
+.CW cd.
+For example, the current day determines what
+.CW la
+and
+.CW bt
+display as the current and future balances.  It affects which transactions are considered the latest for
+.CW lt
+and
+.CW et.
+You can use
+.CW sd
+to browse transactions and to see what your account balances will be on certain days.
 .NH 2
 Browsing by pattern
 .LP
