@@ -2047,10 +2047,8 @@ bal_standard_func ()
            
            (define bal/t
             (lambda (to-account from-account amount desc day)
-             (let ((to-type (list-ref (bal/get-account to-account) 1))
-                   (from-type (list-ref (bal/get-account from-account) 1)))
-              (bal/at to-account amount desc day)
-              (bal/at from-account (* -1 amount) desc day))))
+             (bal/at to-account amount desc day)
+             (bal/at from-account (* -1 amount) desc day)))
 
            (define t
             (lambda ()
@@ -2248,6 +2246,25 @@ bal_standard_func ()
                (lambda (x)
                 (bal/output-by-day (car x) (cdr x)))
                result))))
+
+           (define bal/pay-loan
+            (lambda (loan-account interest-account from-account
+                     principal interest desc day)
+             (bal/at loan-account principal desc day)
+             (bal/at interest-account interest desc day)
+             (bal/at from-account (* -1 (+ principal interest)) desc day)))
+
+           (define pl
+            (lambda ()
+             (bal/call "bal/pay-loan"
+              (list
+               (cons "Loan Account" "account")
+               (cons "Interest Account" "account")
+               (cons "Pay from Account" "account")
+               (cons "Principal" "real")
+               (cons "Interest" "real")
+               (cons "Description" "string")
+               (cons "Day" "day")))))
            ));
 }
 
