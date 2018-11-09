@@ -143,7 +143,7 @@ Delete account.
 .QP
 Delete transaction.
 .IP \~ 2n
-.CW "(lp)"
+.CW "(pl)"
 .QP
 Pay a loan by splitting a transfer between a principal account (a liability account) and an interest account (an expense account)
 .NH 3
