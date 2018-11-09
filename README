@@ -43,6 +43,10 @@ DESCRIPTION
 
        t      transfer from one account to another
 
+       pl     pay a loan, allows you to split a payment between a  prin‐
+              cipal  account (liability account) and an interest account
+              (an expense account)
+
        la     list accounts and current totals
 
        lt     list most recent transactions in current  account  (change
