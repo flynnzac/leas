@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.3 -->
-<!-- CreationDate: Fri Nov  9 01:48:05 2018 -->
+<!-- CreationDate: Fri Nov  9 02:08:32 2018 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -28,15 +28,16 @@
 <a href="#3.3. Listing transactions and checking account balancesover time">3.3. Listing transactions and checking account balancesover time</a><br>
 <a href="#3.4. Browsing by date">3.4. Browsing by date</a><br>
 <a href="#3.5. Browsing by pattern">3.5. Browsing by pattern</a><br>
-<a href="#3.6. Data types">3.6. Data types</a><br>
-<a href="#3.7. Interactive functions">3.7. Interactive functions</a><br>
-<a href="#3.7.1. Functions to add accounts and transactions">3.7.1. Functions to add accounts and transactions</a><br>
-<a href="#3.7.2. Functions to edit accounts transactions">3.7.2. Functions to edit accounts transactions</a><br>
-<a href="#3.7.3. Functions to print account and transactioninformation">3.7.3. Functions to print account and transactioninformation</a><br>
-<a href="#3.7.4. Utility functions">3.7.4. Utility functions</a><br>
-<a href="#3.8. Creating interactive functions">3.8. Creating interactive functions</a><br>
-<a href="#3.9. Non-interactive functions">3.9. Non-interactive functions</a><br>
-<a href="#4. FreeBSD Documentation License">4. FreeBSD Documentation License</a><br>
+<a href="#4. Extending bal in Scheme">4. Extending bal in Scheme</a><br>
+<a href="#4.1. Data types">4.1. Data types</a><br>
+<a href="#4.2. Interactive functions">4.2. Interactive functions</a><br>
+<a href="#4.2.1. Functions to add accounts and transactions">4.2.1. Functions to add accounts and transactions</a><br>
+<a href="#4.2.2. Functions to edit accounts transactions">4.2.2. Functions to edit accounts transactions</a><br>
+<a href="#4.2.3. Functions to print account and transactioninformation">4.2.3. Functions to print account and transactioninformation</a><br>
+<a href="#4.2.4. Utility functions">4.2.4. Utility functions</a><br>
+<a href="#4.3. Creating interactive functions">4.3. Creating interactive functions</a><br>
+<a href="#4.4. Non-interactive functions">4.4. Non-interactive functions</a><br>
+<a href="#5. FreeBSD Documentation License">5. FreeBSD Documentation License</a><br>
 
 <hr>
 
@@ -153,11 +154,13 @@ what your account balances will be on certain days.</p>
 </h3>
 
 
-<p style="margin-top: 1em">Extending <tt>bal</tt> in
-Scheme</p>
+<h2>4. Extending bal in Scheme
+<a name="4. Extending bal in Scheme"></a>
+</h2>
 
-<h3>3.6. Data types
-<a name="3.6. Data types"></a>
+
+<h3>4.1. Data types
+<a name="4.1. Data types"></a>
 </h3>
 
 
@@ -192,8 +195,8 @@ five-element list,</p>
 <p style="margin-left:10%;"><tt>(description amount year
 month day)</tt></p>
 
-<h3>3.7. Interactive functions
-<a name="3.7. Interactive functions"></a>
+<h3>4.2. Interactive functions
+<a name="4.2. Interactive functions"></a>
 </h3>
 
 
@@ -210,8 +213,8 @@ other argument options (besides strings), Scheme expressions
 can be entered. For example, the &quot;amount&quot; of a
 transaction could be entered as: <tt>(+ 2.99 1.43).</tt></p>
 
-<h4>3.7.1. Functions to add accounts and transactions
-<a name="3.7.1. Functions to add accounts and transactions"></a>
+<h4>4.2.1. Functions to add accounts and transactions
+<a name="4.2.1. Functions to add accounts and transactions"></a>
 </h4>
 
 
@@ -269,8 +272,8 @@ in the other. Prompts for the &quot;from&quot; and
 description of the transaction, and when the transaction
 took place.</p>
 
-<h4>3.7.2. Functions to edit accounts transactions
-<a name="3.7.2. Functions to edit accounts transactions"></a>
+<h4>4.2.2. Functions to edit accounts transactions
+<a name="4.2.2. Functions to edit accounts transactions"></a>
 </h4>
 
 
@@ -341,8 +344,25 @@ account.</p>
 <p style="margin-left:10%; margin-top: 1em">Delete
 transaction.</p>
 
-<h4>3.7.3. Functions to print account and transactioninformation
-<a name="3.7.3. Functions to print account and transactioninformation"></a>
+<table width="100%" border="0" rules="none" frame="void"
+       cellspacing="0" cellpadding="0">
+<tr valign="top" align="left">
+<td width="4%"></td>
+<td width="8%">
+
+
+<p style="margin-top: 1em"><tt>(lp)</tt></p></td>
+<td width="88%">
+</td></tr>
+</table>
+
+<p style="margin-left:10%; margin-top: 1em">Pay a loan by
+splitting a transfer between a principal account (a
+liability account) and an interest account (an expense
+account)</p>
+
+<h4>4.2.3. Functions to print account and transactioninformation
+<a name="4.2.3. Functions to print account and transactioninformation"></a>
 </h4>
 
 
@@ -539,8 +559,8 @@ balance across all liability accounts over days.</p>
 transactions in the current account between a first and last
 day (split into intervals of a given size).</p>
 
-<h4>3.7.4. Utility functions
-<a name="3.7.4. Utility functions"></a>
+<h4>4.2.4. Utility functions
+<a name="4.2.4. Utility functions"></a>
 </h4>
 
 
@@ -680,8 +700,8 @@ day in YYYY-MM-DD format.</p>
 <p style="margin-left:10%; margin-top: 1em">quit
 <tt>bal</tt></p>
 
-<h3>3.8. Creating interactive functions
-<a name="3.8. Creating interactive functions"></a>
+<h3>4.3. Creating interactive functions
+<a name="4.3. Creating interactive functions"></a>
 </h3>
 
 
@@ -758,8 +778,8 @@ account&quot;. Its source is,</p>
       (bal/at from-account (* -1 amount) desc day))))</pre>
 
 
-<h3>3.9. Non-interactive functions
-<a name="3.9. Non-interactive functions"></a>
+<h3>4.4. Non-interactive functions
+<a name="4.4. Non-interactive functions"></a>
 </h3>
 
 
@@ -1371,8 +1391,8 @@ balance for row <tt>num</tt> (starting at row 0) of
 <tt>(bt)</tt> output in the <tt>cdr</tt> over the date range
 given by first-day, last-day, and by.</p>
 
-<h2>4. FreeBSD Documentation License
-<a name="4. FreeBSD Documentation License"></a>
+<h2>5. FreeBSD Documentation License
+<a name="5. FreeBSD Documentation License"></a>
 </h2>
 
 

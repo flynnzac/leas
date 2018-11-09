@@ -73,7 +73,7 @@ You can use
 to browse transactions and to see what your account balances will be on certain days.
 .NH 2
 Browsing by pattern
-.LP
+.NH
 Extending
 .CW bal
 in Scheme
@@ -142,6 +142,10 @@ Delete account.
 .CW "(dt)"
 .QP
 Delete transaction.
+.IP \~ 2n
+.CW "(lp)"
+.QP
+Pay a loan by splitting a transfer between a principal account (a liability account) and an interest account (an expense account)
 .NH 3
 Functions to print account and transaction information
 .IP \~ 2n  
