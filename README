@@ -1,4 +1,7 @@
-bal's website: http://zflynn.com/bal\nMan Page\n---\n
+bal's website: http://zflynn.com/bal
+Man Page
+---
+
 
 
 
@@ -32,7 +35,7 @@ DESCRIPTION
 
 
        Text  entry at the bal console follows standard line editor conventions
-       (it has Emacs-like key bindings, uses the  GNU  readline	 library).  To
+       (it has Emacs-like key bindings, uses the  GNU  readline  library).  To
        cancel a command, type: Control-C.
 
        bal's main interactive commands are:
@@ -63,7 +66,7 @@ DESCRIPTION
        lt     list  most recent transactions in current account (change number
 	      to list by modifying the variable bal/number-to-quick-list)
 
-       ltn    list most recent transactions in	current	 account,  prompt  for
+       ltn    list most recent transactions in	current  account,  prompt  for
 	      number to list
 
        ltbd   list  transactions  in current account by day, prompting for the
@@ -123,7 +126,7 @@ FILES
        bal executes Scheme code in ~/.balrc.scm if the file is present.
 
 EXAMPLES
-       bal    start the	 bal  interpreter  and	execute	 any  Scheme  code  in
+       bal    start the  bal  interpreter  and	execute  any  Scheme  code  in
 	      ~/.balrc.scm  (potentially  including  code  to load data from a
 	      default file).
 
@@ -131,7 +134,7 @@ EXAMPLES
 	      load the file myaccounts.btar from the current directory.
 
        bal -s v
-	      quits  and  exists  after	 displaying  version  number  (without
+	      quits  and  exists  after  displaying  version  number  (without
 	      prompting to save data).
 
 SEE ALSO
@@ -144,7 +147,9 @@ AUTHOR
 
 
 				  2018-10-26				bal(1)
-\n---\n
+
+---
+
 bal is an interactive and scriptable command line personal accounting program 
 to keep your books in order and to study past spending habits. It can be 
 scripted and extended using Guile, a simple programming language (a Scheme 
