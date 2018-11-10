@@ -2311,6 +2311,7 @@ main (int argc, char** argv)
   int i;
   int k;
   time_t curtime_time;
+  int load = 1;
 
   time(&curtime_time);
   bal_curtime = localtime(&curtime_time);
@@ -2326,10 +2327,13 @@ main (int argc, char** argv)
   rl_event_hook = dummy_event;
   signal(SIGINT,handler);
   
-  while ((k = getopt(argc, argv, "f:l:s")) != -1)
+  while ((k = getopt(argc, argv, "f:l:sn")) != -1)
     {
       switch (k)
         {
+        case 'n':
+          load = 0;
+          break;
         case 'l':
           scm_c_primitive_load(optarg);
           break;
@@ -2386,21 +2390,24 @@ main (int argc, char** argv)
         }
     }
 
-  char* home = getenv("HOME");
-  char* balrc;
-  
-  balrc = malloc(sizeof(char)*(strlen(home)+
-                               strlen("/.balrc.scm")+
-                               2));
-  strcpy(balrc, home);
-  strcat(balrc, "/.balrc.scm");
-  
-  if (access(balrc, R_OK) != -1)
+  if (load)
     {
-      scm_c_primitive_load(balrc);
-    }
+      char* home = getenv("HOME");
+      char* balrc;
+  
+      balrc = malloc(sizeof(char)*(strlen(home)+
+                                   strlen("/.balrc.scm")+
+                                   2));
+      strcpy(balrc, home);
+      strcat(balrc, "/.balrc.scm");
+      
+      if (access(balrc, R_OK) != -1)
+        {
+          scm_c_primitive_load(balrc);
+        }
 
-  free(balrc);
+      free(balrc);
+    }
 
   if (optind < argc)
     {
