@@ -28,6 +28,7 @@ console follows standard line editor conventions (it has Emacs-like
 key bindings, uses the GNU readline library). To cancel a
 command, type: Control-C.
 
+
 .B bal's
 main interactive commands are:
 
@@ -123,6 +124,20 @@ prints net worth as of a sequence of days
 .TP
 .BR ttbd
 prints total of all transactions between a sequence of days
+.LP
+The command prompt is a full Guile Scheme interpreter except that you do not need to enclose the outer-most expression in parenthesis so any valid Scheme code can be executed at the prompt.  For example, typing
+.B display \(dqhello\(dq
+will, in fact, print the text "hello".  See the full reference manual for documentation of Scheme functions that allow you to manipulate transactions and accounts in Scheme.
+.LP
+Of particular interest for developing your own functions in Scheme is the function
+.B bal/call
+which can be used to make Scheme functions interactive.
+.LP
+The saved file is simply a
+.B tar
+archive of CSV files that record transactions and characteristics of accounts.  These files are human-readable.
+.LP
+The prompt is whatever is returned by the evaluating the Scheme expression "(bal/prompt)" so redefining this function will customize your prompt.
 .SH OPTIONS
 .TP
 .BR \-f " " FILE

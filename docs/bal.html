@@ -1,5 +1,5 @@
 <!-- Creator     : groff version 1.22.3 -->
-<!-- CreationDate: Sat Nov 10 18:29:19 2018 -->
+<!-- CreationDate: Sun Nov 11 18:59:10 2018 -->
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -411,6 +411,31 @@ day.</p> </td></tr>
 <p>prints total of all transactions between a sequence of
 days</p> </td></tr>
 </table>
+
+<p style="margin-left:11%; margin-top: 1em">The command
+prompt is a full Guile Scheme interpreter except that you do
+not need to enclose the outer-most expression in parenthesis
+so any valid Scheme code can be executed at the prompt. For
+example, typing <b>display &quot;hello&quot;</b> will, in
+fact, print the text &quot;hello&quot;. See the full
+reference manual for documentation of Scheme functions that
+allow you to manipulate transactions and accounts in
+Scheme.</p>
+
+<p style="margin-left:11%; margin-top: 1em">Of particular
+interest for developing your own functions in Scheme is the
+function <b>bal/call</b> which can be used to make Scheme
+functions interactive.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The saved file
+is simply a <b>tar</b> archive of CSV files that record
+transactions and characteristics of accounts. These files
+are human-readable.</p>
+
+<p style="margin-left:11%; margin-top: 1em">The prompt is
+whatever is returned by the evaluating the Scheme expression
+&quot;(bal/prompt)&quot; so redefining this function will
+customize your prompt.</p>
 
 <h2>OPTIONS
 <a name="OPTIONS"></a>
