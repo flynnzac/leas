@@ -285,11 +285,11 @@ int
 tsct_before_today (const tsct t)
 {
   return (((bal_curtime->tm_year+1900) > (t.year)) ||
-	  (((bal_curtime->tm_mon+1) > (t.month)) &&
-	   ((bal_curtime->tm_year+1900) == (t.year))) ||
-	  ((bal_curtime->tm_mday >= t.day) &&
-	   (bal_curtime->tm_year+1900) == t.year &&
-	   (bal_curtime->tm_mon+1) == t.month));
+          (((bal_curtime->tm_mon+1) > (t.month)) &&
+           ((bal_curtime->tm_year+1900) == (t.year))) ||
+          ((bal_curtime->tm_mday >= t.day) &&
+           (bal_curtime->tm_year+1900) == t.year &&
+           (bal_curtime->tm_mon+1) == t.month));
 }
 
 /* function to add up transactions */
