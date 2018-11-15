@@ -743,12 +743,15 @@ write_transactions (const char* file, account* acct)
   
   for (i=0; i < acct->n_tsct; i++)
     {
-      fprintf(fp, "%s,%f,%u-%u-%u,%s\n",
-              acct->name, acct->tscts[i].amount,
+      csv_fwrite(fp, acct->name, strlen(acct->name));
+      fprintf(fp, ",%f,%u-%u-%u,",
+              acct->tscts[i].amount,
               acct->tscts[i].year,
               acct->tscts[i].month,
-              acct->tscts[i].day,
-              acct->tscts[i].desc);
+              acct->tscts[i].day);
+      csv_fwrite(fp, acct->tscts[i].desc,
+                 strlen(acct->tscts[i].desc));
+      fprintf(fp, "\n");
     }
 
   fclose(fp);
@@ -783,8 +786,9 @@ write_accounts (const char* file)
           fprintf(fp,"%s,", "liability");
           break;
         }
-      fprintf(fp, "%s,%f\n",
-              bal_book.accounts[i].name,
+      csv_fwrite(fp, bal_book.accounts[i].name,
+                 strlen(bal_book.accounts[i].name));
+      fprintf(fp, ",%f\n",
               bal_book.accounts[i].ob);
 
     }
