@@ -2200,7 +2200,7 @@ bal_standard_func ()
                 (bal/get-by-type-over-days first-day last-day 7 n)
                   (bal/get-by-type-over-days first-day last-day (string->number by) n)))))
 
-           (define-syntax over-day-cmd
+           (define-syntax bal/over-day-cmd
             (syntax-rules ()
              ((over-day-cmd val)
               (let ((result (bal/call
@@ -2219,23 +2219,23 @@ bal_standard_func ()
 
            (define exod
             (lambda ()
-             (over-day-cmd 0)))
+             (bal/over-day-cmd 0)))
 
            (define inod
             (lambda ()
-             (over-day-cmd 1)))
+             (bal/over-day-cmd 1)))
 
            (define asod
             (lambda ()
-             (over-day-cmd 2)))
+             (bal/over-day-cmd 2)))
 
            (define liod
             (lambda ()
-             (over-day-cmd 3)))
+             (bal/over-day-cmd 3)))
 
            (define wood
             (lambda ()
-             (over-day-cmd 4)))
+             (bal/over-day-cmd 4)))
 	   
            (define ttbd
             (lambda ()
@@ -2250,6 +2250,7 @@ bal_standard_func ()
                (lambda (x)
                 (bal/output-by-day (car x) (cdr x)))
                result))))
+
 
            (define bal/pay-loan
             (lambda (loan-account interest-account from-account
