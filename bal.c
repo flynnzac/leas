@@ -1392,6 +1392,11 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
   regex_t regex;
   int i, error;
   SCM list, trans_list;
+  tsct cur_day_t;
+
+  cur_day_t.year = bal_curtime->tm_year + 1900;
+  cur_day_t.month = bal_curtime->tm_mon + 1;
+  cur_day_t.day = bal_curtime->tm_mday;
 
   list = SCM_EOL;
 
@@ -1403,6 +1408,9 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
     }
   for (i=0; i < acct->n_tsct; i++)
     {
+      if (sort_transactions(&cur_day_t, &acct->tscts[i]) < 0)
+        continue;
+      
       error = regexec(&regex, acct->tscts[i].desc,
                       0, NULL, 0);
       if (!error)
