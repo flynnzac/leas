@@ -2166,6 +2166,15 @@ bal_standard_func ()
                (- (cdr (list-ref balance (+ i 1)))
                 (cdr (list-ref balance i)))))))
 
+           (define bal/total-transact-in-account-re
+            (lambda (first-day last-day by account regex)
+             (let ((current-day (bal/get-current-day))
+                   (days (bal/seq-days first-day last-day by)))
+              (bal/loop-days days current-day (length days)
+               (apply +
+                (map (lambda (u) (list-ref u 1))
+                 (bal/get-transactions-by-regex account regex)))))))
+
            (define bal/output-by-day
             (lambda (day amount)
              (display
@@ -2254,6 +2263,21 @@ bal_standard_func ()
                              (cons "Last day" "day")
                              (cons "By" "number")
                              (cons "Account" "current_account")))))
+              (map-in-order
+               (lambda (x)
+                (bal/output-by-day (car x) (cdr x)))
+               result))))
+
+           (define ttre
+            (lambda ()
+             (let ((result (bal/call
+                            "bal/total-transact-in-account-re"
+                            (list
+                             (cons "First day" "day")
+                             (cons "Last day" "day")
+                             (cons "By" "number")
+                             (cons "Account" "current_account")
+                             (cons "Regex" "string")))))
               (map-in-order
                (lambda (x)
                 (bal/output-by-day (car x) (cdr x)))
