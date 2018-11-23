@@ -155,6 +155,10 @@ EXAMPLES
        bal t  displays	 prompts  to  add  new	transaction  after  evaluating
 	      ~/.balrc.scm and then exits (prompting to save)
 
+       bal -s la
+	      displays current account balances and quits without prompting to
+	      save.
+
 SEE ALSO
 BUGS
        Please report as an issue to https://github.com/flynnzac/bal
