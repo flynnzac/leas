@@ -1553,6 +1553,30 @@ bal_total_all_accounts ()
   return ret;
 }
 
+/* Get total for all accounts of a certain type*/
+
+SCM
+bal_total_all_accounts_of_type (SCM type_s)
+{
+  SCM ret, tmp;
+  int i;
+  account_type type = scm_to_int(type_s);
+
+  ret = SCM_EOL;
+  for (i = 0; i < bal_book.n_account; i++)
+    {
+      if (bal_book.accounts[i].type==type)
+        {
+          tmp = total_transactions (&bal_book.accounts[i]);
+          ret = scm_append (scm_list_2 (ret,
+                                        scm_list_1(scm_cons (scm_from_locale_string(bal_book.accounts[i].name),
+                                                             tmp))));
+        }
+    }
+  return ret;
+}
+
+
 /* Get total for account by type */
 SCM
 bal_total_by_account_type ()
@@ -1817,6 +1841,10 @@ register_guile_functions (void* data)
   scm_c_define_gsubr("bal/total-account", 1, 0, 0, &bal_total_account);
   scm_c_define_gsubr("bal/total-all-accounts", 0, 0, 0,
                      &bal_total_all_accounts);
+
+  scm_c_define_gsubr("bal/total-all-accounts-of-type", 1, 0, 0,
+                     &bal_total_all_accounts_of_type);
+
   scm_c_define_gsubr("bal/total-by-account-type", 0, 0, 0,
                      &bal_total_by_account_type);
 
@@ -1964,11 +1992,10 @@ bal_standard_func ()
               (list
                (cons "Transaction" "transaction")))))
 
-           (define la
-            (lambda ()
-             (let* ((accts (bal/total-all-accounts))
-                    (len
-                     (apply max
+           (define bal/display-account-totals
+            (lambda (accts)
+             (let ((len
+                    (apply max
                       (map
                        (lambda (x) (string-length (car x))) accts))))
               (map-in-order
@@ -1984,7 +2011,33 @@ bal_standard_func ()
                   " "
                   (format #f "~10,2f" (cdr (cdr x)))
                   "\n")))
-               accts))))
+               accts))))           
+            
+
+           (define la
+            (lambda ()
+             (bal/display-account-totals (bal/total-all-accounts))))
+
+           (define lae
+            (lambda ()
+             (bal/display-account-totals
+              (bal/total-all-accounts-of-type 0))))
+
+           (define lai
+            (lambda ()
+             (bal/display-account-totals
+              (bal/total-all-accounts-of-type 1))))
+
+           (define laa
+            (lambda ()
+              (bal/display-account-totals
+               (bal/total-all-accounts-of-type 2))))
+
+           (define lal
+            (lambda ()
+             (bal/display-account-totals
+              (bal/total-all-accounts-of-type 3))))
+
 
            (define bt
             (lambda ()
