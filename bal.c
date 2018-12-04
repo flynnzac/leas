@@ -2070,6 +2070,26 @@ bal_standard_func ()
                       "\n"))))
                accts))))
 
+           (define bal/current-total-of-type
+            (lambda (n)
+             (lambda ()
+              (let* ((accts (bal/total-by-account-type))
+                     (el (cdr (list-ref accts n))))
+               (display (string-append
+                         (format #f "~,2f"
+                          (if (pair? el)
+                            (car el)
+                              el))
+                         "\n"))))))
+
+
+           (define cex (bal/current-total-of-type 0))
+           (define cin (bal/current-total-of-type 1))
+           (define cas (bal/current-total-of-type 2))
+           (define cli (bal/current-total-of-type 3))
+           (define cwo (bal/current-total-of-type 4))
+           (define cba (bal/current-total-of-type 5))
+
            (define re
             (lambda ()
              (bal/print-tscts
