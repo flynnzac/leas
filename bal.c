@@ -220,6 +220,20 @@ find_account_in_book (struct book* book, const char* name)
   return NULL;
 }
 
+int
+find_account_location_in_book (struct book* book, const char* name)
+{
+  int i;
+  for (i=0; i < book->n_account; i++)
+    {
+      if (strcmp(book->accounts[i].name, name)==0)
+        {
+          return i;
+        }
+    }
+  return -1;
+}
+
 SCM
 tsct_to_scm (const tsct t)
 {
@@ -1328,6 +1342,19 @@ bal_get_number_of_accounts ()
   return scm_from_int(bal_book.n_account);
 }
 
+/* Get account location by name */
+SCM
+bal_get_account_location (SCM name_scm)
+{
+  char* name = scm_to_locale_string (name_scm);
+  int loc = find_account_location_in_book (&bal_book, name);
+
+  if (loc >= 0)
+    return scm_from_int (loc);
+  else
+    return SCM_UNDEFINED;
+}
+
 /* get "num" most recent transactions */
 
 SCM
@@ -1836,6 +1863,8 @@ register_guile_functions (void* data)
                      &bal_get_number_of_accounts);
   scm_c_define_gsubr("bal/get-account-by-location", 1, 0, 0,
                      &bal_get_account_by_location);
+  scm_c_define_gsubr("bal/get-account-location", 1, 0, 0,
+                     &bal_get_account_location);
   
   /* Total accounts */
   scm_c_define_gsubr("bal/total-account", 1, 0, 0, &bal_total_account);
@@ -1883,6 +1912,7 @@ bal_standard_func ()
     (QUOTE(
            (define bal/number-to-quick-list 20)
            (use-modules (ice-9 format))
+           (use-modules (srfi srfi-1))
            (define aa
             (lambda ()
              (bal/call "bal/aa"
@@ -2145,6 +2175,29 @@ bal_standard_func ()
                (cons "Description" "string")
                (cons "Day" "day")))))
 
+           (define bal/dtr
+            (lambda (from-account location)
+             (let ((transaction
+                    (bal/get-transaction-by-location (car location)
+                     (cdr location)))
+                   (all-from (bal/get-all-transactions from-account))
+                   (num-from (bal/get-account-location from-account)))
+              (bal/dt (cons num-from
+                       (list-index
+                        (lambda (u)
+                         (and (string=? (car u) (car transaction))
+                          (lset= (lambda (v w) (= (abs v) (abs w)))
+                           (cdr u) (cdr transaction)))) all-from)))
+              (bal/dt location))))
+
+           (define dtr
+            (lambda ()
+             (bal/call "bal/dtr"
+              (list
+               (cons "From Account" "account")
+               (cons "Transaction" "transaction")))))
+                
+
            (define ltbd
             (lambda ()
              (bal/print-tscts
@@ -2381,7 +2434,7 @@ bal_standard_func ()
              (display
               (string-append (bal/get-current-file) "\n"))))
            
-           ));
+            ));
 }
 
 void
