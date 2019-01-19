@@ -2375,6 +2375,12 @@ bal_standard_func ()
                (cons "Interest" "real")
                (cons "Description" "string")
                (cons "Day" "day")))))
+
+           (define fn
+            (lambda ()
+             (display
+              (string-append (bal/get-current-file) "\n"))))
+           
            ));
 }
 
