@@ -2438,7 +2438,7 @@ bal_standard_func ()
             (lambda (account from-account stock-price number day)
              (let* ((value (list-ref (bal/total-account account) 1))
                     (newval (* number stock-price))
-                    (trval (- value newval)))
+                    (trval (- newval value)))
               (bal/t account from-account trval
                "Stock Price Change" day))))
 
