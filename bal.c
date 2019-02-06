@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#define BAL_VERSION "0.1.3"
+#define BAL_VERSION "0.1.4"
 
 #include <stdio.h>
 #include <stdlib.h>
