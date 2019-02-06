@@ -2433,6 +2433,26 @@ bal_standard_func ()
             (lambda ()
              (display
               (string-append (bal/get-current-file) "\n"))))
+
+           (define bal/change-stock-price
+            (lambda (account from-account stock-price number day)
+             (let* ((value (list-ref (bal/total-account account) 1))
+                    (newval (* number stock-price))
+                    (trval (- value newval)))
+              (bal/t account from-account trval
+               "Stock Price Change" day))))
+
+           (define csp
+            (lambda ()
+             (bal/call "bal/change-stock-price"
+              (list
+               (cons "To Account" "current_account")
+               (cons "From Account" "account")
+               (cons "Stock Price" "real")
+               (cons "Number of Shares" "real")
+               (cons "Day" "day")))))
+
+              
            
             ));
 }
