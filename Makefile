@@ -3,8 +3,6 @@ bal: bal.c
 
 doc: bal.1 
 	(echo "bal's website: http://zflynn.com/bal\nMan Page\n---\n" && (groff -mandoc -Tascii bal.1 | col -b)) | fold -s - > README
-	groff -mspdf -Tpdf -e baldoc.ms > docs/baldoc.pdf
-	groff -ms -Thtml -e baldoc.ms > docs/baldoc.html
 	groff -mandoc -Thtml bal.1 > docs/bal.html
 	guile postdoc.scm
 

@@ -147,8 +147,8 @@ FILES
 
 EXAMPLES
        bal    start  the  bal  interpreter  and  execute  any  Scheme  code in
-	      ~/.balrc.scm (potentially including code to  load  data  from  a
-	      default file).
+	      ~/.balrc.scm (potentially including code to load data from a de-
+	      fault file).
 
        bal -f myaccounts
 	      load the file myaccounts.btar from the current directory.
