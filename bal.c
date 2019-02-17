@@ -2452,7 +2452,11 @@ bal_standard_func ()
                (cons "Number of Shares" "real")
                (cons "Day" "day")))))
 
-              
+           (define cal
+            (lambda* (#:optional args)
+             (let ((cmd (string-append "cal "
+                         (if args args ""))))
+              (system cmd))))
            
             ));
 }
