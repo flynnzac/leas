@@ -17,7 +17,7 @@
    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#define BAL_VERSION "0.1.4"
+#define BAL_VERSION "0.1.5"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -111,13 +111,13 @@ delete_book (struct book* book)
 }
 
 /* global vars */
-struct book bal_book;
-SCM bal_cur_acct;
-int bal_prompton;
-SCM bal_cur_file;
-int bal_prompt_exit;
-int bal_select_tsct_num;
-struct tm* bal_curtime;
+static struct book bal_book;
+static SCM bal_cur_acct;
+static int bal_prompton;
+static SCM bal_cur_file;
+static int bal_prompt_exit;
+static int bal_select_tsct_num;
+static struct tm* bal_curtime;
 
 /* utility functions */
 
