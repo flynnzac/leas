@@ -715,7 +715,7 @@ read_in (char* base)
   strcpy(account_file, tmp_dir);
   strcat(account_file, "/");
   strcat(account_file, basename(base));
-  strcat(account_file, "/accounts.csv");
+  strcat(account_file, "/accounts");
 
   read_book_accounts_from_csv (&bal_book, account_file);
   free(account_file);
@@ -838,13 +838,13 @@ write_out (char* base)
   
   account_fn = malloc(sizeof(char)*(strlen(basename(base))+
                                     strlen(tmp_dir)+
-                                    strlen("accounts.csv")+3));
+                                    strlen("accounts")+3));
 
   strcpy(account_fn, tmp_dir);
   strcat(account_fn, "/");
   strcat(account_fn, basename(base));
   strcat(account_fn, "/");
-  strcat(account_fn, "accounts.csv");
+  strcat(account_fn, "accounts");
   i = write_accounts (account_fn);
   free(account_fn);
   if (i != 0)
