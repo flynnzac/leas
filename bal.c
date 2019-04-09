@@ -137,11 +137,10 @@ main (int argc, char** argv)
                 fname = scm_to_locale_string(bal_cur_file);
                 read_in (fname);
                 if (bal_book.n_account > 0)
-                  {
-                    bal_cur_acct = scm_from_locale_string
-                      (bal_book.accounts[0].name);
-                  }
-                free(fname);
+		  bal_cur_acct = scm_from_locale_string
+		    (bal_book.accounts[0].name);
+
+		free(fname);
               }
             else
               {
@@ -154,20 +153,13 @@ main (int argc, char** argv)
           break;
         case '?':
           if (optopt=='l')
-            {
-              fprintf (stderr, "Option -l requires an argument.\n");
-              exit(1);
-            }
+	    fprintf (stderr, "Option -l requires an argument.\n");
           else if (optopt=='f')
-            {
-              fprintf (stderr, "Option -f requires an argument.\n");
-              exit(1);
-            }
+	    fprintf (stderr, "Option -f requires an argument.\n");
           else
-            {
-              fprintf (stderr, "Unknown option, -%c.\n", optopt);
-              exit(1);
-            }
+	    fprintf (stderr, "Unknown option, -%c.\n", optopt);
+	  
+	  exit(1);
           break;
         default:
           abort();
@@ -187,9 +179,7 @@ main (int argc, char** argv)
       strcat(balrc, "/.balrc.scm");
       
       if (access(balrc, R_OK) != -1)
-        {
-          scm_c_primitive_load(balrc);
-        }
+	scm_c_primitive_load(balrc);
 
       free(balrc);
     }
@@ -197,16 +187,13 @@ main (int argc, char** argv)
   if (optind < argc)
     {
       for (i=optind; i < argc; i++)
-        {
-          ret = scm_c_catch (SCM_BOOL_T,
-                             exec_string_safe_history,
-                             argv[i],
-                             handle_error,
-                             argv[i],
-                             NULL,
-                             NULL);
-        }
-
+	ret = scm_c_catch (SCM_BOOL_T,
+			   exec_string_safe_history,
+			   argv[i],
+			   handle_error,
+			   argv[i],
+			   NULL,
+			   NULL);
       bal_exit(0);
     }
 
