@@ -9,4 +9,5 @@ doc: bal.1
 install: bal bal.1
 	mkdir -p /usr/local/share/man/man1/
 	cp bal.1 /usr/local/share/man/man1/
+	cp bal.scm /etc/
 	cp bal /usr/local/bin/

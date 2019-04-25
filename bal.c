@@ -54,6 +54,8 @@ static int bal_prompt_exit;
 static int bal_select_tsct_num;
 static struct tm* bal_curtime;
 
+/* main includes */
+
 #include "utility.h"
 #include "select.h"
 #include "btar.h"
@@ -121,7 +123,7 @@ main (int argc, char** argv)
   bal_select_tsct_num = 19;
   
   scm_with_guile (&register_guile_functions, NULL);
-  bal_standard_func("bal.scm");
+  bal_standard_func("/etc/bal.scm");
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
 
@@ -153,10 +155,10 @@ main (int argc, char** argv)
                 fname = scm_to_locale_string(bal_cur_file);
                 read_in (fname);
                 if (bal_book.n_account > 0)
-		  bal_cur_acct = scm_from_locale_string
-		    (bal_book.accounts[0].name);
+                  bal_cur_acct = scm_from_locale_string
+                    (bal_book.accounts[0].name);
 
-		free(fname);
+                free(fname);
               }
             else
               {
@@ -169,13 +171,13 @@ main (int argc, char** argv)
           break;
         case '?':
           if (optopt=='l')
-	    fprintf (stderr, "Option -l requires an argument.\n");
+            fprintf (stderr, "Option -l requires an argument.\n");
           else if (optopt=='f')
-	    fprintf (stderr, "Option -f requires an argument.\n");
+            fprintf (stderr, "Option -f requires an argument.\n");
           else
-	    fprintf (stderr, "Unknown option, -%c.\n", optopt);
+            fprintf (stderr, "Unknown option, -%c.\n", optopt);
 	  
-	  exit(1);
+          exit(1);
           break;
         default:
           abort();
@@ -195,7 +197,7 @@ main (int argc, char** argv)
       strcat(balrc, "/.balrc.scm");
       
       if (access(balrc, R_OK) != -1)
-	scm_c_primitive_load(balrc);
+        scm_c_primitive_load(balrc);
 
       free(balrc);
     }
@@ -203,13 +205,13 @@ main (int argc, char** argv)
   if (optind < argc)
     {
       for (i=optind; i < argc; i++)
-	ret = scm_c_catch (SCM_BOOL_T,
-			   exec_string_safe_history,
-			   argv[i],
-			   handle_error,
-			   argv[i],
-			   NULL,
-			   NULL);
+        ret = scm_c_catch (SCM_BOOL_T,
+                           exec_string_safe_history,
+                           argv[i],
+                           handle_error,
+                           argv[i],
+                           NULL,
+                           NULL);
       bal_exit(0);
     }
 
