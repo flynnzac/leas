@@ -11,27 +11,24 @@ bal_at (SCM account_name,
   char* desc_c = scm_to_locale_string (desc);
   double amount_c = scm_to_double(amount);
   account* acct = find_account_in_book (&bal_book, account_c);
-  tsct t;
-
-  t.year = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(2)));
-  t.month = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(1)));
-  t.day = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(0)));
-  t.amount = amount_c;
-  t.desc = malloc(sizeof(char)*(strlen(desc_c)+1));
-  strcpy(t.desc, desc_c);
 
   if (acct->n_tsct==0)
     acct->tscts = malloc(sizeof(tsct));
   else
     acct->tscts = realloc(acct->tscts, (acct->n_tsct+1)*sizeof(tsct));
+  
+  acct->tscts[acct->n_tsct].year = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(2)));
+  acct->tscts[acct->n_tsct].month = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(1)));
+  acct->tscts[acct->n_tsct].day = scm_to_int
+    (scm_list_ref
+     (day,scm_from_int(0)));
+  acct->tscts[acct->n_tsct].amount = amount_c;
+  acct->tscts[acct->n_tsct].desc = copy_string(desc_c);
 
-  acct->tscts[acct->n_tsct] = t;
   acct->n_tsct = acct->n_tsct + 1;
 
   qsort(acct->tscts, acct->n_tsct, sizeof(tsct), sort_transactions);
@@ -49,38 +46,27 @@ bal_aa (SCM name,
         SCM ob)
 {
   
-  char* type_c = scm_to_locale_string (type);
+  account_type type_c = account_type_from_string(type);
   char* name_c = scm_to_locale_string (name);
   double ob_c = scm_to_double(ob);
-  account_type type_ac;
 
   if (bal_book.n_account == 0)
     bal_book.accounts = malloc(sizeof(account));
   else
-      bal_book.accounts = realloc(bal_book.accounts,
-                                  sizeof(account)*(bal_book.n_account+1));
+    bal_book.accounts = realloc(bal_book.accounts,
+                                sizeof(account)*(bal_book.n_account+1));
 
-  if (strcmp(type_c, "expense")==0)
-    type_ac = EXPENSE;
-  else if (strcmp(type_c, "income")==0)
-    type_ac = INCOME;
-  else if (strcmp(type_c, "asset")==0)
-    type_ac = ASSET;
-  else if (strcmp(type_c, "liability")==0)
-    type_ac = LIABILITY;
+  type_c = account_type_from_string(type);
 
-  bal_book.accounts[bal_book.n_account].type = type_ac;
+  bal_book.accounts[bal_book.n_account].type = type_c;
   bal_book.accounts[bal_book.n_account].n_tsct = 0;
   bal_book.accounts[bal_book.n_account].n_pos = 0;
   bal_book.accounts[bal_book.n_account].name =
-    malloc(sizeof(char)*(strlen(name_c)+1));
-  strcpy(bal_book.accounts[bal_book.n_account].name,
-         name_c);
+    copy_string(name_c);
 
   bal_book.accounts[bal_book.n_account].ob = ob_c;
-  bal_book.n_account = bal_book.n_account + 1;
+  bal_book.n_account++;
 
-  free(type_c);
   free(name_c);
 
   bal_cur_acct = name;
@@ -102,8 +88,7 @@ bal_ea (SCM cur_name,
   if (strcmp(name_c,"") != 0)
     {
       free(acct->name);
-      acct->name = malloc(sizeof(char)*(strlen(name_c)+1));
-      strcpy(acct->name, name_c);
+      acct->name = copy_string(name_c);
     }
 
   if (strcmp(ob_c,"") != 0)
@@ -153,22 +138,25 @@ bal_da (SCM account)
   for (i=0; i < bal_book.n_account; i++)
     if (strcmp(bal_book.accounts[i].name, account_c)==0)
       {
-	flag = 1;
-	break;
+        flag = 1;
+        break;
       }
   
-  if (flag == 0)
-    return SCM_UNDEFINED;
-  
-  delete_account (bal_book.accounts + i);
-  bal_book.n_account = bal_book.n_account - 1;
-  for (i=i; i < bal_book.n_account; i++)
-    bal_book.accounts[i] = bal_book.accounts[i+1];
+  if (flag != 0)
+    {
+      delete_account (bal_book.accounts + i);
+      bal_book.n_account = bal_book.n_account - 1;
+      for (i=i; i < bal_book.n_account; i++)
+        bal_book.accounts[i] = bal_book.accounts[i+1];
 
-  char* current_account = scm_to_locale_string (bal_cur_acct);
-  if (strcmp(current_account, account_c)==0)
-    bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
+      char* current_account = scm_to_locale_string (bal_cur_acct);
+      if (strcmp(current_account, account_c)==0)
+        bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
 
+      free(current_account);
+    }
+
+  free(account_c);
   return SCM_UNDEFINED;  
 }
 
@@ -193,6 +181,7 @@ bal_get_account_location (SCM name_scm)
 {
   char* name = scm_to_locale_string (name_scm);
   int loc = find_account_location_in_book (&bal_book, name);
+  free(name);
 
   if (loc >= 0)
     return scm_from_int (loc);
@@ -261,9 +250,7 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
   SCM list, trans_list;
   tsct cur_day_t;
 
-  cur_day_t.year = bal_curtime->tm_year + 1900;
-  cur_day_t.month = bal_curtime->tm_mon + 1;
-  cur_day_t.day = bal_curtime->tm_mday;
+  set_tsct_time(&cur_day_t, bal_curtime);
 
   list = SCM_EOL;
 
@@ -271,19 +258,21 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
   if (error)
     {
       fprintf(stderr, "Bad regex.\n");
-      return SCM_UNDEFINED;
     }
-  for (i=0; i < acct->n_tsct; i++)
+  else
     {
-      if (sort_transactions(&cur_day_t, &acct->tscts[i]) < 0)
-        continue;
-      
-      error = regexec(&regex, acct->tscts[i].desc,
-                      0, NULL, 0);
-      if (!error)
+      for (i=0; i < acct->n_tsct; i++)
         {
-          trans_list = scm_list_1(tsct_to_scm(acct->tscts[i]));
-          list = scm_append (scm_list_2(list, trans_list));
+          if (sort_transactions(&cur_day_t, &acct->tscts[i]) < 0)
+            continue;
+      
+          error = regexec(&regex, acct->tscts[i].desc,
+                          0, NULL, 0);
+          if (!error)
+            {
+              trans_list = scm_list_1(tsct_to_scm(acct->tscts[i]));
+              list = scm_append (scm_list_2(list, trans_list));
+            }
         }
     }
   
@@ -349,19 +338,8 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
   tsct first_day_t;
   tsct last_day_t;
 
-  first_day_t.year = scm_to_int
-    (scm_list_ref(first_day,scm_from_int(2)));
-  first_day_t.month = scm_to_int
-    (scm_list_ref(first_day,scm_from_int(1)));
-  first_day_t.day = scm_to_int
-    (scm_list_ref(first_day,scm_from_int(0)));
-
-  last_day_t.year = scm_to_int
-    (scm_list_ref(last_day,scm_from_int(2)));
-  last_day_t.month = scm_to_int
-    (scm_list_ref(last_day,scm_from_int(1)));
-  last_day_t.day = scm_to_int
-    (scm_list_ref(last_day,scm_from_int(0)));
+  set_tsct_time_from_scm(&first_day_t, first_day);
+  set_tsct_time_from_scm(&last_day_t, last_day);
   
   SCM ret = SCM_EOL;
   int i;
@@ -458,6 +436,7 @@ bal_total_by_account_type ()
   SCM tmp,tmpcur,tmptotal,tmpallcur,tmpalltotal;
   SCM ret = SCM_EOL;
   int i,j;
+  char* type_str;
 
   tmpallcur = scm_from_double(0.0);
   tmpalltotal = scm_from_double(0.0);
@@ -480,43 +459,15 @@ bal_total_by_account_type ()
             }
         }
       tmp = scm_cons(tmpcur, tmptotal);
-      
-      switch (j)
-        {
-        case EXPENSE:
-          ret = scm_append
-            (scm_list_2
-             (ret,
-              scm_list_1
-              (scm_cons(scm_from_locale_string("Expense"),
-                        tmp))));
-          break;
-        case INCOME:
-          ret = scm_append
-            (scm_list_2
-             (ret,
-              scm_list_1
-              (scm_cons(scm_from_locale_string("Income"),
-                        tmp))));
-          break;
-        case ASSET:
-          ret = scm_append
-            (scm_list_2
-             (ret,
-              scm_list_1
-              (scm_cons(scm_from_locale_string("Asset"),
-                        tmp))));
-          break;
-        case LIABILITY:
-          ret = scm_append
-            (scm_list_2
-             (ret,
-              scm_list_1
-              (scm_cons(scm_from_locale_string("Liability"),
-                        tmp))));
-          break;
-        }
-          
+
+      type_str = account_type_to_string(j);
+      type_str[0] = toupper(type_str[0]);
+
+      ret = scm_append
+        (scm_list_2
+         (ret,
+          scm_list_1
+          (scm_cons(scm_from_locale_string(type_str), tmp))));
     }
 
   tmp = scm_cons(tmpallcur, tmpalltotal);
@@ -664,10 +615,7 @@ bal_get_current_day ()
      scm_from_int(bal_curtime->tm_year + 1900));
 }
 
-#define QUOTE(...) #__VA_ARGS__
-
 /* Register all functions */
-
 void*
 register_guile_functions (void* data)
 {

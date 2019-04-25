@@ -43,6 +43,7 @@ copy_string (const char* str)
 }
 
 #include "types.h"
+#include "conv.h"
 
 /* global vars */
 
