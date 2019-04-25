@@ -4,7 +4,7 @@
 (define README-text
   (get-string-all (open-file "README" "r")))
 
-(define regex-README "(---\n)[^bal]*(bal)")
+(define regex-README "(\n)[^bal]*(bal)")
 
 (set! README-text
   (regexp-substitute #f
