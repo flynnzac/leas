@@ -1,4 +1,4 @@
-bal: bal.c bal.scm btar.h call.h interface.h select.h types.h utility.h
+bal: bal.c 
 	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall
 
 doc: bal.1 
@@ -6,7 +6,7 @@ doc: bal.1
 	groff -mandoc -Thtml bal.1 > docs/bal.html
 	guile postdoc.scm
 
-install: bal bal.1
+install: bal bal.1 bal.scm
 	mkdir -p /usr/local/share/man/man1/
 	cp bal.1 /usr/local/share/man/man1/
 	cp bal.scm /etc/
