@@ -19,7 +19,7 @@ bal \- for keeping accounts in order and studying past spending habits
 
 .SH DESCRIPTION
 .B bal
-keeps track of personal accounts and spending.  It is extensible using Guile Scheme, a full programming language, so that it is easy to build custom reports about your past transactions and to script the program to automatically add or update transactions when certain conditions are met (you could, say, write a piece of Scheme code that fetches the latest stock price and updates the current value of your shares).
+keeps track of personal accounts and spending.  
 
 .LP
 Text entry at the
@@ -137,9 +137,11 @@ prints net worth as of a sequence of days
 .BR ttbd
 prints total of all transactions between a sequence of days
 .LP
-The command prompt is a full Guile Scheme interpreter except that you do not need to enclose the outer-most expression in parenthesis so any valid Scheme code can be executed at the prompt.  For example, typing
+The command prompt is a full Guile Scheme interpreter except that you do not need to enclose the outer-most expression in parenthesis. Any valid Scheme code can be executed at the prompt.  For example, typing
 .B display \(dqhello\(dq
-will, in fact, print the text "hello".  See the full reference manual for documentation of Scheme functions that allow you to manipulate transactions and accounts in Scheme.
+will, in fact, print the text "hello".
+.B bal
+loads the Scheme functions in the /etc/bal.scm file at startup. These functions implement the interaction functions above.
 .LP
 Of particular interest for developing your own functions in Scheme is the function
 .B bal/call
