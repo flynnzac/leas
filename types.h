@@ -1,25 +1,20 @@
 /* transaction, account, and book types */
-struct tsct
+typedef struct tsct
 {
   double amount;
   unsigned year;
   unsigned month;
   unsigned day;
   char* desc;
-};
+} tsct;
 
-typedef struct tsct tsct;
-
-enum account_type
+typedef enum 
   {
     EXPENSE,
     INCOME,
     ASSET,
     LIABILITY
-  };
-
-typedef enum account_type account_type;
-
+  } account_type;
 
 typedef enum
   {
@@ -30,8 +25,7 @@ typedef enum
    TRANSACTION,
    DAY,
    OTHER
-  }
-  arg_type;
+  } arg_type;
 
 arg_type
 type_from_string (SCM type)
@@ -88,9 +82,7 @@ account_type_to_string (account_type type)
 
 }
 
-
-
-struct account
+typedef struct
 {
   account_type type;
   char* name;
@@ -98,9 +90,7 @@ struct account
   double ob;
   int n_tsct;
   int n_pos;
-};
-
-typedef struct account account;
+} account;
 
 int
 delete_account (account* acct)
