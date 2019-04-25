@@ -732,10 +732,11 @@ read_book_accounts_from_csv (book* book,
           fprintf(stderr,
                   "Error parsing file: %s\n",
                   csv_strerror(csv_error(&p)));
-          exit(1);
+          goto end_read_book;
         }
     }
   csv_fini(&p, account_cb1, NULL, book);
+ end_read_book:
   fclose(fp);
   csv_free(&p);
 }
@@ -1050,8 +1051,7 @@ bal_call (SCM func, SCM options)
               append_to_string(&command,
                                 bal_book.accounts[k].name,
                                 "\"");
-            }
-	  else bal_prompton = 1;
+            } else bal_prompton = 1;
           break;
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
@@ -1059,12 +1059,12 @@ bal_call (SCM func, SCM options)
           break;
         case TYPE:
           k = bal_select_account_type(name_c);
-	  if (k >= 0)
-	    {
-	      tmp_str = account_type_to_string(k);
-	      append_to_string(&command, tmp_str, "\"");
-	      free(tmp_str);
-	    } else bal_prompton = 1;
+          if (k >= 0)
+            {
+              tmp_str = account_type_to_string(k);
+              append_to_string(&command, tmp_str, "\"");
+              free(tmp_str);
+            } else bal_prompton = 1;
           break;
         case TRANSACTION:
           printf("%s\n", name_c);
@@ -1074,14 +1074,12 @@ bal_call (SCM func, SCM options)
               if (anyalpha(opt) == 0)
                 {
                   k = atoi(opt);
-                  free(opt);
-
                   j = bal_select_transaction (&bal_book.accounts[k]);
 
                   if (j >= 0)
                     {
-		      tmp_str = malloc(sizeof(char)*(strlen("(cons  )") +
-						     digits(k)+digits(j)+1));
+                      tmp_str = malloc(sizeof(char)*(strlen("(cons  )") +
+                                                     digits(k)+digits(j)+1));
                       sprintf(tmp_str, "(cons %d %d)", k, j);
                       append_to_string(&command, tmp_str, "");
                       free(tmp_str);
@@ -1831,7 +1829,7 @@ register_guile_functions (void* data)
 }
 
 void
-bal_exit (int exit_code)
+bal_exit ()
 {
   int c;
 
@@ -1846,7 +1844,6 @@ bal_exit (int exit_code)
         }
     }
   delete_book (&bal_book);
-  exit (exit_code);
 }
 
 int
@@ -1976,7 +1973,8 @@ main (int argc, char** argv)
                            argv[i],
                            NULL,
                            NULL);
-      bal_exit(0);
+      bal_exit();
+      return 0;
     }
 
 
@@ -2005,8 +2003,8 @@ main (int argc, char** argv)
       free(prompt);
       free(command);
     }
-
-  bal_exit(0);
+  scm_gc();
+  bal_exit();
   return 0;
 }
 
