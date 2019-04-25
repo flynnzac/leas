@@ -38,7 +38,6 @@ bal_select_transaction (account* acct)
   end = 0;
   while ((end < acct->n_tsct) && tsct_before_today(acct->tscts[end]))
     end++;
-  
 
   n = (end - bal_select_tsct_num) >= 0 ?
     (end - bal_select_tsct_num) : 0;
@@ -62,8 +61,9 @@ bal_select_transaction (account* acct)
 	       acct->tscts[i].amount);
 
       option = readline ("Transaction #: ");
-    } while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
-                                   atoi(option) >= acct->n_tsct));
+    }
+  while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
+                               atoi(option) >= acct->n_tsct));
   if (strcmp(option,"")!=0)
     {
       i = atoi(option);
@@ -104,3 +104,25 @@ bal_select_day (struct tm* curtime_info,
   return 0;
 }
 
+account_type
+bal_select_account_type (char* prompt)
+{
+  int k;
+  char* opt;
+  
+  printf("%d: Expense\n", EXPENSE);
+  printf("%d: Income\n", INCOME);
+  printf("%d: Asset\n", ASSET);
+  printf("%d: Liability\n", LIABILITY);
+  opt = readline (prompt);
+  if (anyalpha(opt) > 0)
+    {
+      k = -1;
+    }
+  else
+    {
+      k = atoi(opt);
+    }
+
+  return k;
+}

@@ -20,6 +20,76 @@ enum account_type
 
 typedef enum account_type account_type;
 
+
+typedef enum
+  {
+   STRING,
+   ACCOUNT,
+   CURRENT_ACCOUNT,
+   TYPE,
+   TRANSACTION,
+   DAY,
+   OTHER
+  }
+  arg_type;
+
+arg_type
+type_from_string (SCM type)
+{
+  char* type_c = scm_to_locale_string(type);
+  arg_type t = OTHER;
+  
+  if (strcmp(type_c, "string")==0)
+    t = STRING;
+
+  if (strcmp(type_c, "account")==0)
+    t = ACCOUNT;
+  
+  if (strcmp(type_c, "current_account")==0)
+    t = CURRENT_ACCOUNT;
+
+  if (strcmp(type_c, "type")==0)
+    t = TYPE;
+
+  if (strcmp(type_c, "transaction")==0)
+    t = TRANSACTION;
+
+  if (strcmp(type_c, "day")==0)
+    t = DAY;
+
+  free(type_c);
+  return t;
+}
+
+char*
+account_type_to_string (account_type type)
+{
+  char* t;
+  switch (type)
+    {
+    case EXPENSE:
+      t = copy_string("expense");
+      break;
+    case INCOME:
+      t = copy_string("income");
+      break;
+    case ASSET:
+      t = copy_string("asset");
+      break;
+    case LIABILITY:
+      t = copy_string("liability");
+      break;
+    default:
+      t = copy_string("none");
+      break;
+    }
+
+  return t;
+
+}
+
+
+
 struct account
 {
   account_type type;

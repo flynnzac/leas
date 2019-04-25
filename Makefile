@@ -1,6 +1,4 @@
-.FORCE:
-
-bal: bal.c .FORCE
+bal: bal.c bal.scm btar.h call.h interface.h select.h types.h utility.h
 	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall
 
 doc: bal.1 

@@ -1,15 +1,26 @@
 /* function to call a function with options specified interactively */
 
+void
+append_to_command (char** base, const char* add, const char* surround)
+{
+  int sz = strlen(*base)+strlen(add)+2*strlen(surround);
+  *base = realloc(*base, sizeof(char)*(sz+1));
+  strcat(*base, surround);
+  strcat(*base, add);
+  strcat(*base, surround);
+}
+
 SCM
 bal_call (SCM func, SCM options)
 {
-  
   int i,j,k;
   SCM pair;
-  SCM name, type;
+  SCM name;
 
+  arg_type type;
+
+  char* tmp_str;
   char* name_c = NULL;
-  char* type_c = NULL;
   char* opt;
 
   time_t curtime;
@@ -21,13 +32,10 @@ bal_call (SCM func, SCM options)
   char* day;
 
   char* func_c = scm_to_locale_string (func);
-  char* command = malloc((strlen(func_c)+3)*sizeof(char));
-
-  strcpy(command, func_c);
-  strcat(command, " ");
+  char* command = copy_string(func_c);
+  append_to_command(&command, " ", "");
 
   free(func_c);
-
   bal_prompton = 2;
 
   for (i=0; i < len; i++)
@@ -38,136 +46,74 @@ bal_call (SCM func, SCM options)
       pair = scm_list_ref (options, scm_from_int(i));
 
       name = scm_car(pair);
-      type = scm_cdr(pair);
 
       name_c = scm_to_locale_string (name);
       name_c = realloc (name_c, sizeof(char)*(strlen(name_c)+4));
       strcat(name_c, ": ");
       
-      type_c = scm_to_locale_string (type);
+      type = type_from_string(scm_cdr(pair));
 
-      if (strcmp(type_c, "string")==0)
+      switch (type)
         {
+        case STRING:
           opt = readline(name_c);
-          command = realloc (command,
-                             (strlen(command)+strlen(opt)+5)*sizeof(char));
-          strcat(command, "\"");
-          strcat(command, opt);
-          strcat(command, "\"");
-        }
-      else if (strcmp(type_c, "account")==0)
-        {
+          append_to_command(&command, opt, "\"");
+          break;
+        case ACCOUNT:
           opt = bal_select_account(name_c);
           if (strcmp(opt,"") && anyalpha(opt) == 0)
             {
               k = atoi(opt);
-              command = realloc (command,
-                                 (strlen(command)+strlen(bal_book.accounts[k].name)+5)*sizeof(char));
-              strcat(command, "\"");
-              strcat(command, bal_book.accounts[k].name);
-              strcat(command, "\"");
+              append_to_command(&command,
+                                bal_book.accounts[k].name,
+                                "\"");
             }
-        }
-      else if (strcmp(type_c, "current_account")==0)
-        {
+          break;
+        case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
-          command = realloc(command,
-                            (strlen(command) + strlen(opt)+5)*sizeof(char));
-          strcat(command, "\"");
-          strcat(command, opt);
-          strcat(command, "\"");
-
-        }
-      else if (strcmp(type_c, "type")==0)
-        {
-          printf("%d: Expense\n", EXPENSE);
-          printf("%d: Income\n", INCOME);
-          printf("%d: Asset\n", ASSET);
-          printf("%d: Liability\n", LIABILITY);
-          opt = readline (name_c);
-          if (anyalpha(opt) > 0)
+          append_to_command(&command, opt, "\"");
+          break;
+        case TYPE:
+          k = bal_select_account_type(name_c);
+          tmp_str = account_type_to_string(k);
+          append_to_command(&command, tmp_str, "\"");
+          free(tmp_str);
+          break;
+        case TRANSACTION:
+          printf("%s\n", name_c);
+          opt = bal_select_account("Account: ");
+          if (opt==NULL || strcmp(opt,"")==0)
             {
-              k = -1;
+              bal_prompton = 1;
             }
           else
             {
-              k = atoi(opt);
-            }
-
-          switch (k)
-            {
-            case EXPENSE:
-              command = realloc (command,
-                                 (strlen(command)+strlen("expense")+5)*sizeof(char));
-              strcat(command, "\"expense\"");
-              break;
-            case INCOME:
-              command = realloc (command,
-                                 (strlen(command)+strlen("income")+5)*sizeof(char));
-              strcat(command, "\"income\"");
-              break;
-            case ASSET:
-              command = realloc (command,
-                                 (strlen(command)+strlen("asset")+5)*sizeof(char));
-              strcat(command, "\"asset\"");
-              break;
-            case LIABILITY:
-              command = realloc (command,
-                                 (strlen(command)+strlen("liability")+5)*sizeof(char));
-              strcat(command, "\"liability\"");
-              break;
-            default:
-              command = realloc (command,
-                                 (strlen(command)+strlen("liability")+5)*sizeof(char));
-              strcat(command, "\"none\"");
-              break;
-            }
-
-        }
-      else if (strcmp(type_c, "transaction")==0)
-        {
-          printf("%s\n", name_c);
-          opt = bal_select_account("Account: ");
-
-          if (opt==NULL || strcmp(opt,"")==0)
-            return SCM_UNDEFINED;
-
-          if (anyalpha(opt) == 0)
-            {
-              k = atoi(opt);
-          
-              free(opt);
-
-              j = bal_select_transaction (&bal_book.accounts[k]);
-
-              if (j < 0)
-                opt = malloc(sizeof(char));
-              else
-                opt = malloc(sizeof(char)*(((k % 10) + 1) + 1 +
-                                           ((j % 10) + 1) + 1));
-              if (j >= 0)
+              if (anyalpha(opt) == 0)
                 {
+                  k = atoi(opt);
+                  free(opt);
 
-                  sprintf(opt, "(cons %d %d)", k, j);
+                  j = bal_select_transaction (&bal_book.accounts[k]);
 
-                  command = realloc(command,
-                                    (strlen(command)+
-                                     strlen(opt)+3)*sizeof(char));
-
-                  strcat(command, opt);
+                  if (j >= 0)
+                    {
+                      tmp_str = malloc(sizeof(char)*(((k % 10) + 1) +
+                                                     ((j % 10) + 1) +
+                                                     1));
+                      sprintf(tmp_str, "(cons %d %d)", k, j);
+                      append_to_command(&command, tmp_str, "");
+                      free(tmp_str);
+                    }
                 }
             }
-          
-        }
-      else if (strcmp(type_c,"day")==0)
-        {
+          break;
+        case DAY:
           time(&curtime);
           curtime_info = localtime(&curtime);
 
           printf("%s\n", name_c);
 
           bal_select_day (curtime_info, &year, &month, &day);
-
           command = realloc(command,
                             sizeof(char)*(strlen(command)+4+2+2+15));
 
@@ -176,31 +122,18 @@ bal_call (SCM func, SCM options)
                   strcmp(day,"")==0 ? curtime_info->tm_mday : atoi(day),
                   strcmp(month,"")==0 ? (curtime_info->tm_mon+1) : atoi(month),
                   strcmp(year,"")==0 ? (curtime_info->tm_year+1900) : atoi(year));
-
-        }
-      else
-        {
+          break;
+        default:
           opt = readline(name_c);
-          command = realloc (command,
-                             (strlen(command)+strlen(opt)+5)*sizeof(char));
-          strcat(command, opt);
+          append_to_command(&command, opt, "");
+          break;
         }
 
-
-      if (strcmp(type_c,"day") != 0)
-        {
-          free(opt);
-        }
-
+      if (type != DAY) free(opt);
       free(name_c);
-      free(type_c);
       
       if (i != (len-1))
-        {
-          command = realloc(command,
-                            (strlen(command)+2)*sizeof(char));
-          strcat(command, " ");
-        }
+        append_to_command(&command, " ", "");
 
     }
 

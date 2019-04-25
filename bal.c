@@ -34,6 +34,14 @@
 #include <libgen.h>
 #include <signal.h>
 
+char*
+copy_string (const char* str)
+{
+  char* s = malloc(sizeof(char)*(strlen(str)+1));
+  strcpy(s, str);
+  return s;
+}
+
 #include "types.h"
 
 /* global vars */
@@ -51,7 +59,6 @@ static struct tm* bal_curtime;
 #include "btar.h"
 #include "call.h"
 #include "interface.h"
-#include "scm.h"
 
 void
 bal_exit (int exit_code)
@@ -78,12 +85,21 @@ dummy_event ()
 }
 
 void
-handler (int status)
+interrupt_handler (int status)
 {
   rl_replace_line("",0);
   if (bal_prompton==2)
     bal_prompton = 1;
   rl_done = 1;
+}
+
+void
+bal_standard_func (char* file)
+{
+  char* command = copy_string("load ");
+  append_to_command(&command, file, "\"");
+  (void) exec_string_safe(command);
+  free(command);
 }
 
 int
@@ -105,12 +121,12 @@ main (int argc, char** argv)
   bal_select_tsct_num = 19;
   
   scm_with_guile (&register_guile_functions, NULL);
-  bal_standard_func();
+  bal_standard_func("bal.scm");
   bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_");
 
   rl_event_hook = dummy_event;
-  signal(SIGINT,handler);
+  signal(SIGINT,interrupt_handler);
   
   while ((k = getopt(argc, argv, "f:l:sn")) != -1)
     {
