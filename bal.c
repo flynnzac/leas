@@ -48,6 +48,23 @@ digits (int num)
   return n;
 }
 
+int
+anyalpha (const char* str)
+{
+  int i;
+  int any = strlen(str) > 0 ? 0 : 1;
+  if (any==1) return any;
+  for (i=0; i < strlen(str); i++)
+    {
+      if (isdigit(str[i]) == 0)
+        {
+          any = 1;
+          break;
+        }
+    }
+  return any;
+}
+
 char*
 copy_string (const char* str)
 {
@@ -65,6 +82,54 @@ copy_string_insert_int (const char* str, int num)
   sprintf(s, str, num);
   return s;
 }
+
+char*
+create_tmp_dir ()
+{
+  int i;
+  char* tmp_dir;
+  char buffer[100];
+  FILE* fp;
+
+  fp = popen("mktemp -d", "r");
+  if (fp == NULL)
+    {
+      fprintf(stderr, "Could not create temporary directory.\n");
+      return NULL;
+    }
+
+
+  i = 0;
+  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
+    {
+      if (i==0)
+        {
+          tmp_dir = malloc(sizeof(char)*101);
+          strcpy(tmp_dir, buffer);
+        }
+      else
+        {
+          tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
+          strcat(tmp_dir, buffer);
+        }
+      i++;
+    }
+  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
+  pclose(fp);
+
+  return tmp_dir;
+}
+
+void
+append_to_string (char** base, const char* add, const char* surround)
+{
+  int sz = strlen(*base)+strlen(add)+2*strlen(surround);
+  *base = realloc(*base, sizeof(char)*(sz+1));
+  strcat(*base, surround);
+  strcat(*base, add);
+  strcat(*base, surround);
+}
+
 
 /* transaction, account, and book types */
 typedef struct 
@@ -250,24 +315,7 @@ static int bal_prompt_exit;
 static int bal_select_tsct_num;
 static struct tm* bal_curtime;
 
-/* utility functions */
-
-int
-anyalpha (const char* str)
-{
-  int i;
-  int any = strlen(str) > 0 ? 0 : 1;
-  if (any==1) return any;
-  for (i=0; i < strlen(str); i++)
-    {
-      if (isdigit(str[i]) == 0)
-        {
-          any = 1;
-          break;
-        }
-    }
-  return any;
-}
+/* sorting functions */
   
 int
 sort_transactions (const void* a, const void* b)
@@ -285,6 +333,8 @@ sort_transactions (const void* a, const void* b)
   else if (a_t->day < b_t->day) return -1;
   else return 0;
 }
+
+/* send code to guile interpreter */
 
 SCM
 handle_error (void* toeval_v,
@@ -337,6 +387,8 @@ exec_string_safe_history (void* toeval_v)
     }
 }
 
+/* find accounts by name */
+
 account*
 find_account_in_book (book* book, const char* name)
 {
@@ -359,6 +411,8 @@ find_account_location_in_book (book* book, const char* name)
   return -1;
 }
 
+/* conversion functions to scheme objects */
+
 SCM
 tsct_to_scm (const tsct t)
 {
@@ -380,42 +434,6 @@ acct_to_scm (const account a)
   SCM ob = scm_from_double(a.ob);
 
   return scm_list_4(name,type,ntsct,ob);
-}
-
-char*
-create_tmp_dir ()
-{
-  int i;
-  char* tmp_dir;
-  char buffer[100];
-  FILE* fp;
-
-  fp = popen("mktemp -d", "r");
-  if (fp == NULL)
-    {
-      fprintf(stderr, "Could not create temporary directory.\n");
-      return NULL;
-    }
-
-  i = 0;
-  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
-    {
-      if (i==0)
-        {
-          tmp_dir = malloc(sizeof(char)*101);
-          strcpy(tmp_dir, buffer);
-        }
-      else
-        {
-          tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
-          strcat(tmp_dir, buffer);
-        }
-      i++;
-    }
-  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
-  pclose(fp);
-
-  return tmp_dir;
 }
 
 /* function to check whether transact after current time */
@@ -950,17 +968,8 @@ write_out (char* base)
 
   return 0;
 }
-/* function to call a function with options specified interactively */
 
-void
-append_to_command (char** base, const char* add, const char* surround)
-{
-  int sz = strlen(*base)+strlen(add)+2*strlen(surround);
-  *base = realloc(*base, sizeof(char)*(sz+1));
-  strcat(*base, surround);
-  strcat(*base, add);
-  strcat(*base, surround);
-}
+/* function to call a function with options specified interactively */
 
 SCM
 bal_call (SCM func, SCM options)
@@ -985,7 +994,7 @@ bal_call (SCM func, SCM options)
 
   char* func_c = scm_to_locale_string (func);
   char* command = copy_string(func_c);
-  append_to_command(&command, " ", "");
+  append_to_string(&command, " ", "");
 
   free(func_c);
   bal_prompton = 2;
@@ -1009,14 +1018,14 @@ bal_call (SCM func, SCM options)
         {
         case STRING:
           opt = readline(name_c);
-          append_to_command(&command, opt, "\"");
+          append_to_string(&command, opt, "\"");
           break;
         case ACCOUNT:
           opt = bal_select_account(name_c);
           if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
             {
               k = atoi(opt);
-              append_to_command(&command,
+              append_to_string(&command,
                                 bal_book.accounts[k].name,
                                 "\"");
             }
@@ -1024,14 +1033,14 @@ bal_call (SCM func, SCM options)
           break;
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
-          append_to_command(&command, opt, "\"");
+          append_to_string(&command, opt, "\"");
           break;
         case TYPE:
           k = bal_select_account_type(name_c);
 	  if (k >= 0)
 	    {
 	      tmp_str = account_type_to_string(k);
-	      append_to_command(&command, tmp_str, "\"");
+	      append_to_string(&command, tmp_str, "\"");
 	      free(tmp_str);
 	    } else bal_prompton = 1;
           break;
@@ -1052,7 +1061,7 @@ bal_call (SCM func, SCM options)
 		      tmp_str = malloc(sizeof(char)*(strlen("(cons  )") +
 						     digits(k)+digits(j)+1));
                       sprintf(tmp_str, "(cons %d %d)", k, j);
-                      append_to_command(&command, tmp_str, "");
+                      append_to_string(&command, tmp_str, "");
                       free(tmp_str);
                     }
                 }
@@ -1076,7 +1085,7 @@ bal_call (SCM func, SCM options)
           break;
         default:
           opt = readline(name_c);
-          append_to_command(&command, opt, "");
+          append_to_string(&command, opt, "");
           break;
         }
 
@@ -1084,7 +1093,7 @@ bal_call (SCM func, SCM options)
       free(name_c);
       
       if (i != (len-1))
-        append_to_command(&command, " ", "");
+        append_to_string(&command, " ", "");
 
     }
 
@@ -1106,9 +1115,9 @@ bal_call (SCM func, SCM options)
   return SCM_UNDEFINED;
 }
 
-/* main interface functions */
-/* Add transactions and accounts */
+/* Main Scheme interface functions */
 
+/* Add transactions and accounts */
 SCM
 bal_at (SCM account_name,
         SCM amount,
@@ -1836,7 +1845,7 @@ void
 bal_standard_func (char* file)
 {
   char* command = copy_string("load ");
-  append_to_command(&command, file, "\"");
+  append_to_string(&command, file, "\"");
   (void) exec_string_safe(command);
   free(command);
 }
