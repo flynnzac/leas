@@ -805,10 +805,10 @@ read_in (char* base)
   /* untar archive */
   untar_cmd = malloc(sizeof(char)*(strlen("tar xaf ")+
                                    strlen(base)+
-                                   strlen(".btar -C ")+
+                                   strlen(" -C ")+
                                    strlen(tmp_dir)+1));
 
-  sprintf(untar_cmd, "tar xaf %s.btar -C %s", base, tmp_dir);
+  sprintf(untar_cmd, "tar xaf %s -C %s", base, tmp_dir);
   system(untar_cmd);
   free(untar_cmd);
 
@@ -950,10 +950,10 @@ write_out (char* base)
 
   cmd = malloc(sizeof(char)*(strlen("tar caf ")+
 			     strlen(base)+
-			     strlen(".btar -C ")+
+			     strlen(" -C ")+
 			     strlen(tmp_dir)+
 			     strlen(basename(base))+2));
-  sprintf(cmd, "tar caf %s.btar -C %s %s", base, tmp_dir, basename(base));
+  sprintf(cmd, "tar caf %s -C %s %s", base, tmp_dir, basename(base));
   system(cmd);
   free(cmd);
 
@@ -1871,7 +1871,7 @@ main (int argc, char** argv)
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func("/etc/bal.scm");
   bal_cur_acct = SCM_UNDEFINED;
-  bal_cur_file = scm_from_locale_string ("_");
+  bal_cur_file = scm_from_locale_string ("_.btar");
 
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
@@ -1890,11 +1890,7 @@ main (int argc, char** argv)
           {
             bal_cur_file = scm_from_locale_string (optarg);
             fname = scm_to_locale_string (bal_cur_file);
-            fname = realloc(fname, sizeof(char)*(strlen(fname)+
-                                                 strlen(".btar")
-                                                 +1));
-            strcat(fname, ".btar");
-  
+
             if (access(fname, R_OK) != -1)
               {
                 free(fname);

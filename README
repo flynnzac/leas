@@ -119,7 +119,7 @@ DESCRIPTION
 
 OPTIONS
        -f FILE
-	      load accounts from FILE where FILE omits the .btar extension
+	      load accounts from FILE
 
        -l CODE
 	      execute Scheme code in file CODE
@@ -142,7 +142,7 @@ EXAMPLES
 	      ~/.balrc.scm (potentially including code to  load	 data  from  a
 	      default file).
 
-       bal -f myaccounts
+       bal -f myaccounts.btar
 	      load the file myaccounts.btar from the current directory.
 
        bal -s v

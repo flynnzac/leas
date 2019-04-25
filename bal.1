@@ -155,7 +155,7 @@ The prompt is whatever is returned by the evaluating the Scheme expression "(bal
 .SH OPTIONS
 .TP
 .BR \-f " " FILE
-load accounts from FILE where FILE omits the \.btar extension
+load accounts from FILE
 .TP
 .BR \-l " " CODE
 execute Scheme code in file CODE
@@ -178,7 +178,7 @@ executes Scheme code in ~/.balrc.scm if the file is present.
 bal
 start the bal interpreter and execute any Scheme code in ~/.balrc.scm (potentially including code to load data from a default file).
 .TP
-bal -f myaccounts
+bal -f myaccounts.btar
 load the file 
 .B myaccounts.btar
 from the current directory.
