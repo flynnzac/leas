@@ -8,7 +8,7 @@ bal_select_account (const char* prompt)
 
   if (bal_book.n_account==0)
     {
-      printf("No account loaded.\n");
+      printf("No account.\n");
       return NULL;
     }
   else
@@ -21,8 +21,8 @@ bal_select_account (const char* prompt)
               printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
             }
           c = readline(prompt);
-        } while (strcmp(c,"")  && (anyalpha(c) || atoi(c) < 0 ||
-                                   atoi(c) >= bal_book.n_account));
+        } while (strcmp(c,"") && (anyalpha(c) || atoi(c) < 0 ||
+				  atoi(c) >= bal_book.n_account));
 
       return c;
     }
@@ -61,9 +61,8 @@ bal_select_transaction (account* acct)
 	       acct->tscts[i].amount);
 
       option = readline ("Transaction #: ");
-    }
-  while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
-                               atoi(option) >= acct->n_tsct));
+    } while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
+				   atoi(option) >= acct->n_tsct));
   if (strcmp(option,"")!=0)
     {
       i = atoi(option);
@@ -80,26 +79,19 @@ bal_select_day (struct tm* curtime_info,
                 char** month,
                 char** day)
 {
-  char *yprompt, *mprompt, *dprompt;
-  char* tmp;
+  char* prompt;
 
-  yprompt = malloc(sizeof(char)*(strlen("Year []: ")+10));
-  sprintf(yprompt, "Year [%d]: ", curtime_info->tm_year+1900);
-  tmp = readline(yprompt);
-  *year = tmp;
-  free(yprompt);
+  prompt = copy_string_insert_int("Year [%d]: ", curtime_info->tm_year+1900);
+  *year = readline(prompt);
+  free(prompt);
 
-  mprompt = malloc(sizeof(char)*(strlen("Month []: ")+10));
-  sprintf(mprompt, "Month [%d]: ", curtime_info->tm_mon+1);
-  tmp = readline(mprompt);
-  *month = tmp;
-  free(mprompt);
-  
-  dprompt = malloc(sizeof(char)*(strlen("Day []: ")+10));
-  sprintf(dprompt, "Day [%d]: ", curtime_info->tm_mday);
-  tmp = readline(dprompt);
-  *day = tmp;
-  free(dprompt);
+  prompt = copy_string_insert_int("Month [%d]: ", curtime_info->tm_mon+1);
+  *month = readline(prompt);
+  free(prompt);
+
+  prompt = copy_string_insert_int("Day [%d]: ", curtime_info->tm_mday);
+  *day = readline(prompt);
+  free(prompt);
 
   return 0;
 }
@@ -115,14 +107,8 @@ bal_select_account_type (char* prompt)
   printf("%d: Asset\n", ASSET);
   printf("%d: Liability\n", LIABILITY);
   opt = readline (prompt);
-  if (anyalpha(opt) > 0)
-    {
-      k = -1;
-    }
-  else
-    {
-      k = atoi(opt);
-    }
+
+  k = anyalpha(opt) > 0 ? -1 : atoi(opt);
 
   return k;
 }

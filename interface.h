@@ -45,8 +45,10 @@ bal_aa (SCM name,
         SCM type,
         SCM ob)
 {
-  
-  account_type type_c = account_type_from_string(type);
+
+  char* type_str = scm_to_locale_string(type);
+  account_type type_c = account_type_from_string(type_str);
+  free(type_str);
   char* name_c = scm_to_locale_string (name);
   double ob_c = scm_to_double(ob);
 
@@ -55,8 +57,6 @@ bal_aa (SCM name,
   else
     bal_book.accounts = realloc(bal_book.accounts,
                                 sizeof(account)*(bal_book.n_account+1));
-
-  type_c = account_type_from_string(type);
 
   bal_book.accounts[bal_book.n_account].type = type_c;
   bal_book.accounts[bal_book.n_account].n_tsct = 0;

@@ -61,13 +61,14 @@ bal_call (SCM func, SCM options)
           break;
         case ACCOUNT:
           opt = bal_select_account(name_c);
-          if (strcmp(opt,"") && anyalpha(opt) == 0)
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
             {
               k = atoi(opt);
               append_to_command(&command,
                                 bal_book.accounts[k].name,
                                 "\"");
             }
+	  else bal_prompton = 1;
           break;
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
@@ -75,18 +76,17 @@ bal_call (SCM func, SCM options)
           break;
         case TYPE:
           k = bal_select_account_type(name_c);
-          tmp_str = account_type_to_string(k);
-          append_to_command(&command, tmp_str, "\"");
-          free(tmp_str);
+	  if (k >= 0)
+	    {
+	      tmp_str = account_type_to_string(k);
+	      append_to_command(&command, tmp_str, "\"");
+	      free(tmp_str);
+	    } else bal_prompton = 1;
           break;
         case TRANSACTION:
           printf("%s\n", name_c);
           opt = bal_select_account("Account: ");
-          if (opt==NULL || strcmp(opt,"")==0)
-            {
-              bal_prompton = 1;
-            }
-          else
+          if (opt!=NULL && strcmp(opt,"")!=0)
             {
               if (anyalpha(opt) == 0)
                 {
@@ -97,15 +97,14 @@ bal_call (SCM func, SCM options)
 
                   if (j >= 0)
                     {
-                      tmp_str = malloc(sizeof(char)*(((k % 10) + 1) +
-                                                     ((j % 10) + 1) +
-                                                     1));
+		      tmp_str = malloc(sizeof(char)*(strlen("(cons  )") +
+						     digits(k)+digits(j)+1));
                       sprintf(tmp_str, "(cons %d %d)", k, j);
                       append_to_command(&command, tmp_str, "");
                       free(tmp_str);
                     }
                 }
-            }
+            } else bal_prompton = 1;
           break;
         case DAY:
           time(&curtime);

@@ -31,15 +31,10 @@ transaction_cb1 (void* s, size_t len, void* data)
           break;
         case 2:
           strptime(buf, "%Y-%m-%d", &t);
-          acct->tscts[acct->n_tsct].year = t.tm_year+1900;
-          acct->tscts[acct->n_tsct].month = t.tm_mon+1;
-          acct->tscts[acct->n_tsct].day = t.tm_mday;
+	  set_tsct_time(&acct->tscts[acct->n_tsct], &t);
           break;
         case 3:
-          acct->tscts[acct->n_tsct].desc =
-            malloc(sizeof(char)*(strlen(buf)+1));
-          strcpy(acct->tscts[acct->n_tsct].desc,
-                 buf);
+	  acct->tscts[acct->n_tsct].desc = copy_string(buf);
           break;
         default:
           break;
@@ -79,23 +74,15 @@ account_cb1 (void* s, size_t len, void* data)
   switch (book->n_pos)
     {
     case 0:
-      if (!strcmp(buf, "expense"))
-	book->accounts[book->n_account].type = EXPENSE;
-      else if (!strcmp(buf, "income"))
-	book->accounts[book->n_account].type = INCOME;
-      else if (!strcmp(buf, "asset"))
-	book->accounts[book->n_account].type = ASSET;
-      else if (!strcmp(buf, "liability"))
-	book->accounts[book->n_account].type = LIABILITY;
-      else
+      book->accounts[book->n_account].type = account_type_from_string(buf);
+      if (book->accounts[book->n_account].type < 0)
         {
           fprintf(stderr, "Invalid account type: %s.\n", buf);
           exit(1);
         }
       break;
     case 1:
-      book->accounts[book->n_account].name = malloc(sizeof(char)*(strlen(buf)+1));
-      strcpy(book->accounts[book->n_account].name, buf);
+      book->accounts[book->n_account].name = copy_string(buf);
       break;
     case 2:
       book->accounts[book->n_account].ob = atof(buf);
@@ -172,9 +159,9 @@ read_all_transactions_into_book (struct book* book,
     {
       name = malloc(sizeof(char)*(strlen(basename(base)) +
                                   strlen(tmp_dir) +
-                                  strlen("/") +
+                                  strlen("//") +
                                   strlen(book->accounts[i].name)+
-                                  strlen(".csv")+2));
+                                  strlen(".csv")+1));
 
       strcpy(name, tmp_dir);
       strcat(name, "/");
@@ -237,25 +224,18 @@ read_in (char* base)
                                    strlen(base)+
                                    strlen(".btar -C ")+
                                    strlen(tmp_dir)+1));
-  strcpy(untar_cmd, "tar xaf ");
-  strcat(untar_cmd, base);
-  strcat(untar_cmd, ".btar");
-  strcat(untar_cmd, " -C ");
-  strcat(untar_cmd, tmp_dir);
-	  
+
+  sprintf(untar_cmd, "tar xaf %s.btar -C %s", base, tmp_dir);
   system(untar_cmd);
   free(untar_cmd);
 
   /* read in accounts */
   account_file = malloc(sizeof(char)*(strlen(basename(base)) +
                                       strlen(tmp_dir) +
-                                      strlen("/accounts.csv")+
-                                      2));
-  strcpy(account_file, tmp_dir);
-  strcat(account_file, "/");
-  strcat(account_file, basename(base));
-  strcat(account_file, "/accounts");
+                                      strlen("/accounts")+
+                                      12));
 
+  sprintf(account_file, "%s/%s/accounts", tmp_dir, basename(base));
   read_book_accounts_from_csv (&bal_book, account_file);
   free(account_file);
 
@@ -266,16 +246,14 @@ read_in (char* base)
 
   /* clean up */
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
-                                strlen(tmp_dir) + 
+                                strlen(tmp_dir) +
+				strlen("/") +
                                 strlen(basename(base))+
-                                2));
-  strcpy(rm_cmd, "rm -R ");
-  strcat(rm_cmd, tmp_dir);
-  strcat(rm_cmd, "/");
-  strcat(rm_cmd, basename(base));
+                                1));
+
+  sprintf(rm_cmd, "rm -R %s/%s", tmp_dir, basename(base));
   system(rm_cmd);
   free(rm_cmd);
-
   free(tmp_dir);
   
   /* return success */
@@ -314,35 +292,22 @@ write_accounts (const char* file)
 {
   int i;
   FILE* fp;
+  char* type;
 
   fp = fopen (file, "w");
   if (fp==NULL)
     {
-      printf("Could not open file to write accounts.\n");
+      fprintf(stderr, "Could not open file to write accounts.\n");
       return 1;
     }
   for (i=0; i < bal_book.n_account; i++)
     {
-      switch (bal_book.accounts[i].type)
-        {
-        case EXPENSE:
-          fprintf(fp,"%s,", "expense");
-          break;
-        case INCOME:
-          fprintf(fp,"%s,", "income");
-          break;
-        case ASSET:
-          fprintf(fp,"%s,", "asset");
-          break;
-        case LIABILITY:
-          fprintf(fp,"%s,", "liability");
-          break;
-        }
+      type = account_type_to_string(bal_book.accounts[i].type);
+      fprintf(fp, "%s,", type);
       csv_fwrite(fp, bal_book.accounts[i].name,
                  strlen(bal_book.accounts[i].name));
-      fprintf(fp, ",%f\n",
-              bal_book.accounts[i].ob);
-
+      free(type);
+      fprintf(fp, ",%f\n", bal_book.accounts[i].ob);
     }
   fclose(fp);
   return 0;
@@ -351,11 +316,9 @@ write_accounts (const char* file)
 int
 write_out (char* base)
 {
+  char* cmd;
   char* account_fn;
   char* tsct_fn;
-  char* tar_cmd;
-  char* rm_cmd;
-  char* dir_cmd;
   char* tmp_dir;
 
   int i;
@@ -364,27 +327,23 @@ write_out (char* base)
   if (tmp_dir==NULL)
     return 1;
 
-  dir_cmd = malloc(sizeof(char)*(strlen(basename(base))+
-                                 strlen(tmp_dir)+
-                                 strlen("mkdir ")+3));
+  cmd = malloc(sizeof(char)*(strlen(basename(base))+
+			     strlen(tmp_dir)+
+			     strlen("mkdir /")+1));
 
-  strcpy(dir_cmd, "mkdir ");
-  strcat(dir_cmd, tmp_dir);
-  strcat(dir_cmd, "/");
-  strcat(dir_cmd, basename(base));
-  system(dir_cmd);
+  sprintf(cmd, "mkdir %s/%s", tmp_dir, basename(base));
+  system(cmd);
+  free(cmd);
   
   account_fn = malloc(sizeof(char)*(strlen(basename(base))+
                                     strlen(tmp_dir)+
-                                    strlen("accounts")+3));
+                                    strlen("accounts")+
+				    strlen("//")+1));
 
-  strcpy(account_fn, tmp_dir);
-  strcat(account_fn, "/");
-  strcat(account_fn, basename(base));
-  strcat(account_fn, "/");
-  strcat(account_fn, "accounts");
+  sprintf(account_fn, "%s/%s/accounts", tmp_dir, basename(base));
   i = write_accounts (account_fn);
   free(account_fn);
+  
   if (i != 0)
     {
       free(tmp_dir);
@@ -397,41 +356,31 @@ write_out (char* base)
         (sizeof(char)*(strlen(bal_book.accounts[i].name) +
                        strlen(basename(base)) +
                        strlen(tmp_dir) + 
-                       strlen("/.csv") +
-                       2));
-
-      strcpy(tsct_fn, tmp_dir);
-      strcat(tsct_fn, "/");
-      strcat(tsct_fn, basename(base));
-      strcat(tsct_fn, "/");
-      strcat(tsct_fn, bal_book.accounts[i].name);
-      strcat(tsct_fn, ".csv");
+                       strlen("//.csv") +
+                       1));
+      sprintf(tsct_fn, "%s/%s/%s.csv", tmp_dir, basename(base),
+	      bal_book.accounts[i].name);
       
       write_transactions (tsct_fn, &bal_book.accounts[i]);
       free(tsct_fn);
     }
 
-  tar_cmd = malloc(sizeof(char)*(strlen("tar caf ")+
-                                 strlen(base)+
-                                 strlen(".btar -C ")+
-                                 strlen(tmp_dir)+
-                                 strlen(basename(base))+2));
-  strcpy(tar_cmd, "tar caf ");
-  strcat(tar_cmd, base);
-  strcat(tar_cmd, ".btar -C ");
-  strcat(tar_cmd, tmp_dir);
-  strcat(tar_cmd, " ");
-  strcat(tar_cmd, basename(base));
-  system(tar_cmd);
-  free(tar_cmd);
+  cmd = malloc(sizeof(char)*(strlen("tar caf ")+
+			     strlen(base)+
+			     strlen(".btar -C ")+
+			     strlen(tmp_dir)+
+			     strlen(basename(base))+2));
+  sprintf(cmd, "tar caf %s.btar -C %s %s", base, tmp_dir, basename(base));
+  system(cmd);
+  free(cmd);
 
-  rm_cmd = malloc(sizeof(char)*(strlen("rm -R ")+
-                                strlen(tmp_dir)+
-                                2));
-  strcpy(rm_cmd, "rm -R ");
-  strcat(rm_cmd, tmp_dir);
-  system(rm_cmd);
-  free(rm_cmd);
+  cmd = malloc(sizeof(char)*(strlen("rm -R ")+
+			     strlen(tmp_dir)+
+			     1));
+
+  sprintf(cmd, "rm -R %s", tmp_dir);
+  system(cmd);
+  free(cmd);
   free(tmp_dir);
 
   return 0;

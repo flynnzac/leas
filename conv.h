@@ -56,20 +56,19 @@ account_type_to_string (account_type type)
 }
 
 account_type
-account_type_from_string (SCM type)
+account_type_from_string (char* type)
 {
-  char* type_c = scm_to_locale_string(type);
   account_type t;
-  if (strcmp(type_c, "expense")==0)
+  if (strcmp(type, "expense")==0)
     t = EXPENSE;
-  else if (strcmp(type_c, "income")==0)
+  else if (strcmp(type, "income")==0)
     t = INCOME;
-  else if (strcmp(type_c, "asset")==0)
+  else if (strcmp(type, "asset")==0)
     t = ASSET;
-  else if (strcmp(type_c, "liability")==0)
+  else if (strcmp(type, "liability")==0)
     t = LIABILITY;
-
-  free(type_c);
+  else
+    t = -1;
 
   return t;
 }

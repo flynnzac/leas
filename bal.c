@@ -34,11 +34,33 @@
 #include <libgen.h>
 #include <signal.h>
 
+int
+digits (int num)
+{
+  int n = 1;
+  while ((num / 10) > 0)
+    {
+      n++;
+      num = num / 10;
+    }
+  return n;
+}
+
 char*
 copy_string (const char* str)
 {
   char* s = malloc(sizeof(char)*(strlen(str)+1));
   strcpy(s, str);
+  return s;
+}
+
+char*
+copy_string_insert_int (const char* str, int num)
+{
+  /* str has one %d in it */
+  int d = digits(num);
+  char* s = malloc(sizeof(char)*(strlen(str)-2 + d + 1));
+  sprintf(s, str, num);
   return s;
 }
 
