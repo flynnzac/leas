@@ -36,6 +36,22 @@
 
 /* convenience, manipulation functions */
 
+char*
+remove_ext (char* str)
+{
+  int i;
+  for (i=strlen(str); i >= 1; i--)
+    {
+      if (str[i-1] == '.')
+        {
+          str[i-1] = '\0';
+          break;
+        }
+    }
+  return str;
+}
+        
+
 int
 digits (int num)
 {
@@ -709,7 +725,6 @@ read_book_accounts_from_csv (book* book,
 
   fp = fopen(account_file, "rb");
   if (!fp) exit(1);
-
   while ((bytes_read=fread(buf,1,1024,fp)) > 0)
     {
       if (csv_parse (&p, buf, bytes_read, account_cb1, NULL, book) != bytes_read)
@@ -738,20 +753,18 @@ read_all_transactions_into_book (book* book,
   size_t bytes_read;
   char* name;
 
+  char* fn = copy_string(basename(base));
+  fn = remove_ext(fn);
+
   for (i=0; i < book->n_account; i++)
     {
-      name = malloc(sizeof(char)*(strlen(basename(base)) +
+      name = malloc(sizeof(char)*(strlen(fn) +
                                   strlen(tmp_dir) +
                                   strlen("//") +
                                   strlen(book->accounts[i].name)+
                                   strlen(".csv")+1));
 
-      strcpy(name, tmp_dir);
-      strcat(name, "/");
-      strcat(name, basename(base));
-      strcat(name, "/");
-      strcat(name, book->accounts[i].name);
-      strcat(name, ".csv");
+      sprintf(name, "%s/%s/%s.csv", tmp_dir, fn, book->accounts[i].name);
       
       error = csv_init (&p,0);
       if (error != 0)
@@ -787,6 +800,7 @@ read_all_transactions_into_book (book* book,
       fclose(fp);
       csv_free(&p);
     }
+  free(fn);
 }
 
 int
@@ -796,6 +810,10 @@ read_in (char* base)
   char* account_file;
   char* rm_cmd;
   char* tmp_dir;
+  char* fn = copy_string(basename(base));
+  fn = remove_ext(fn);
+
+  
 
   /* create tmp dir */
   tmp_dir = create_tmp_dir();
@@ -813,12 +831,13 @@ read_in (char* base)
   free(untar_cmd);
 
   /* read in accounts */
-  account_file = malloc(sizeof(char)*(strlen(basename(base)) +
+
+  account_file = malloc(sizeof(char)*(strlen(fn) +
                                       strlen(tmp_dir) +
                                       strlen("/accounts")+
-                                      12));
+                                      1));
 
-  sprintf(account_file, "%s/%s/accounts", tmp_dir, basename(base));
+  sprintf(account_file, "%s/%s/accounts", tmp_dir, fn);
   read_book_accounts_from_csv (&bal_book, account_file);
   free(account_file);
 
@@ -831,14 +850,14 @@ read_in (char* base)
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
                                 strlen(tmp_dir) +
 				strlen("/") +
-                                strlen(basename(base))+
+                                strlen(fn)+
                                 1));
 
-  sprintf(rm_cmd, "rm -R %s/%s", tmp_dir, basename(base));
+  sprintf(rm_cmd, "rm -R %s/%s", tmp_dir, fn);
   system(rm_cmd);
   free(rm_cmd);
   free(tmp_dir);
-  
+  free(fn);
   /* return success */
   return 0;
   
@@ -903,27 +922,29 @@ write_out (char* base)
   char* account_fn;
   char* tsct_fn;
   char* tmp_dir;
+  char* fn = copy_string(basename(base));
 
+  fn = remove_ext(fn);
   int i;
 
   tmp_dir = create_tmp_dir();
   if (tmp_dir==NULL)
     return 1;
 
-  cmd = malloc(sizeof(char)*(strlen(basename(base))+
+  cmd = malloc(sizeof(char)*(strlen(fn)+
 			     strlen(tmp_dir)+
 			     strlen("mkdir /")+1));
 
-  sprintf(cmd, "mkdir %s/%s", tmp_dir, basename(base));
+  sprintf(cmd, "mkdir %s/%s", tmp_dir, fn);
   system(cmd);
   free(cmd);
   
-  account_fn = malloc(sizeof(char)*(strlen(basename(base))+
+  account_fn = malloc(sizeof(char)*(strlen(fn)+
                                     strlen(tmp_dir)+
                                     strlen("accounts")+
 				    strlen("//")+1));
 
-  sprintf(account_fn, "%s/%s/accounts", tmp_dir, basename(base));
+  sprintf(account_fn, "%s/%s/accounts", tmp_dir, fn);
   i = write_accounts (account_fn);
   free(account_fn);
   
@@ -937,11 +958,11 @@ write_out (char* base)
     {
       tsct_fn = malloc
         (sizeof(char)*(strlen(bal_book.accounts[i].name) +
-                       strlen(basename(base)) +
+                       strlen(fn) +
                        strlen(tmp_dir) + 
                        strlen("//.csv") +
                        1));
-      sprintf(tsct_fn, "%s/%s/%s.csv", tmp_dir, basename(base),
+      sprintf(tsct_fn, "%s/%s/%s.csv", tmp_dir, fn,
 	      bal_book.accounts[i].name);
       
       write_transactions (tsct_fn, &bal_book.accounts[i]);
@@ -952,8 +973,8 @@ write_out (char* base)
 			     strlen(base)+
 			     strlen(" -C ")+
 			     strlen(tmp_dir)+
-			     strlen(basename(base))+2));
-  sprintf(cmd, "tar caf %s -C %s %s", base, tmp_dir, basename(base));
+			     strlen(fn)+2));
+  sprintf(cmd, "tar caf %s -C %s %s", base, tmp_dir, fn);
   system(cmd);
   free(cmd);
 
@@ -965,6 +986,7 @@ write_out (char* base)
   system(cmd);
   free(cmd);
   free(tmp_dir);
+  free(fn);
 
   return 0;
 }
