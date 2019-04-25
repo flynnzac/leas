@@ -16,16 +16,9 @@ bal_at (SCM account_name,
     acct->tscts = malloc(sizeof(tsct));
   else
     acct->tscts = realloc(acct->tscts, (acct->n_tsct+1)*sizeof(tsct));
-  
-  acct->tscts[acct->n_tsct].year = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(2)));
-  acct->tscts[acct->n_tsct].month = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(1)));
-  acct->tscts[acct->n_tsct].day = scm_to_int
-    (scm_list_ref
-     (day,scm_from_int(0)));
+
+  set_tsct_time_from_scm(&acct->tscts[acct->n_tsct], day);
+
   acct->tscts[acct->n_tsct].amount = amount_c;
   acct->tscts[acct->n_tsct].desc = copy_string(desc_c);
 
@@ -48,9 +41,10 @@ bal_aa (SCM name,
 
   char* type_str = scm_to_locale_string(type);
   account_type type_c = account_type_from_string(type_str);
-  free(type_str);
   char* name_c = scm_to_locale_string (name);
   double ob_c = scm_to_double(ob);
+
+  free(type_str);
 
   if (bal_book.n_account == 0)
     bal_book.accounts = malloc(sizeof(account));
@@ -61,8 +55,7 @@ bal_aa (SCM name,
   bal_book.accounts[bal_book.n_account].type = type_c;
   bal_book.accounts[bal_book.n_account].n_tsct = 0;
   bal_book.accounts[bal_book.n_account].n_pos = 0;
-  bal_book.accounts[bal_book.n_account].name =
-    copy_string(name_c);
+  bal_book.accounts[bal_book.n_account].name = copy_string(name_c);
 
   bal_book.accounts[bal_book.n_account].ob = ob_c;
   bal_book.n_account++;
@@ -136,11 +129,13 @@ bal_da (SCM account)
 
   flag = 0;
   for (i=0; i < bal_book.n_account; i++)
-    if (strcmp(bal_book.accounts[i].name, account_c)==0)
-      {
-        flag = 1;
-        break;
-      }
+    {
+      if (strcmp(bal_book.accounts[i].name, account_c)==0)
+	{
+	  flag = 1;
+	  break;
+	}
+    }
   
   if (flag != 0)
     {
