@@ -18,6 +18,7 @@
 */
 
 #define BAL_VERSION "0.2.0-dev"
+#define _XOPEN_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -28,6 +29,7 @@
 #include <time.h>
 #include <unistd.h>
 #include <readline/readline.h>
+#include <readline/history.h>
 #include <csv.h>
 #include <ctype.h>
 #include <string.h>
@@ -848,9 +850,8 @@ read_in (char* base)
 
   sprintf(rm_cmd, "rm -R %s/%s", tmp_dir, fn);
   system(rm_cmd);
-  free(rm_cmd);
-  free(tmp_dir);
-  free(fn);
+
+  free(rm_cmd); free(tmp_dir); free(fn);
   /* return success */
   return 0;
   
@@ -1383,8 +1384,7 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
         }
     }
   
-  free(regex_txt);
-  free(acct_c);
+  free(regex_txt); free(acct_c);
   return list;
 }
 
@@ -1965,8 +1965,8 @@ main (int argc, char** argv)
                          command,
                          NULL,
                          NULL);
-      free(prompt);
-      free(command);
+      
+      free(prompt); free(command);
     }
   scm_gc();
   bal_exit();
