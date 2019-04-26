@@ -94,7 +94,7 @@ copy_string_insert_int (const char* str, int num)
 {
   /* str has one %d in it */
   int d = digits(num);
-  char* s = malloc(sizeof(char)*(strlen(str)-2 + d + 1));
+  char* s = malloc(sizeof(char)*(strlen(str) - 2 + d + 1));
   sprintf(s, str, num);
   return s;
 }
@@ -114,20 +114,14 @@ create_tmp_dir ()
       return NULL;
     }
 
-
   i = 0;
+  tmp_dir = malloc(sizeof(char));
+  tmp_dir[0] = '\0';
+
   while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
     {
-      if (i==0)
-        {
-          tmp_dir = malloc(sizeof(char)*101);
-          strcpy(tmp_dir, buffer);
-        }
-      else
-        {
-          tmp_dir = realloc(tmp_dir, sizeof(char)*(i+1)*101);
-          strcat(tmp_dir, buffer);
-        }
+      tmp_dir = realloc(tmp_dir, sizeof(char)*((i+1)*100+1));
+      strcat(tmp_dir, buffer);
       i++;
     }
   tmp_dir[strcspn(tmp_dir, "\n")] = 0;
@@ -145,7 +139,6 @@ append_to_string (char** base, const char* add, const char* surround)
   strcat(*base, add);
   strcat(*base, surround);
 }
-
 
 /* transaction, account, and book types */
 typedef struct 
@@ -194,6 +187,8 @@ typedef struct
   int n_account;
   int n_pos; /* used in reading data */
 } book;
+
+/* destructors */
 
 int
 delete_account (account* acct)
@@ -279,7 +274,6 @@ account_type_to_string (account_type type)
     }
 
   return t;
-
 }
 
 account_type
@@ -300,13 +294,14 @@ account_type_from_string (char* type)
   return t;
 }
 
+/* set attributes and arrange bal objects */
+
 void
 set_tsct_time (tsct* t, struct tm* time)
 {
   t->year = time->tm_year + 1900;
   t->month = time->tm_mon + 1;
   t->day = time->tm_mday;
-
 }
 
 void
@@ -318,21 +313,8 @@ set_tsct_time_from_scm (tsct* t, SCM time)
     (scm_list_ref(time,scm_from_int(1)));
   t->day = scm_to_int
     (scm_list_ref(time,scm_from_int(0)));
-
 }
 
-/* global vars */
-
-static book bal_book;
-static SCM bal_cur_acct;
-static int bal_prompton;
-static SCM bal_cur_file;
-static int bal_prompt_exit;
-static int bal_select_tsct_num;
-static struct tm* bal_curtime;
-
-/* sorting functions */
-  
 int
 sort_transactions (const void* a, const void* b)
 {
@@ -349,6 +331,17 @@ sort_transactions (const void* a, const void* b)
   else if (a_t->day < b_t->day) return -1;
   else return 0;
 }
+
+
+/* global vars */
+
+static book bal_book;
+static SCM bal_cur_acct;
+static int bal_prompton;
+static SCM bal_cur_file;
+static int bal_prompt_exit;
+static int bal_select_tsct_num;
+static struct tm* bal_curtime;
 
 /* send code to guile interpreter */
 
@@ -397,10 +390,7 @@ exec_string_safe_history (void* toeval_v)
       add_history ((char*) toeval_v);
       return exec_string_safe (toeval_v);
     }
-  else
-    {
-      return SCM_UNDEFINED;
-    }
+  else return SCM_UNDEFINED;
 }
 
 /* find accounts by name */
@@ -483,7 +473,7 @@ total_transactions (const account* acct)
                   scm_from_double(total));
 }
 
-/* selection functions */
+/* selection functions for bal/call */
 
 char*
 bal_select_account (const char* prompt)
@@ -558,27 +548,30 @@ bal_select_transaction (account* acct)
   return -1;
 }
 
-int
-bal_select_day (struct tm* curtime_info,
-                char** year,
-                char** month,
-                char** day)
+char*
+bal_select_day (struct tm* curtime_info)
 {
   char* prompt;
+  char* year; char* month; char* day;
 
   prompt = copy_string_insert_int("Year [%d]: ", curtime_info->tm_year+1900);
-  *year = readline(prompt);
+  year = readline(prompt);
   free(prompt);
 
   prompt = copy_string_insert_int("Month [%d]: ", curtime_info->tm_mon+1);
-  *month = readline(prompt);
+  month = readline(prompt);
   free(prompt);
 
   prompt = copy_string_insert_int("Day [%d]: ", curtime_info->tm_mday);
-  *day = readline(prompt);
+  day = readline(prompt);
   free(prompt);
 
-  return 0;
+  char* ret = malloc(sizeof(char)*(strlen("(list   )")+2+2+4+1));
+  sprintf(ret, "(list %d %d %d)",
+	  strcmp(day,"")==0 ? curtime_info->tm_mday : atoi(day),
+	  strcmp(month,"")==0 ? (curtime_info->tm_mon+1) : atoi(month),
+	  strcmp(year,"")==0 ? (curtime_info->tm_year+1900) : atoi(year));
+  return ret;
 }
 
 account_type
@@ -985,9 +978,8 @@ write_out (char* base)
 
   sprintf(cmd, "rm -R %s", tmp_dir);
   system(cmd);
-  free(cmd);
-  free(tmp_dir);
-  free(fn);
+
+  free(cmd); free(tmp_dir); free(fn);
 
   return 0;
 }
@@ -1011,17 +1003,14 @@ bal_call (SCM func, SCM options)
   struct tm* curtime_info;
 
   int len = scm_to_int (scm_length (options));
-  char* year;
-  char* month;
-  char* day;
 
   char* func_c = scm_to_locale_string (func);
   char* command = copy_string(func_c);
+  free(func_c);
+  
   append_to_string(&command, " ", "");
 
-  free(func_c);
   bal_prompton = 2;
-
   for (i=0; i < len; i++)
     {
       if (bal_prompton != 2)
@@ -1092,16 +1081,8 @@ bal_call (SCM func, SCM options)
           curtime_info = localtime(&curtime);
 
           printf("%s\n", name_c);
-
-          bal_select_day (curtime_info, &year, &month, &day);
-          command = realloc(command,
-                            sizeof(char)*(strlen(command)+4+2+2+15));
-
-          
-          sprintf(command, "%s(list %d %d %d)", command,
-                  strcmp(day,"")==0 ? curtime_info->tm_mday : atoi(day),
-                  strcmp(month,"")==0 ? (curtime_info->tm_mon+1) : atoi(month),
-                  strcmp(year,"")==0 ? (curtime_info->tm_year+1900) : atoi(year));
+          opt = bal_select_day (curtime_info);
+	  append_to_string(&command, opt, "");
           break;
         default:
           opt = readline(name_c);
@@ -1109,8 +1090,7 @@ bal_call (SCM func, SCM options)
           break;
         }
 
-      if (type != DAY) free(opt);
-      free(name_c);
+      free(opt); free(name_c);
       
       if (i != (len-1))
         append_to_string(&command, " ", "");
@@ -1163,8 +1143,7 @@ bal_at (SCM account_name,
 
   qsort(acct->tscts, acct->n_tsct, sizeof(tsct), sort_transactions);
   
-  free(account_c);
-  free(desc_c);
+  free(account_c); free(desc_c);
 
   bal_cur_acct = account_name;
   return SCM_UNDEFINED;
@@ -1229,10 +1208,7 @@ bal_ea (SCM cur_name,
   if (strcmp(current_account, cur_name_c)==0)
     bal_cur_acct = name;
 
-  free(ob_c);
-  free(cur_name_c);
-  free(name_c);
-  free(current_account);
+  free(ob_c); free(cur_name_c); free(name_c); free(current_account);
 
   return SCM_UNDEFINED;
 }
@@ -1849,14 +1825,14 @@ bal_exit ()
 int
 dummy_event ()
 {
+  return 0;
 }
 
 void
 interrupt_handler (int status)
 {
   rl_replace_line("",0);
-  if (bal_prompton==2)
-    bal_prompton = 1;
+  if (bal_prompton==2) bal_prompton = 1;
   rl_done = 1;
 }
 
@@ -1906,26 +1882,19 @@ main (int argc, char** argv)
           scm_c_primitive_load(optarg);
           break;
         case 'f':
-          {
-            bal_cur_file = scm_from_locale_string (optarg);
-            fname = scm_to_locale_string (bal_cur_file);
+	  bal_cur_file = scm_from_locale_string (optarg);
+	  fname = scm_to_locale_string (bal_cur_file);
 
-            if (access(fname, R_OK) != -1)
-              {
-                free(fname);
-                fname = scm_to_locale_string(bal_cur_file);
-                read_in (fname);
-                if (bal_book.n_account > 0)
-                  bal_cur_acct = scm_from_locale_string
-                    (bal_book.accounts[0].name);
-
-                free(fname);
-              }
-            else
-              {
-                free(fname);
-              }
-          }
+	  if (access(fname, R_OK) != -1)
+	    {
+	      free(fname);
+	      fname = scm_to_locale_string(bal_cur_file);
+	      read_in (fname);
+	      if (bal_book.n_account > 0)
+		bal_cur_acct = scm_from_locale_string
+		  (bal_book.accounts[0].name);
+	    }
+	  free(fname);
           break;
         case 's':
           bal_prompt_exit = 0;
@@ -1950,12 +1919,9 @@ main (int argc, char** argv)
     {
       char* home = getenv("HOME");
       char* balrc;
-  
-      balrc = malloc(sizeof(char)*(strlen(home)+
-                                   strlen("/.balrc.scm")+
-                                   2));
-      strcpy(balrc, home);
-      strcat(balrc, "/.balrc.scm");
+
+      balrc = copy_string(home);
+      append_to_string(&balrc, "/.balrc.scm", "");
       
       if (access(balrc, R_OK) != -1)
         scm_c_primitive_load(balrc);
