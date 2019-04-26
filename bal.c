@@ -169,7 +169,6 @@ typedef enum
    OTHER
   } arg_type;
 
-
 typedef struct
 {
   account_type type;
