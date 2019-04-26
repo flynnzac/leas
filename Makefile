@@ -9,4 +9,6 @@ install: bal bal.1 bal.scm
 	mkdir -p /usr/local/share/man/man1/
 	cp bal.1 /usr/local/share/man/man1/
 	cp bal.scm /etc/
+	guild compile /etc/bal.scm
 	cp bal /usr/local/bin/
+
