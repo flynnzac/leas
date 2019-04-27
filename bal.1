@@ -11,7 +11,7 @@
 
 \" THIS DOCUMENTATION IS PROVIDED BY ZACH FLYNN "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL ZACH FLYNN BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-.TH bal 1 2018-10-26 
+.TH bal 1 2019-04-26 
 .SH NAME
 bal \- for keeping accounts in order and studying past spending habits
 .SH SYNOPSIS
@@ -39,23 +39,24 @@ add account
 .BR at
 add transaction to current account
 .TP
-.BR ea
-rename account
-.TP
 .BR et\~ [n]
 edit transaction, optionally setting how many of the latest transaction numbers to list (any transaction can be chosen whether it is listed or not).
+.TP
+.BR lt
+list most recent transactions in current account (change number to list by modifying the variable bal/number-to-quick-list).
+.TP
+.BR ltn
+list most recent transactions in current account, prompt for number to
+list
+.TP
+.BR ea
+rename account
 .TP
 .BR da
 delete account
 .TP
 .BR dt
 delete transaction
-.TP
-.BR t
-transfer from one account to another
-.TP
-.BR pl
-pay a loan, allows you to split a payment between a principal account (liability account) and an interest account (an expense account)
 .TP
 .BR la
 list accounts and current balances
@@ -72,18 +73,26 @@ list asset accounts and current balances
 .BR lal
 list liability accounts and current balances
 .TP
-.BR lt
-list most recent transactions in current account (change number to list by modifying the variable bal/number-to-quick-list)
-.TP
-.BR ltn
-list most recent transactions in current account, prompt for number to
-list
-.TP
-.BR ltbd
-list transactions in current account by day, prompting for the first and last day to show
-.TP
 .BR bt
 total accounts by type (income, expense, asset, liability)
+.TP
+.BR cex
+total across expenditure accounts
+.TP
+.BR cin
+total across income accounts
+.TP
+.BR cas
+total across asset accounts
+.TP
+.BR cli
+total across liability accounts
+.TP
+.BR cwo
+assets - liabilities
+.TP
+.BR cba
+current balance
 .TP
 .BR re
 list transactions in current account matching a regular expression
@@ -100,21 +109,20 @@ write accounts to file
 .BR r
 read saved accounts from file
 .TP
-.BR p " " X
-print X, a Scheme expression
+.BR t
+transfer from one account to another
 .TP
-.BR q
-quit, unless -s specified, prompt to save before quit
+.BR dtr
+delete a transfer
+.TP
+.BR ltbd
+list transactions in current account by day, prompting for the first and last day to show
 .TP
 .BR v
 print version
 .TP
 .BR sd
-set "current" day, changing it allows you to see how account values have changed over time because
-.BR bt
-and
-.BR la
-will now show before and after this day.
+set "current" day, changing it allows you to see how account values have changed over time 
 .TP
 .BR cd
 print current day out in YYYY-MM-DD format
@@ -136,12 +144,33 @@ prints net worth as of a sequence of days
 .TP
 .BR ttbd
 prints total of all transactions between a sequence of days
+.TP
+.BR ttre
+prints total of all transactions between a sequence of days matching a regular expression
+.TP
+.BR pl
+pay a loan, allows you to split a payment between a principal account (liability account) and an interest account (an expense account)
+.TP
+.BR fn
+print out current default save file
+.TP
+.BR csp
+Change the stock price of current account
+.TP
+.BR "cal [opt]"
+print out calendar, can pass a string to cal which acts like specifying options for the program cal at the command line
+.TP
+.BR p " " X
+print X, a Scheme expression
+.TP
+.BR q
+quit, unless -s specified, prompt to save before quit
 .LP
 The command prompt is a full Guile Scheme interpreter except that you do not need to enclose the outer-most expression in parenthesis. Any valid Scheme code can be executed at the prompt.  For example, typing
 .B display \(dqhello\(dq
-will, in fact, print the text "hello".
+will print the text "hello".
 .B bal
-loads the Scheme functions in the /etc/bal.scm file at startup. These functions implement the interaction functions above.
+loads the Scheme functions in the /etc/bal.scm file at startup. These functions implement the commands above.
 .LP
 Of particular interest for developing your own functions in Scheme is the function
 .B bal/call
