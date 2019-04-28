@@ -1,10 +1,5 @@
-
 bal(1)			    General Commands Manual			bal(1)
-
-
-
-NAME
-       bal - for keeping accounts in order and studying past spending habits
+bal - for keeping accounts in order and studying past spending habits
 
 SYNOPSIS
        bal [-f FILE] [-l CODE] [-s] [-n] [COMMAND]
@@ -189,6 +184,10 @@ BUGS
 
 AUTHOR
        Zach Flynn <zlflynn@gmail.com>
+
+       This manpage is distributed under the GNU  Free	Documentation  License
+       version	1.3.   See COPYING_DOC for the text of the license.  There are
+       no invariant sections.
 
 
 

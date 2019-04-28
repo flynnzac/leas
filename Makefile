@@ -4,6 +4,9 @@ bal: bal.c
 doc: bal.1 
 	(groff -mandoc -Tascii bal.1 | col -b) | fold -s - > README
 	guile postdoc.scm
+	cat bal.mro.texinfo | mro > bal.texinfo
+	makeinfo bal.texinfo
+	makeinfo --pdf bal.texinfo
 
 install: bal bal.1 bal.scm
 	mkdir -p /usr/local/share/man/man1/
