@@ -3,3 +3,5 @@ bal.exe
 *.btar
 *~
 1.scm
+*.log
+*.aux
