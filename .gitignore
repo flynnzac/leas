@@ -5,3 +5,4 @@ bal.exe
 1.scm
 *.log
 *.aux
+*.toc

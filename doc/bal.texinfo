@@ -8,6 +8,7 @@ Copying @copyright{} 2019 Zach Flynn.
 
 @titlepage
 @title bal manual
+@author Zach Flynn
 
 @page
 @vskip 0pt plus 1fill
@@ -49,10 +50,29 @@ This document has two main sections.  In the first, I describe the basic workflo
 
 This chapter will be a tutorial demonstrating basic usage of @b{bal}.
 
+@node Adding a cash asset account
+@section Adding a cash asset account
+
+@node Paying for expenses
+@section Paying for expenses
+An example of adding an expense and income account and transferring money between them.
+
+@node Earning income
+@section Earning income
+
+@node Paying back debt
+@section Paying back debt
+
+@node Adding new debt
+@section Adding new debt
+
+@node Non-cash assets
+@section Non-cash assets
+
 @node Programming bal
 @chapter Programming bal
 
-This chapter is more of a reference manual for the various Scheme functions available in @b{bal}.
+This chapter will be more of a reference manual for the various Scheme functions available in @b{bal}.
 
 @bye
 

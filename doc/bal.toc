@@ -1,3 +1,0 @@
-@numchapentry{Introduction}{1}{Introduction}{1}
-@numchapentry{Basic usage}{2}{Basic usage}{2}
-@numchapentry{Programming bal}{3}{Programming bal}{3}

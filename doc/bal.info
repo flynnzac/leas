@@ -78,13 +78,61 @@ File: bal.info,  Node: Basic usage,  Next: Programming bal,  Prev: Introduction,
 
 This chapter will be a tutorial demonstrating basic usage of bal.
 
+* Menu:
+
+* Adding a cash asset account::
+* Paying for expenses::
+* Earning income::
+* Paying back debt::
+* Adding new debt::
+* Non-cash assets::
+
+
+File: bal.info,  Node: Adding a cash asset account,  Next: Paying for expenses,  Up: Basic usage
+
+2.1 Adding a cash asset account
+===============================
+
+
+File: bal.info,  Node: Paying for expenses,  Next: Earning income,  Prev: Adding a cash asset account,  Up: Basic usage
+
+2.2 Paying for expenses
+=======================
+
+An example of adding an expense and income account and transferring
+money between them.
+
+
+File: bal.info,  Node: Earning income,  Next: Paying back debt,  Prev: Paying for expenses,  Up: Basic usage
+
+2.3 Earning income
+==================
+
+
+File: bal.info,  Node: Paying back debt,  Next: Adding new debt,  Prev: Earning income,  Up: Basic usage
+
+2.4 Paying back debt
+====================
+
+
+File: bal.info,  Node: Adding new debt,  Next: Non-cash assets,  Prev: Paying back debt,  Up: Basic usage
+
+2.5 Adding new debt
+===================
+
+
+File: bal.info,  Node: Non-cash assets,  Prev: Adding new debt,  Up: Basic usage
+
+2.6 Non-cash assets
+===================
+
 
 File: bal.info,  Node: Programming bal,  Prev: Basic usage,  Up: Top
 
 3 Programming bal
 *****************
 
-This chapter is more of a reference manual for the various Scheme
+This chapter will be more of a reference manual for the various Scheme
 functions available in bal.
 
 
@@ -93,6 +141,12 @@ Tag Table:
 Node: Top160
 Node: Introduction508
 Node: Basic usage3304
-Node: Programming bal3493
+Node: Adding a cash asset account3639
+Node: Paying for expenses3804
+Node: Earning income4065
+Node: Paying back debt4216
+Node: Adding new debt4367
+Node: Non-cash assets4517
+Node: Programming bal4642
 
 End Tag Table
