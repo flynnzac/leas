@@ -1,5 +1,6 @@
 \input texinfo
 @settitle bal manual
+@author Zach Flynn
 @copying
 This is the manual for bal, a personal account manager.
 

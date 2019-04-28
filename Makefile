@@ -1,10 +1,11 @@
 bal: bal.c 
 	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall
 
-doc: bal.1 
-	(groff -mandoc -Tascii bal.1 | col -b) | fold -s - > README
+
+doc: doc/bal.1 doc/bal.mro.texinfo
+	(groff -mandoc -Tascii doc/bal.1 | col -b) | fold -s - > README
 	guile postdoc.scm
-	cat bal.mro.texinfo | mro > bal.texinfo
+	cat doc/bal.mro.texinfo | mro > doc/bal.texinfo
 	makeinfo bal.texinfo
 	makeinfo --pdf bal.texinfo
 
