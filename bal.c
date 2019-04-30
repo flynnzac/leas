@@ -1,9 +1,7 @@
 /* 
    bal - for keeping accounts in order and studying past spending habits
    Copyright Zach Flynn <zlflynn@gmail.com>
-*/
 
-/* 
    This program is free software: you can redistribute it and/or modify
    it under the terms of version 3 of the GNU General Public License as published by
    the Free Software Foundation.
