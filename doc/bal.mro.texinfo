@@ -312,8 +312,7 @@ Worth            13970.00   13970.00
 Balances         10000.00
 @end example
 
-@node Adding new debt
-@section Adding new debt
+Note that income is measured as a @i{negative} number as are @i{liabilities}.  @i{Worth} is @i{Assets} - @i{Liabilities}.  
 
 @node Non-cash assets
 @section Non-cash assets

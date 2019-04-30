@@ -301,8 +301,18 @@ Loan            -9930.00   -9930.00
 Interest           30.00      30.00
 @end example
 
-@node Adding new debt
-@section Adding new debt
+It is useful to see broadly how much we are spending, how much we are making, and how in debt we are.  To do so, we can use the command @t{bt}.
+@example
+(Checking) :> bt
+Expense           2030.00    2030.00
+Income           -6000.00   -6000.00
+Asset            23900.00   23900.00
+Liability        -9930.00   -9930.00
+Worth            13970.00   13970.00
+Balances         10000.00
+@end example
+
+Note that income is measured as a @i{negative} number as are @i{liabilities}.  @i{Worth} is @i{Assets} - @i{Liabilities}.
 
 @node Non-cash assets
 @section Non-cash assets

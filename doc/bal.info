@@ -85,7 +85,6 @@ This chapter will be a tutorial demonstrating basic usage of bal.
 * Paying for expenses::
 * Earning income::
 * Paying back debt::
-* Adding new debt::
 * Non-cash assets::
 * Common customizations::
 
@@ -260,7 +259,7 @@ money from the salary account to an asset account.
      Salary          -6000.00   -6000.00
 
 
-File: bal.info,  Node: Paying back debt,  Next: Adding new debt,  Prev: Earning income,  Up: Basic usage
+File: bal.info,  Node: Paying back debt,  Next: Non-cash assets,  Prev: Earning income,  Up: Basic usage
 
 2.4 Paying back debt
 ====================
@@ -347,22 +346,29 @@ split your monthly payment on the loan between interest and principal.
      Loan            -9930.00   -9930.00
      Interest           30.00      30.00
 
+   It is useful to see broadly how much we are spending, how much we are
+making, and how in debt we are.  To do so, we can use the command bt.
+     (Checking) :> bt
+     Expense           2030.00    2030.00
+     Income           -6000.00   -6000.00
+     Asset            23900.00   23900.00
+     Liability        -9930.00   -9930.00
+     Worth            13970.00   13970.00
+     Balances         10000.00
+
+   Note that income is measured as a negative number as are liabilities.
+Worth is Assets - Liabilities.
+
 
-File: bal.info,  Node: Adding new debt,  Next: Non-cash assets,  Prev: Paying back debt,  Up: Basic usage
+File: bal.info,  Node: Non-cash assets,  Next: Common customizations,  Prev: Paying back debt,  Up: Basic usage
 
-2.5 Adding new debt
-===================
-
-
-File: bal.info,  Node: Non-cash assets,  Next: Common customizations,  Prev: Adding new debt,  Up: Basic usage
-
-2.6 Non-cash assets
+2.5 Non-cash assets
 ===================
 
 
 File: bal.info,  Node: Common customizations,  Prev: Non-cash assets,  Up: Basic usage
 
-2.7 Common customizations
+2.6 Common customizations
 =========================
 
 * Menu:
@@ -372,7 +378,7 @@ File: bal.info,  Node: Common customizations,  Prev: Non-cash assets,  Up: Basic
 
 File: bal.info,  Node: Customize prompt,  Up: Common customizations
 
-2.7.1 Customize prompt
+2.6.1 Customize prompt
 ----------------------
 
 
@@ -390,14 +396,13 @@ Tag Table:
 Node: Top160
 Node: Introduction508
 Node: Basic usage3428
-Node: Adding a cash asset account3789
-Node: Paying for expenses4507
-Node: Earning income7186
-Node: Paying back debt8281
-Node: Adding new debt10296
-Node: Non-cash assets10446
-Node: Common customizations10601
-Node: Customize prompt10775
-Node: Programming bal10893
+Node: Adding a cash asset account3769
+Node: Paying for expenses4487
+Node: Earning income7166
+Node: Paying back debt8261
+Node: Non-cash assets10788
+Node: Common customizations10944
+Node: Customize prompt11118
+Node: Programming bal11236
 
 End Tag Table
