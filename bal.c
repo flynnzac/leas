@@ -1862,7 +1862,6 @@ main (int argc, char** argv)
   
   scm_with_guile (&register_guile_functions, NULL);
   bal_standard_func("/etc/bal.scm");
-  bal_cur_acct = SCM_UNDEFINED;
   bal_cur_file = scm_from_locale_string ("_.btar");
 
   rl_event_hook = dummy_event;

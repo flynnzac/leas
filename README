@@ -10,7 +10,7 @@ DESCRIPTION
 
 
        Text  entry at the bal console follows standard line editor conventions
-       (it has Emacs-like key bindings, uses the  GNU  readline	 library).  To
+       (it has Emacs-like key bindings, uses the  GNU  readline  library).  To
        cancel a command, type: Control-C.
 
 
@@ -28,7 +28,7 @@ DESCRIPTION
        lt     list  most recent transactions in current account (change number
 	      to list by modifying the variable bal/number-to-quick-list).
 
-       ltn    list most recent transactions in	current	 account,  prompt  for
+       ltn    list most recent transactions in	current  account,  prompt  for
 	      number to list
 
        ea     rename account
@@ -98,7 +98,7 @@ DESCRIPTION
 
        ttbd   prints total of all transactions between a sequence of days
 
-       ttre   prints total of all transactions	between	 a  sequence  of  days
+       ttre   prints total of all transactions	between  a  sequence  of  days
 	      matching a regular expression
 
        pl     pay  a  loan,  allows you to split a payment between a principal
@@ -119,8 +119,8 @@ DESCRIPTION
 
        The command prompt is a full Guile Scheme interpreter except  that  you
        do  not	need  to enclose the outer-most expression in parenthesis. Any
-       valid Scheme code can be executed at the prompt.	 For  example,	typing
-       display	"hello"	 will  print  the  text "hello".  bal loads the Scheme
+       valid Scheme code can be executed at the prompt.  For  example,	typing
+       display	"hello"  will  print  the  text "hello".  bal loads the Scheme
        functions in the /etc/bal.scm file at startup. These  functions	imple-
        ment the commands above.
 
@@ -129,11 +129,11 @@ DESCRIPTION
        active.
 
        The  saved file is simply a tar archive of CSV files that record trans-
-       actions and characteristics of accounts.	 These files  are  human-read-
+       actions and characteristics of accounts.  These files  are  human-read-
        able.
 
        The prompt is whatever is returned by the evaluating the Scheme expres-
-       sion "(bal/prompt)" so redefining this  function	 will  customize  your
+       sion "(bal/prompt)" so redefining this  function  will  customize  your
        prompt.
 
 OPTIONS
@@ -157,21 +157,21 @@ FILES
        bal executes Scheme code in ~/.balrc.scm if the file is present.
 
 EXAMPLES
-       bal    start the	 bal  interpreter  and	execute	 any  Scheme  code  in
-	      ~/.balrc.scm  (potentially  including  code  to load data from a
-	      default file).
+       bal    start the  bal  interpreter  and	execute  any  Scheme  code  in
+	      ~/.balrc.scm (potentially including code to load data from a de-
+	      fault file).
 
        bal -f myaccounts.btar
 	      load the file myaccounts.btar from the current directory.
 
        bal -s v
-	      quits  and  exists  after	 displaying  version  number  (without
+	      quits  and  exists  after  displaying  version  number  (without
 	      prompting to save data).
 
        bal aa displays	 prompts   to	add   new   account  after  evaluating
 	      ~/.balrc.scm and then exits (prompting to save)
 
-       bal t  displays	prompts	 to  add  new  transaction  after   evaluating
+       bal t  displays	prompts  to  add  new  transaction  after   evaluating
 	      ~/.balrc.scm and then exits (prompting to save)
 
        bal -s la

@@ -86,6 +86,8 @@ This chapter will be a tutorial demonstrating basic usage of bal.
 * Earning income::
 * Paying back debt::
 * Non-cash assets::
+* Saving loading and quitting::
+* Scheme code::
 * Common customizations::
 
 
@@ -94,7 +96,7 @@ File: bal.info,  Node: Adding a cash asset account,  Next: Paying for expenses, 
 2.1 Adding a cash asset account
 ===============================
 
-A bal file is made up of several 'accounts'.  To start using bal, you
+A bal file is made up of several "accounts".  To start using bal, you
 will want to add some asset accounts to represent your assets.  Assets
 can be wherever you store your money.  Asset accounts can be Checking
 accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you
@@ -133,7 +135,7 @@ expenses.
      (Rent) :>
 
    Now, to pay the Rent.  The main command you use in bal after getting
-your accounts set up is the 'transfer' command, t.  t transfers money
+your accounts set up is the "transfer" command, t.  t transfers money
 from one account to another account.  Making a payment is transferring
 money from your asset accounts to your expense accounts.
 
@@ -163,14 +165,14 @@ You can change the current account with the sa command,
      Account: 1
      (Rent) :>
 
-   Another command you commonly use in bal is the 'list transactions'
+   Another command you commonly use in bal is the "list transactions"
 command, lt.  lt lists the transactions in the current account,
 
      (Rent) :> lt
      2019-04-30 The rent        2000.00
 
-   To see how much money is in your accounts, type la (for 'list
-account').
+   To see how much money is in your accounts, type la (for "list
+account").
 
      (Rent) :> la
      Checking         8000.00    8000.00
@@ -357,18 +359,145 @@ making, and how in debt we are.  To do so, we can use the command bt.
      Balances         10000.00
 
    Note that income is measured as a negative number as are liabilities.
-Worth is Assets - Liabilities.
+Worth is Assets - Liabilities.  Balances gives the total of the opening
+balances.
 
 
-File: bal.info,  Node: Non-cash assets,  Next: Common customizations,  Prev: Paying back debt,  Up: Basic usage
+File: bal.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Paying back debt,  Up: Basic usage
 
 2.5 Non-cash assets
 ===================
 
-
-File: bal.info,  Node: Common customizations,  Prev: Non-cash assets,  Up: Basic usage
+You may own some non-cash assets, like stocks, mutual funds, or bonds.
+The value of these assets in terms of currency changes over time.  bal
+provides a command for updating the currency value of these assets.
 
-2.6 Common customizations
+   First, let's add our mutual fund,
+     (Checking) :> aa
+     Account: Mutual Fund
+     0: Expense
+     1: Income
+     2: Asset
+     3: Liability
+     Type: 2
+     Opening Balance: 10000
+     (Mutual Fund) :>
+
+   Then, let's add an income account for our fund.
+     (Mutual Fund) :> aa
+     Account: Mutual Fund Income
+     0: Expense
+     1: Income
+     2: Asset
+     3: Liability
+     Type: 1
+     Opening Balance: 0
+     (Mutual Fund Income) :>
+
+   Now, say we own 500 shares of the mutual fund each worth 20 currency
+units.  Say the value of a share in the mutual fund increased to 21
+currency units.  We can then use the csp ("change share price") command
+to change the value of the shares in our mutual fund,
+     (Mutual Fund Income) :> sa
+      0: Checking
+      1: Rent
+      2: Salary
+      3: Loan
+      4: Interest
+      5: Mutual Fund
+      6: Mutual Fund Income
+     Account: 5
+     (Mutual Fund) :> csp
+      0: Checking
+      1: Rent
+      2: Salary
+      3: Loan
+      4: Interest
+      5: Mutual Fund
+      6: Mutual Fund Income
+     From Account: 6
+     Stock Price: 21
+     Number of Shares: 500
+     Day:
+     Year [2019]:
+     Month [4]:
+     Day [30]:
+     (Mutual Fund Income) :> lt
+     2019-04-30 Stock Price Change         -500.00
+     (Mutual Fund Income) :> la
+     Checking                  23900.00   23900.00
+     Rent                       2000.00    2000.00
+     Salary                    -6000.00   -6000.00
+     Loan                      -9930.00   -9930.00
+     Interest                     30.00      30.00
+     Mutual Fund               10500.00   10500.00
+     Mutual Fund Income         -500.00    -500.00
+     (Mutual Fund Income) :>
+
+
+File: bal.info,  Node: Saving loading and quitting,  Next: Scheme code,  Prev: Non-cash assets,  Up: Basic usage
+
+2.6 Saving, loading, and quitting
+=================================
+
+To save your bal accounts, use the w command.
+
+     (Mutual Fund Income) :> w
+     File: example.btar
+     (Mutual Fund Income) :>
+
+   To do so non-interactively, type bal/write "example.btar".
+
+   To quit bal, use the q command,
+
+     (Mutual Fund Income) :> q
+     Save file? (y/n) n
+
+   To load the file you just saved, you can use the interactive command
+r,
+
+     $ bal
+     :> r
+     File: example.btar
+     (Checking) :> la
+     Checking                  23900.00   23900.00
+     Rent                       2000.00    2000.00
+     Salary                    -6000.00   -6000.00
+     Loan                      -9930.00   -9930.00
+     Interest                     30.00      30.00
+     Mutual Fund               10500.00   10500.00
+     Mutual Fund Income         -500.00    -500.00
+     (Checking) :>
+
+   To load the file non-interactively, you can use the command bal/read
+"example.btar".  This command is particularly useful to include in bal's
+init file ~/.balrc.scm.  Usually, this file will include the line,
+
+     (bal/read "balfile.btar")
+
+
+File: bal.info,  Node: Scheme code,  Next: Common customizations,  Prev: Saving loading and quitting,  Up: Basic usage
+
+2.7 Scheme code
+===============
+
+The prompt is a Scheme interpreter and can execute arbitrary code.  The
+only difference is that the outer expression should not be enclosed in
+parenthesis.  For example,
+     (Checking) :> display (string-append (number->string (+ 1 2)) "\n")
+     3
+     (Checking) :>
+
+   bal provides a useful function p for displaying expressions and then
+adding a newline like the above,
+     (Checking) :> p (+ 1 2)
+     3
+     (Checking) :>
+
+
+File: bal.info,  Node: Common customizations,  Prev: Scheme code,  Up: Basic usage
+
+2.8 Common customizations
 =========================
 
 * Menu:
@@ -378,8 +507,31 @@ File: bal.info,  Node: Common customizations,  Prev: Non-cash assets,  Up: Basic
 
 File: bal.info,  Node: Customize prompt,  Up: Common customizations
 
-2.6.1 Customize prompt
+2.8.1 Customize prompt
 ----------------------
+
+The bal prompt is generated by calling the Scheme function (bal/prompt).
+If you change this function, you can customize the prompt.  For example,
+try adding the following to see the current date,
+
+     (define bal/prompt
+       (lambda ()
+         (if (= (bal/get-number-of-accounts) 0)
+             ":> "
+             (let* ((day (bal/get-current-day))
+                    (mday (list-ref day 0))
+                    (month (list-ref day 1))
+                    (year (list-ref day 2)))
+               (string-append
+                "("
+                (bal/get-current-account)
+                " "
+                (number->string year)
+                "-"
+                (number->string month)
+                "-"
+                (number->string mday)
+                ") :> ")))))
 
 
 File: bal.info,  Node: Programming bal,  Prev: Basic usage,  Up: Top
@@ -396,13 +548,15 @@ Tag Table:
 Node: Top160
 Node: Introduction508
 Node: Basic usage3428
-Node: Adding a cash asset account3769
-Node: Paying for expenses4487
-Node: Earning income7166
-Node: Paying back debt8261
-Node: Non-cash assets10788
-Node: Common customizations10944
-Node: Customize prompt11118
-Node: Programming bal11236
+Node: Adding a cash asset account3817
+Node: Paying for expenses4535
+Node: Earning income7214
+Node: Paying back debt8309
+Node: Non-cash assets10887
+Node: Saving loading and quitting12939
+Node: Scheme code14176
+Node: Common customizations14762
+Node: Customize prompt14932
+Node: Programming bal15835
 
 End Tag Table

@@ -6,7 +6,6 @@ bal: bal.c
 doc: doc/bal.1 doc/bal.mro.texinfo .FORCE
 	(groff -mandoc -Tascii doc/bal.1 | col -b) | fold -s - > README
 	guile postdoc.scm
-	cat doc/bal.mro.texinfo | mro > doc/bal.texinfo
 	makeinfo doc/bal.texinfo -o doc/bal.info
 	makeinfo --pdf doc/bal.texinfo -o doc/bal.pdf
 
