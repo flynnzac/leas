@@ -27,7 +27,7 @@ This is the bal reference manual.
 @ifinfo
 @menu
 * Introduction:: introduction to bal, what it is, and an outline of manual
-* Basic usage:: basic interactive usage of bal
+* Tutorial:: tutorial explaining basic interactive usage of bal
 * Programming bal:: full documentation of the functions bal exposes for use when writing custom bal commands
 @end menu
 @end ifinfo
@@ -41,19 +41,17 @@ No knowledge of Scheme or programming in general is required to use @b{bal}.  I 
 
 The other extreme in the accounting software world were programs that required the user to edit text files to add transactions (the best example being @b{ledger}).  I found this to be difficult to use as a user and wanted something more interactive.  Of course, you may have your own preference.  Like @b{ledger}, @b{bal} stores data in human-readable text files, but @b{bal}'s save files are particularly easy to analyze with other tools.  The @b{bal} save file is simply a @b{tar} archive of comma-separated data files with data about your various transactions.  You can open these files in @b{R}, for example, and analyze your past spending that way.
 
-All commands that ship with @b{bal} are small Guile Scheme commands which call a few functions exported by @b{bal} from C and a built-in function @i{bal/call} which lets the user enter the function arguments interactively (it fills the role of @i{interactive} in Emacs, if you are familiar with it).  These functions are documented in the reference manual to help you construct your own commands.  The @b{bal} prompt, in fact, is a Scheme interpreter.  Any Scheme expression can be written there.
+All commands that ship with @b{bal} are small Guile Scheme commands which call a few functions exported by @b{bal} from C and a built-in function @t{bal/call} which lets the user enter the function arguments interactively (it fills the role of @t{interactive} in Emacs, if you are familiar with it).  These functions are documented in the reference manual to help you construct your own commands.  The @b{bal} prompt, in fact, is a Scheme interpreter.  Any Scheme expression can be written there.
 
 This document has two main sections.  In the first, I describe the basic workflow for using @b{bal}.  This section is more in-depth than the manpage and gives some examples of how to add accounts and make transactions.  It is a tutorial that will help get you up-and-running using @b{bal}.  In the second section, I describe all the Scheme commands exported by @b{bal} which is more useful if you are trying to write your own commands.
 
-@node Basic usage
-@chapter Basic usage
-
-This chapter will be a tutorial demonstrating basic usage of @b{bal}.
+@node Tutorial
+@chapter Tutorial
 
 @node Adding a cash asset account
 @section Adding a cash asset account
 
-A @b{bal} file is made up of several "accounts".  To start using @b{bal}, you will want to add some asset accounts to represent your assets.  Assets can be wherever you store your money.  Asset accounts can be Checking accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you own.  To see how this works in @b{bal}, let us look at an example of adding a checking account to a fresh @b{bal} file.
+A @b{bal} file is made up of several "accounts".  To start using @b{bal}, you will want to add some asset accounts.  Assets can be wherever you store your money.  Asset accounts can be Checking accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you own.  To see how this works in @b{bal}, let's look at an example of adding a checking account to a fresh @b{bal} file.
 
 @example
 :> aa
@@ -67,6 +65,7 @@ Opening Balance: @i{10000}
 (Checking) :> 
 @end example
 
+This opens up an asset account called "Checking" with 10000 units of currency in it as an opening balance.  We can use asset accounts to pay for our expenses, to pay back our loans, and as a place to store the income we earn from working.  I discuss how to do each of those things in the following sections.
 
 @node Paying for expenses
 @section Paying for expenses

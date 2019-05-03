@@ -15,11 +15,11 @@ This is the bal reference manual.
 * Menu:
 
 * Introduction:: introduction to bal, what it is, and an outline of manual
-* Basic usage:: basic interactive usage of bal
+* Tutorial:: tutorial explaining basic interactive usage of bal
 * Programming bal:: full documentation of the functions bal exposes for use when writing custom bal commands
 
 
-File: bal.info,  Node: Introduction,  Next: Basic usage,  Prev: Top,  Up: Top
+File: bal.info,  Node: Introduction,  Next: Tutorial,  Prev: Top,  Up: Top
 
 1 Introduction
 **************
@@ -72,12 +72,10 @@ exported by bal which is more useful if you are trying to write your own
 commands.
 
 
-File: bal.info,  Node: Basic usage,  Next: Programming bal,  Prev: Introduction,  Up: Top
+File: bal.info,  Node: Tutorial,  Next: Programming bal,  Prev: Introduction,  Up: Top
 
-2 Basic usage
-*************
-
-This chapter will be a tutorial demonstrating basic usage of bal.
+2 Tutorial
+**********
 
 * Menu:
 
@@ -91,17 +89,17 @@ This chapter will be a tutorial demonstrating basic usage of bal.
 * Common customizations::
 
 
-File: bal.info,  Node: Adding a cash asset account,  Next: Paying for expenses,  Up: Basic usage
+File: bal.info,  Node: Adding a cash asset account,  Next: Paying for expenses,  Up: Tutorial
 
 2.1 Adding a cash asset account
 ===============================
 
 A bal file is made up of several "accounts".  To start using bal, you
-will want to add some asset accounts to represent your assets.  Assets
-can be wherever you store your money.  Asset accounts can be Checking
-accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you
-own.  To see how this works in bal, let us look at an example of adding
-a checking account to a fresh bal file.
+will want to add some asset accounts.  Assets can be wherever you store
+your money.  Asset accounts can be Checking accounts, Savings accounts,
+Stocks, Bonds, Cash, and anything else you own.  To see how this works
+in bal, let's look at an example of adding a checking account to a fresh
+bal file.
 
      :> aa
      Account: Checking
@@ -113,8 +111,14 @@ a checking account to a fresh bal file.
      Opening Balance: 10000
      (Checking) :>
 
+   This opens up an asset account called "Checking" with 10000 units of
+currency in it as an opening balance.  We can use asset accounts to pay
+for our expenses, to pay back our loans, and as a place to store the
+income we earn from working.  I discuss how to do each of those things
+in the following sections.
+
 
-File: bal.info,  Node: Paying for expenses,  Next: Earning income,  Prev: Adding a cash asset account,  Up: Basic usage
+File: bal.info,  Node: Paying for expenses,  Next: Earning income,  Prev: Adding a cash asset account,  Up: Tutorial
 
 2.2 Paying for expenses
 =======================
@@ -217,7 +221,7 @@ where you are spending your money),
      Rent         2000.00    2000.00
 
 
-File: bal.info,  Node: Earning income,  Next: Paying back debt,  Prev: Paying for expenses,  Up: Basic usage
+File: bal.info,  Node: Earning income,  Next: Paying back debt,  Prev: Paying for expenses,  Up: Tutorial
 
 2.3 Earning income
 ==================
@@ -261,7 +265,7 @@ money from the salary account to an asset account.
      Salary          -6000.00   -6000.00
 
 
-File: bal.info,  Node: Paying back debt,  Next: Non-cash assets,  Prev: Earning income,  Up: Basic usage
+File: bal.info,  Node: Paying back debt,  Next: Non-cash assets,  Prev: Earning income,  Up: Tutorial
 
 2.4 Paying back debt
 ====================
@@ -363,7 +367,7 @@ Worth is Assets - Liabilities.  Balances gives the total of the opening
 balances.
 
 
-File: bal.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Paying back debt,  Up: Basic usage
+File: bal.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Paying back debt,  Up: Tutorial
 
 2.5 Non-cash assets
 ===================
@@ -435,7 +439,7 @@ to change the value of the shares in our mutual fund,
      (Mutual Fund Income) :>
 
 
-File: bal.info,  Node: Saving loading and quitting,  Next: Scheme code,  Prev: Non-cash assets,  Up: Basic usage
+File: bal.info,  Node: Saving loading and quitting,  Next: Scheme code,  Prev: Non-cash assets,  Up: Tutorial
 
 2.6 Saving, loading, and quitting
 =================================
@@ -476,7 +480,7 @@ init file ~/.balrc.scm.  Usually, this file will include the line,
      (bal/read "balfile.btar")
 
 
-File: bal.info,  Node: Scheme code,  Next: Common customizations,  Prev: Saving loading and quitting,  Up: Basic usage
+File: bal.info,  Node: Scheme code,  Next: Common customizations,  Prev: Saving loading and quitting,  Up: Tutorial
 
 2.7 Scheme code
 ===============
@@ -495,7 +499,7 @@ adding a newline like the above,
      (Checking) :>
 
 
-File: bal.info,  Node: Common customizations,  Prev: Scheme code,  Up: Basic usage
+File: bal.info,  Node: Common customizations,  Prev: Scheme code,  Up: Tutorial
 
 2.8 Common customizations
 =========================
@@ -534,7 +538,7 @@ try adding the following to see the current date,
                 ") :> ")))))
 
 
-File: bal.info,  Node: Programming bal,  Prev: Basic usage,  Up: Top
+File: bal.info,  Node: Programming bal,  Prev: Tutorial,  Up: Top
 
 3 Programming bal
 *****************
@@ -546,17 +550,17 @@ functions available in bal.
 
 Tag Table:
 Node: Top160
-Node: Introduction508
-Node: Basic usage3428
-Node: Adding a cash asset account3817
-Node: Paying for expenses4535
-Node: Earning income7214
-Node: Paying back debt8309
-Node: Non-cash assets10887
-Node: Saving loading and quitting12939
-Node: Scheme code14176
-Node: Common customizations14762
-Node: Customize prompt14932
-Node: Programming bal15835
+Node: Introduction525
+Node: Tutorial3442
+Node: Adding a cash asset account3755
+Node: Paying for expenses4756
+Node: Earning income7432
+Node: Paying back debt8524
+Node: Non-cash assets11099
+Node: Saving loading and quitting13148
+Node: Scheme code14382
+Node: Common customizations14965
+Node: Customize prompt15132
+Node: Programming bal16035
 
 End Tag Table
