@@ -105,7 +105,7 @@ Day [30]:
 (Checking) :>
 @end example
 
-By default, the prompt tells you what the @i{current account} is and, when you add an account, the current account is set to the account you just created.  @b{bal} has several commands that act on the current account.  You can change the current account with the @t{sa} command,
+By default, the prompt tells you what the @i{current account} is and, when you add an account, the current account is set to the account you just created.  @b{bal} has several commands that act on the current account.  You can change the current account with the @t{sa} ("switch account") command,
 
 @example
 (Checking) :> sa
@@ -173,7 +173,7 @@ Rent         2000.00    2000.00
 @node Earning income
 @section Earning income
 
-It is a good idea to earn income to pay for your expenses.  Highly recommended.  Like with paying expenses, earning income starts up adding an income account. Let's start with adding a salary account,
+It is a good idea to earn income to pay for your expenses.  Highly recommended.  Like with paying expenses, to add income start by adding an income account. Let's start with adding a salary account,
 
 @example
 (Rent) :> aa
@@ -212,8 +212,8 @@ Rent             2000.00    2000.00
 Salary          -6000.00   -6000.00
 @end example
 
-@node Paying back debt
-@section Paying back debt
+@node Managing debt
+@section Managing debt
 
 Adding debt follows the same pattern as paying expenses and receiving income.
 @example
@@ -264,7 +264,7 @@ Opening Balance: 0
 (Interest) :>
 @end example
 
-To pay back loans, use the command @t{pl}.  This command allows you to split your monthly payment on the loan between interest and principal.
+To pay back loans, use the command @t{pl}.  This command allows you to split your payment on the loan between interest and principal.
 @example
 (Interest) :> pl
  0: Checking

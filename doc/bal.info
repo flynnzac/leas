@@ -82,7 +82,7 @@ File: bal.info,  Node: Tutorial,  Next: Programming bal,  Prev: Introduction,  U
 * Adding a cash asset account::
 * Paying for expenses::
 * Earning income::
-* Paying back debt::
+* Managing debt::
 * Non-cash assets::
 * Saving loading and quitting::
 * Scheme code::
@@ -161,7 +161,8 @@ money from your asset accounts to your expense accounts.
    By default, the prompt tells you what the current account is and,
 when you add an account, the current account is set to the account you
 just created.  bal has several commands that act on the current account.
-You can change the current account with the sa command,
+You can change the current account with the sa ("switch account")
+command,
 
      (Checking) :> sa
       0: Checking
@@ -221,13 +222,13 @@ where you are spending your money),
      Rent         2000.00    2000.00
 
 
-File: bal.info,  Node: Earning income,  Next: Paying back debt,  Prev: Paying for expenses,  Up: Tutorial
+File: bal.info,  Node: Earning income,  Next: Managing debt,  Prev: Paying for expenses,  Up: Tutorial
 
 2.3 Earning income
 ==================
 
 It is a good idea to earn income to pay for your expenses.  Highly
-recommended.  Like with paying expenses, earning income starts up adding
+recommended.  Like with paying expenses, to add income start by adding
 an income account.  Let's start with adding a salary account,
 
      (Rent) :> aa
@@ -265,10 +266,10 @@ money from the salary account to an asset account.
      Salary          -6000.00   -6000.00
 
 
-File: bal.info,  Node: Paying back debt,  Next: Non-cash assets,  Prev: Earning income,  Up: Tutorial
+File: bal.info,  Node: Managing debt,  Next: Non-cash assets,  Prev: Earning income,  Up: Tutorial
 
-2.4 Paying back debt
-====================
+2.4 Managing debt
+=================
 
 Adding debt follows the same pattern as paying expenses and receiving
 income.
@@ -318,7 +319,7 @@ also need an expense account for paying interest.
      (Interest) :>
 
    To pay back loans, use the command pl.  This command allows you to
-split your monthly payment on the loan between interest and principal.
+split your payment on the loan between interest and principal.
      (Interest) :> pl
       0: Checking
       1: Rent
@@ -367,7 +368,7 @@ Worth is Assets - Liabilities.  Balances gives the total of the opening
 balances.
 
 
-File: bal.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Paying back debt,  Up: Tutorial
+File: bal.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Managing debt,  Up: Tutorial
 
 2.5 Non-cash assets
 ===================
@@ -552,15 +553,15 @@ Tag Table:
 Node: Top160
 Node: Introduction525
 Node: Tutorial3442
-Node: Adding a cash asset account3755
-Node: Paying for expenses4756
-Node: Earning income7432
-Node: Paying back debt8524
-Node: Non-cash assets11099
-Node: Saving loading and quitting13148
-Node: Scheme code14382
-Node: Common customizations14965
-Node: Customize prompt15132
-Node: Programming bal16035
+Node: Adding a cash asset account3752
+Node: Paying for expenses4753
+Node: Earning income7448
+Node: Managing debt8535
+Node: Non-cash assets11093
+Node: Saving loading and quitting13139
+Node: Scheme code14373
+Node: Common customizations14956
+Node: Customize prompt15123
+Node: Programming bal16026
 
 End Tag Table
