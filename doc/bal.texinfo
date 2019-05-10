@@ -443,6 +443,9 @@ The prompt is a Scheme interpreter and can execute arbitrary code.  The only dif
 (Checking) :>
 @end example
 
+In interactive functions, the prompt for the various arguments allows
+Scheme expressions as well.  For example, you can enter the value of a
+transaction as @t{(- 15.29 13.99)}.
 
 @node Common customizations
 @section Common customizations

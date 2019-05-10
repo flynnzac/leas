@@ -499,6 +499,10 @@ adding a newline like the above,
      3
      (Checking) :>
 
+   In interactive functions, the prompt for the various arguments allows
+Scheme expressions as well.  For example, you can enter the value of a
+transaction as (- 15.29 13.99).
+
 
 File: bal.info,  Node: Common customizations,  Prev: Scheme code,  Up: Tutorial
 
@@ -560,8 +564,8 @@ Node: Managing debt8535
 Node: Non-cash assets11093
 Node: Saving loading and quitting13139
 Node: Scheme code14373
-Node: Common customizations14956
-Node: Customize prompt15123
-Node: Programming bal16026
+Node: Common customizations15133
+Node: Customize prompt15300
+Node: Programming bal16203
 
 End Tag Table
