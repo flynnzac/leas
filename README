@@ -154,10 +154,11 @@ OPTIONS
 	      ~/.balrc.scm).
 
 FILES
-       bal executes Scheme code in ~/.balrc.scm if the file is present.
+       bal executes Scheme code in ~/.balrc.scm when it starts up if the  file
+       is present.
 
 EXAMPLES
-       bal    start the  bal  interpreter  and	execute  any  Scheme  code  in
+       bal    start  the  bal  interpreter  and  execute  any  Scheme  code in
 	      ~/.balrc.scm (potentially including code to load data from a de-
 	      fault file).
 
@@ -168,10 +169,10 @@ EXAMPLES
 	      quits  and  exists  after  displaying  version  number  (without
 	      prompting to save data).
 
-       bal aa displays	 prompts   to	add   new   account  after  evaluating
+       bal aa displays	prompts  to   add   new   account   after   evaluating
 	      ~/.balrc.scm and then exits (prompting to save)
 
-       bal t  displays	prompts  to  add  new  transaction  after   evaluating
+       bal t  displays	 prompts  to  add  new	transaction  after  evaluating
 	      ~/.balrc.scm and then exits (prompting to save)
 
        bal -s la
@@ -185,8 +186,8 @@ BUGS
 AUTHOR
        Zach Flynn <zlflynn@gmail.com>
 
-       This manpage is distributed under the GNU  Free	Documentation  License
-       version	1.3.   See COPYING_DOC for the text of the license.  There are
+       This  manpage  is  distributed under the GNU Free Documentation License
+       version 1.3.  See COPYING_DOC for the text of the license.   There  are
        no invariant sections.
 
 
