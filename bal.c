@@ -342,6 +342,22 @@ static int bal_prompt_exit;
 static int bal_select_tsct_num;
 static struct tm* bal_curtime;
 
+/* check whether an (account,transaction) exists by number */
+int
+check_account_trans (int a, int t)
+{
+  if ((0 <= a) & (bal_book.n_account > a))
+    {
+      if ((0 <= t) & (bal_book.accounts[a].n_tsct > t))
+	return 1;
+      else
+	return 0;
+    }
+  else
+    return 0;
+}
+
+
 /* send code to guile interpreter */
 
 SCM
@@ -1123,9 +1139,13 @@ bal_at (SCM account_name,
         SCM day)
 {
   char* account_c = scm_to_locale_string (account_name);
+  account* acct = find_account_in_book (&bal_book, account_c);
+  free(account_c);
+
+  if (acct == NULL) return SCM_UNDEFINED;
+
   char* desc_c = scm_to_locale_string (desc);
   double amount_c = scm_to_double(amount);
-  account* acct = find_account_in_book (&bal_book, account_c);
 
   if (acct->n_tsct==0)
     acct->tscts = malloc(sizeof(tsct));
@@ -1141,7 +1161,7 @@ bal_at (SCM account_name,
 
   qsort(acct->tscts, acct->n_tsct, sizeof(tsct), sort_transactions);
   
-  free(account_c); free(desc_c);
+  free(desc_c);
 
   bal_cur_acct = account_name;
   return SCM_UNDEFINED;
@@ -1188,9 +1208,14 @@ bal_ea (SCM cur_name,
         SCM ob)
 {
   char* cur_name_c = scm_to_locale_string (cur_name);
+  account* acct = find_account_in_book(&bal_book, cur_name_c);
+  if (acct == NULL)
+    {
+      free(cur_name_c);
+      return SCM_UNDEFINED;
+    }
   char* name_c = scm_to_locale_string (name);
   char* ob_c = scm_to_locale_string(ob);
-  account* acct = find_account_in_book(&bal_book, cur_name_c);
 
   if (strcmp(name_c,"") != 0)
     {
@@ -1223,12 +1248,15 @@ bal_dt (SCM at_pair)
   int j = scm_to_int (tsct);
   int i;
 
-  free(bal_book.accounts[k].tscts[j].desc);
-  for (i=j; i < (bal_book.accounts[k].n_tsct-1); i++)
-    bal_book.accounts[k].tscts[i] = bal_book.accounts[k].tscts[i+1];
-  
-  bal_book.accounts[k].n_tsct = bal_book.accounts[k].n_tsct - 1;
+  if (check_account_trans(k,j))
+    {
+      free(bal_book.accounts[k].tscts[j].desc);
+      for (i=j; i < (bal_book.accounts[k].n_tsct-1); i++)
+	bal_book.accounts[k].tscts[i] = bal_book.accounts[k].tscts[i+1];
+      bal_book.accounts[k].n_tsct = bal_book.accounts[k].n_tsct - 1;
+    }
   return SCM_UNDEFINED;
+
 }
 
 
@@ -1271,6 +1299,8 @@ bal_da (SCM account)
 SCM
 bal_get_current_account ()
 {
+  if (bal_book.n_account==0) return scm_from_locale_string("");
+      
   return bal_cur_acct;
 }
 
@@ -1305,11 +1335,14 @@ bal_get_transactions (SCM acct, SCM num)
   char* acct_c;
 
   acct_c = scm_to_locale_string (acct);
-
   account* a = find_account_in_book (&bal_book, acct_c);
+  free(acct_c);
+
+  if (a==NULL) return SCM_EOL;
+    
   int i,n;
 
-  if (a->n_tsct == 0) return SCM_UNDEFINED;
+  if (a->n_tsct == 0) return SCM_EOL;
 
   n = num_c < a->n_tsct ? num_c : a->n_tsct;
   ret = SCM_EOL;
@@ -1318,7 +1351,7 @@ bal_get_transactions (SCM acct, SCM num)
 		      (ret,
 		       scm_list_1
 		       (tsct_to_scm(a->tscts[a->n_tsct-1-i]))));
-  free(acct_c);
+
   return ret;
 }
 
@@ -1332,6 +1365,10 @@ bal_get_all_transactions (SCM acct)
   acct_c = scm_to_locale_string (acct);
 
   account* a = find_account_in_book (&bal_book, acct_c);
+  free(acct_c);
+  
+  if (a==NULL) return SCM_EOL;
+  
   int i;
   if (a->n_tsct == 0) return SCM_UNDEFINED;
 
@@ -1340,17 +1377,20 @@ bal_get_all_transactions (SCM acct)
     ret = scm_append (scm_list_2
 		      (ret,
 		       scm_list_1(tsct_to_scm(a->tscts[i]))));
-  free(acct_c);
   return ret;
 }
 
 SCM
 bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
 {
-  char* regex_txt = scm_to_locale_string (regex_s);
+
   char* acct_c = scm_to_locale_string (acct_s);
   account* acct = find_account_in_book (&bal_book, acct_c);
+  free(acct_c);
+  
+  if (acct==NULL) return SCM_EOL;
 
+  char* regex_txt = scm_to_locale_string (regex_s);
   regex_t regex;
   int i, error;
   SCM list, trans_list;
@@ -1382,7 +1422,7 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
         }
     }
   
-  free(regex_txt); free(acct_c);
+  free(regex_txt); 
   return list;
 }
 
@@ -1395,7 +1435,10 @@ bal_get_account (SCM name)
   account* acct = find_account_in_book (&bal_book, name_c);
 
   free(name_c);
-  return acct_to_scm(*acct);
+  if (acct == NULL)
+    return SCM_EOL;
+  else
+    return acct_to_scm(*acct);
 }
 
 /* Get account information for all accounts */
@@ -1422,7 +1465,10 @@ bal_get_transaction_by_location (SCM acct_num, SCM tsct_num)
   int acct_c = scm_to_int(acct_num);
   int tsct_c = scm_to_int(tsct_num);
 
-  return tsct_to_scm(bal_book.accounts[acct_c].tscts[tsct_c]);
+  if (check_account_trans(acct_c, tsct_c))
+    return tsct_to_scm(bal_book.accounts[acct_c].tscts[tsct_c]);
+  else
+    return SCM_EOL;
 }
 
 /* Get account by number */
@@ -1430,7 +1476,10 @@ SCM
 bal_get_account_by_location (SCM acct_num)
 {
   int acct_c = scm_to_int(acct_num);
-  return acct_to_scm(bal_book.accounts[acct_c]);
+  if (check_account_trans(acct_c,0))
+    return acct_to_scm(bal_book.accounts[acct_c]);
+  else
+    return SCM_EOL;
 }
 
 /* Get transactions by day */
@@ -1439,6 +1488,9 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
 {
   char* acct_c = scm_to_locale_string(acct);
   account* acct_p = find_account_in_book(&bal_book, acct_c);
+  free(acct_c);
+
+  if (acct_p == NULL) return SCM_EOL;
 
   tsct first_day_t;
   tsct last_day_t;
@@ -1463,7 +1515,7 @@ bal_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
         }
 
     }
-  free(acct_c);
+
 
   return ret;
 }
@@ -1477,9 +1529,11 @@ bal_total_account (SCM acct)
 
   char* acct_c = scm_to_locale_string (acct);
   account* a = find_account_in_book (&bal_book, acct_c);
-
-  ret = total_transactions (a);
   free(acct_c);
+
+  if (a == NULL) return SCM_EOL;
+  
+  ret = total_transactions (a);
   return scm_cons(acct, ret);
 }
 
