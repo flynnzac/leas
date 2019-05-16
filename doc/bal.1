@@ -213,6 +213,10 @@ displays prompts to add new transaction after evaluating ~/.balrc.scm and then e
 .TP
 bal -s la
 displays current account balances and quits without prompting to save.
+.TP
+bal -f myaccounts.btar -l myscript.scm -s
+Runs a script, presumably to modify myaccounts.btar, and exists.  bal
+can be run noninteractively in this way.
 .SH "SEE ALSO"
 .SH BUGS
 .TP

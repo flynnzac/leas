@@ -28,6 +28,7 @@ This is the bal reference manual.
 @menu
 * Introduction:: introduction to bal, what it is, and an outline of manual
 * Tutorial:: tutorial explaining basic interactive usage of bal
+* Btar file format:: documentation of file format for bal for other programs and scripts to modify them
 * Programming bal:: full documentation of the functions bal exposes for use when writing custom bal commands
 @end menu
 @end ifinfo
