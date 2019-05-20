@@ -16,6 +16,7 @@ This is the bal reference manual.
 
 * Introduction:: introduction to bal, what it is, and an outline of manual
 * Tutorial:: tutorial explaining basic interactive usage of bal
+* Btar file format:: documentation of file format for bal for other programs and scripts to modify them
 * Programming bal:: full documentation of the functions bal exposes for use when writing custom bal commands
 
 
@@ -72,7 +73,7 @@ exported by bal which is more useful if you are trying to write your own
 commands.
 
 
-File: bal.info,  Node: Tutorial,  Next: Programming bal,  Prev: Introduction,  Up: Top
+File: bal.info,  Node: Tutorial,  Next: Btar file format,  Prev: Introduction,  Up: Top
 
 2 Tutorial
 **********
@@ -543,9 +544,17 @@ try adding the following to see the current date,
                 ") :> ")))))
 
 
-File: bal.info,  Node: Programming bal,  Prev: Tutorial,  Up: Top
+File: bal.info,  Node: Btar file format,  Next: Programming bal,  Prev: Tutorial,  Up: Top
 
-3 Programming bal
+3 Btar file format
+******************
+
+Document the btar file format, a tar archive of some CSV files
+
+
+File: bal.info,  Node: Programming bal,  Prev: Btar file format,  Up: Top
+
+4 Programming bal
 *****************
 
 This chapter will be more of a reference manual for the various Scheme
@@ -555,17 +564,18 @@ functions available in bal.
 
 Tag Table:
 Node: Top160
-Node: Introduction525
-Node: Tutorial3442
-Node: Adding a cash asset account3752
-Node: Paying for expenses4753
-Node: Earning income7448
-Node: Managing debt8535
-Node: Non-cash assets11093
-Node: Saving loading and quitting13139
-Node: Scheme code14373
-Node: Common customizations15133
-Node: Customize prompt15300
-Node: Programming bal16203
+Node: Introduction629
+Node: Tutorial3546
+Node: Adding a cash asset account3857
+Node: Paying for expenses4858
+Node: Earning income7553
+Node: Managing debt8640
+Node: Non-cash assets11198
+Node: Saving loading and quitting13244
+Node: Scheme code14478
+Node: Common customizations15238
+Node: Customize prompt15405
+Node: Btar file format16308
+Node: Programming bal16505
 
 End Tag Table
