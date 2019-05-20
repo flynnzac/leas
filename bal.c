@@ -1263,7 +1263,14 @@ bal_dt (SCM at_pair)
 SCM
 bal_da (SCM account)
 {
+
   char* account_c = scm_to_locale_string (account);
+  if (bal_book.n_account == 1)
+    {
+      printf("Cannot delete account: %s.  There must always be at least one account.\n", account_c);
+      free(account_c);
+      return SCM_UNDEFINED;
+    }
   int i,flag;
 
   flag = 0;
