@@ -16,6 +16,7 @@ This is the bal reference manual.
 
 * Introduction:: introduction to bal, what it is, and an outline of manual
 * Tutorial:: tutorial explaining basic interactive usage of bal
+* Btar file format:: documentation of file format for bal for other programs and scripts to modify them
 * Programming bal:: full documentation of the functions bal exposes for use when writing custom bal commands
 
 
@@ -72,7 +73,7 @@ exported by bal which is more useful if you are trying to write your own
 commands.
 
 
-File: bal.info,  Node: Tutorial,  Next: Programming bal,  Prev: Introduction,  Up: Top
+File: bal.info,  Node: Tutorial,  Next: Btar file format,  Prev: Introduction,  Up: Top
 
 2 Tutorial
 **********
@@ -543,9 +544,37 @@ try adding the following to see the current date,
                 ") :> ")))))
 
 
-File: bal.info,  Node: Programming bal,  Prev: Tutorial,  Up: Top
+File: bal.info,  Node: Btar file format,  Next: Programming bal,  Prev: Tutorial,  Up: Top
 
-3 Programming bal
+3 Btar file format
+******************
+
+The bal save file is a tar archive containing the following files in a
+directory named after the save file's filename (e.g.  a save file named
+book.btar would, when un-tarred, be a directory called book.btar):
+
+   * accounts - a CSV file containing the metadata for each account, one
+     line for each account.  There is no header line giving column
+     names.  The fields are (in this order):
+        * Account Type - one of expense, income, asset, liability.
+        * Account Name - the name of the account
+        * Opening Balance - the opening balance of the account.
+   * account_name.csv - for each account, there is a separate CSV file
+     (the format of the filename for this CSV file implies that account
+     names in bal need to be valid filenames).  There is no header line
+     giving column names.  Each row in the file is a transaction.  The
+     fields are (in this order):
+        * Account Name - will be the same for all transactions in the
+          file, just the account name.
+        * Amount - the amount of money added to or subtracted from the
+          account.
+        * Day - the day of the transaction (YYYY-MM-DD)
+        * Description - a description of the transaction
+
+
+File: bal.info,  Node: Programming bal,  Prev: Btar file format,  Up: Top
+
+4 Programming bal
 *****************
 
 This chapter will be more of a reference manual for the various Scheme
@@ -555,17 +584,18 @@ functions available in bal.
 
 Tag Table:
 Node: Top160
-Node: Introduction525
-Node: Tutorial3442
-Node: Adding a cash asset account3752
-Node: Paying for expenses4753
-Node: Earning income7448
-Node: Managing debt8535
-Node: Non-cash assets11093
-Node: Saving loading and quitting13139
-Node: Scheme code14373
-Node: Common customizations15133
-Node: Customize prompt15300
-Node: Programming bal16203
+Node: Introduction629
+Node: Tutorial3546
+Node: Adding a cash asset account3857
+Node: Paying for expenses4858
+Node: Earning income7553
+Node: Managing debt8640
+Node: Non-cash assets11198
+Node: Saving loading and quitting13244
+Node: Scheme code14478
+Node: Common customizations15238
+Node: Customize prompt15405
+Node: Btar file format16308
+Node: Programming bal17649
 
 End Tag Table
