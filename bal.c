@@ -1994,6 +1994,14 @@ main (int argc, char** argv)
     }
 
 
+  if (bal_book.n_account == 0)
+    {
+      /* create cash account if no other account */
+      bal_aa (scm_from_locale_string("Cash"),
+	      scm_from_locale_string("asset"),
+	      scm_from_double(0.0));
+    }
+  
   bal_prompton = 1;
 
   while (bal_prompton)
