@@ -50,7 +50,6 @@ remove_ext (char* str)
     }
   return str;
 }
-        
 
 int
 digits (int num)
@@ -178,7 +177,6 @@ typedef struct
   int n_tsct;
   int n_pos;
 } account;
-
 
 typedef struct
 {
