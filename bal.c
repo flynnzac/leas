@@ -2,17 +2,18 @@
    bal - for keeping accounts in order and studying past spending habits
    Copyright Zach Flynn <zlflynn@gmail.com>
 
-   This program is free software: you can redistribute it and/or modify
-   it under the terms of version 3 of the GNU General Public License as published by
-   the Free Software Foundation.
+   This program is free software: you can redistribute it and/or
+   modify it under the terms of version 3 of the GNU General Public
+   License as published by the Free Software Foundation.
 
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
+   This program is distributed in the hope that it will be useful, but
+   WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+   General Public License for more details.
 
    You should have received a copy of the GNU General Public License
-   along with this program.  If not, see <https://www.gnu.org/licenses/>.
+   along with this program.  If not, see
+   <https://www.gnu.org/licenses/>.
 */
 
 #define BAL_VERSION "0.2.0-dev"
@@ -733,7 +734,8 @@ read_book_accounts_from_csv (book* book,
   if (!fp) exit(1);
   while ((bytes_read=fread(buf,1,1024,fp)) > 0)
     {
-      if (csv_parse (&p, buf, bytes_read, account_cb1, NULL, book) != bytes_read)
+      if (csv_parse (&p, buf, bytes_read, account_cb1, NULL, book)
+	  != bytes_read)
         {
           fprintf(stderr,
                   "Error parsing file: %s\n",
@@ -784,7 +786,8 @@ read_all_transactions_into_book (book* book,
       free(name);
       if (fp==NULL)
         {
-          fprintf(stderr, "Data not found for account: %s\n", book->accounts[i].name);
+          fprintf(stderr, "Data not found for account: %s\n",
+		  book->accounts[i].name);
           continue;
         }
 
@@ -1265,7 +1268,8 @@ bal_da (SCM account)
   char* account_c = scm_to_locale_string (account);
   if (bal_book.n_account == 1)
     {
-      printf("Cannot delete account: %s.  There must always be at least one account.\n", account_c);
+      printf("Cannot delete account: %s.", account_c);
+      printf(" There must always be at least one account.\n");
       free(account_c);
       return SCM_UNDEFINED;
     }
