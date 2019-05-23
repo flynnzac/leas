@@ -1918,9 +1918,9 @@ main (int argc, char** argv)
 
   bal_prompt_exit = 1;
   bal_select_tsct_num = 19;
-  
+
   scm_with_guile (&register_guile_functions, NULL);
-  bal_standard_func("/etc/bal.scm");
+  bal_standard_func(BAL_SCM_INSTALL);
   bal_cur_file = scm_from_locale_string ("_.btar");
 
   rl_event_hook = dummy_event;

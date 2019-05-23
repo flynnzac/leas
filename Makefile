@@ -1,7 +1,9 @@
 INFODIR=/usr/share/info/dir
+BAL_SCM_INSTALL=/etc/bal.scm
+
 
 bal: bal.c 
-	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall
+	cc  -I /usr/include/guile/2.2 bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall -DBAL_SCM_INSTALL=\"$(BAL_SCM_INSTALL)\"
 
 .FORCE:
 
@@ -14,8 +16,8 @@ doc: doc/bal.1 doc/bal.texinfo .FORCE
 install: bal doc/bal.1 doc/bal.texinfo bal.scm
 	mkdir -p /usr/local/share/man/man1/
 	cp doc/bal.1 /usr/local/share/man/man1/
-	cp bal.scm /etc/
-	guild compile /etc/bal.scm
+	cp bal.scm $(BAL_SCM_INSTALL)
+	guild compile $(BAL_SCM_INSTALL)
 	cp bal /usr/local/bin/
 
 
