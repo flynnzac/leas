@@ -1105,7 +1105,8 @@ bal_call (SCM func, SCM options)
           break;
         }
 
-      free(opt); free(name_c);
+      if (type != TYPE) free(opt);
+      free(name_c);
       
       if (i != (len-1))
         append_to_string(&command, " ", "");
