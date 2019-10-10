@@ -566,3 +566,44 @@
                               (if args args ""))))
       (system cmd))))
 
+
+(define spend
+  (lambda ()
+    (bal/call "bal/t"
+	      (list
+	       (cons "To Account" "expense_account")
+	       (cons "From Account" "asset_account")
+	       (cons "Amount" "real")
+	       (cons "Description" "string")
+	       (cons "Day" "day")))))
+
+(define charge
+  (lambda ()
+    (bal/call "bal/t"
+	      (list
+	       (cons "To Account" "expense_account")
+	       (cons "From Account" "liability_account")
+	       (cons "Amount" "real")
+	       (cons "Description" "string")
+	       (cons "Day" "day")))))
+
+
+(define earn
+  (lambda ()
+    (bal/call "bal/t"
+	      (list
+	       (cons "To Account" "asset_account")
+	       (cons "From Account" "income_account")
+	       (cons "Amount" "real")
+	       (cons "Description" "string")
+	       (cons "Day" "day")))))
+
+(define loan
+  (lambda ()
+    (bal/call "bal/t"
+	      (list
+	       (cons "To Account" "asset_account")
+	       (cons "From Account" "liability_account")
+	       (cons "Amount" "real")
+	       (cons "Description" "string")
+	       (cons "Day" "day")))))
