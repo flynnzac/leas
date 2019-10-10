@@ -58,13 +58,8 @@ int
 digits (int num)
 {
   /* count number of digits in a number */
-  int n = 1;
-  while ((num / 10) > 0)
-    {
-      n++;
-      num = num / 10;
-    }
-  return n;
+
+  return floor(log10(num))+1;
 }
 
 int
@@ -538,7 +533,7 @@ bal_select_account (const char* prompt, int kind)
     }
   else
     {
-      ndigit = (bal_book.n_account / 10) + 1;
+      ndigit = floor(log10(bal_book.n_account)) + 1;
       do
         {
           for (j=0; j < bal_book.n_account; j++)
@@ -568,11 +563,12 @@ bal_select_transaction (account* acct)
   n = (end - bal_select_tsct_num) >= 0 ?
     (end - bal_select_tsct_num) : 0;
   
-  ndigit = (acct->n_tsct / 10) + 1;
+  ndigit = floor(log10(acct->n_tsct)) + 1;
 
   for (i=n; i < end; i++)
     if (maxlen < strlen(acct->tscts[i].desc))
       maxlen = strlen(acct->tscts[i].desc);
+  
   do
     {
       for (i=n; i < end; i++)
@@ -1518,8 +1514,8 @@ bal_get_transactions_by_regex (SCM acct_s, SCM regex_s)
 SCM
 bal_get_account (SCM name)
 {
-  char* name_c = scm_to_locale_string (name);
-  account* acct = find_account_in_book (&bal_book, name_c);
+  char* name_c = scm_to_locale_string(name);
+  account* acct = find_account_in_book(&bal_book, name_c);
 
   free(name_c);
   if (acct == NULL)
@@ -1538,10 +1534,10 @@ bal_get_all_accounts ()
 
   ret = SCM_EOL;
   for (i=0; i < bal_book.n_account; i++)
-    ret = scm_append (scm_list_2
-                      (ret,
-                       scm_list_1
-                       (acct_to_scm(bal_book.accounts[i]))));
+    ret = scm_append(scm_list_2
+		     (ret,
+		      scm_list_1
+		      (acct_to_scm(bal_book.accounts[i]))));
   return ret;
 }
 
@@ -1614,13 +1610,13 @@ bal_total_account (SCM acct)
 {
   SCM ret;
 
-  char* acct_c = scm_to_locale_string (acct);
-  account* a = find_account_in_book (&bal_book, acct_c);
+  char* acct_c = scm_to_locale_string(acct);
+  account* a = find_account_in_book(&bal_book, acct_c);
   free(acct_c);
 
   if (a == NULL) return SCM_EOL;
   
-  ret = total_transactions (a);
+  ret = total_transactions(a);
   return scm_cons(acct, ret);
 }
 
@@ -1635,14 +1631,14 @@ bal_total_all_accounts ()
   ret = SCM_EOL;
   for (i = 0; i < bal_book.n_account; i++)
     {
-      tmp = total_transactions (&bal_book.accounts[i]);
-      ret = scm_append (scm_list_2
-                        (ret,
-                         scm_list_1
-                         (scm_cons
-                          (scm_from_locale_string
-                           (bal_book.accounts[i].name),
-                           tmp))));
+      tmp = total_transactions(&bal_book.accounts[i]);
+      ret = scm_append(scm_list_2
+		       (ret,
+			scm_list_1
+			(scm_cons
+			 (scm_from_locale_string
+			  (bal_book.accounts[i].name),
+			  tmp))));
     }
   return ret;
 }
@@ -1661,14 +1657,14 @@ bal_total_all_accounts_of_type (SCM type_s)
     {
       if (bal_book.accounts[i].type==type)
         {
-          tmp = total_transactions (&bal_book.accounts[i]);
-          ret = scm_append (scm_list_2
-                            (ret,
-                             scm_list_1
-                             (scm_cons
-                              (scm_from_locale_string
-                               (bal_book.accounts[i].name),
-                               tmp))));
+          tmp = total_transactions(&bal_book.accounts[i]);
+          ret = scm_append(scm_list_2
+			   (ret,
+			    scm_list_1
+			    (scm_cons
+			     (scm_from_locale_string
+			      (bal_book.accounts[i].name),
+			      tmp))));
         }
     }
   return ret;
@@ -1753,7 +1749,7 @@ bal_quit ()
 SCM
 bal_print (SCM x)
 {
-  scm_display (x, scm_current_output_port());
+  scm_display(x, scm_current_output_port());
   printf("\n");
 
   return SCM_UNDEFINED;
@@ -1773,11 +1769,11 @@ bal_set_account (SCM acct)
 SCM
 bal_write (SCM file)
 {
-  char* file_c = scm_to_locale_string (file);
+  char* file_c = scm_to_locale_string(file);
   if (strcmp(file_c,"")==0)
     {
       free(file_c);
-      file_c = scm_to_locale_string (bal_cur_file);
+      file_c = scm_to_locale_string(bal_cur_file);
     }
   else
     {
@@ -1798,14 +1794,14 @@ bal_read (SCM file)
 
   char* file_c = scm_to_locale_string(file);
   int i;
-  delete_book (&bal_book);
+  delete_book(&bal_book);
   bal_book.n_account = 0;
-  read_in (file_c);
+  read_in(file_c);
   free(file_c);
 
   if (bal_book.n_account > 0)
     {
-      bal_cur_acct = scm_from_locale_string (bal_book.accounts[0].name);
+      bal_cur_acct = scm_from_locale_string(bal_book.accounts[0].name);
       for (i=0; i < bal_book.n_account; i++)
         qsort(bal_book.accounts[i].tscts,
               bal_book.accounts[i].n_tsct,
@@ -1827,7 +1823,7 @@ bal_get_current_file ()
 SCM
 bal_set_select_transact_num (SCM num)
 {
-  bal_select_tsct_num = scm_to_int (num);
+  bal_select_tsct_num = scm_to_int(num);
   return num;
 }
 
@@ -1954,10 +1950,10 @@ bal_exit ()
 
       if (c=='y')
         {
-          (void) bal_write (bal_cur_file);
+          (void) bal_write(bal_cur_file);
         }
     }
-  delete_book (&bal_book);
+  delete_book(&bal_book);
 }
 
 int
@@ -2001,9 +1997,9 @@ main (int argc, char** argv)
   bal_prompt_exit = 1;
   bal_select_tsct_num = 19;
 
-  scm_with_guile (&register_guile_functions, NULL);
+  scm_with_guile(&register_guile_functions, NULL);
   bal_standard_func(BAL_SCM_INSTALL);
-  bal_cur_file = scm_from_locale_string ("_.btar");
+  bal_cur_file = scm_from_locale_string("_.btar");
 
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
@@ -2019,8 +2015,8 @@ main (int argc, char** argv)
           scm_c_primitive_load(optarg);
           break;
         case 'f':
-          bal_cur_file = scm_from_locale_string (optarg);
-          fname = scm_to_locale_string (bal_cur_file);
+          bal_cur_file = scm_from_locale_string(optarg);
+          fname = scm_to_locale_string(bal_cur_file);
 
           if (access(fname, R_OK) != -1)
             {
@@ -2038,11 +2034,11 @@ main (int argc, char** argv)
           break;
         case '?':
           if (optopt=='l')
-            fprintf (stderr, "Option -l requires an argument.\n");
+            fprintf(stderr, "Option -l requires an argument.\n");
           else if (optopt=='f')
-            fprintf (stderr, "Option -f requires an argument.\n");
+            fprintf(stderr, "Option -f requires an argument.\n");
           else
-            fprintf (stderr, "Unknown option, -%c.\n", optopt);
+            fprintf(stderr, "Unknown option, -%c.\n", optopt);
 	  
           exit(1);
           break;
@@ -2069,13 +2065,13 @@ main (int argc, char** argv)
   if (optind < argc)
     {
       for (i=optind; i < argc; i++)
-        ret = scm_c_catch (SCM_BOOL_T,
-                           exec_string_safe_history,
-                           argv[i],
-                           handle_error,
-                           argv[i],
-                           NULL,
-                           NULL);
+        ret = scm_c_catch(SCM_BOOL_T,
+			  exec_string_safe_history,
+			  argv[i],
+			  handle_error,
+			  argv[i],
+			  NULL,
+			  NULL);
       bal_exit();
       return 0;
     }
@@ -2084,33 +2080,33 @@ main (int argc, char** argv)
   if (bal_book.n_account == 0)
     {
       /* create cash account if no other account */
-      bal_aa (scm_from_locale_string("Cash"),
-              scm_from_locale_string("asset"),
-              scm_from_double(0.0));
+      bal_aa(scm_from_locale_string("Cash"),
+	     scm_from_locale_string("asset"),
+	     scm_from_double(0.0));
     }
   
   bal_prompton = 1;
 
   while (bal_prompton)
     {
-      ret = scm_c_catch (SCM_BOOL_T,
-                         exec_string_safe,
-                         "bal/prompt",
-                         handle_error,
-                         "bal/prompt",
-                         NULL,
-                         NULL);
+      ret = scm_c_catch(SCM_BOOL_T,
+			exec_string_safe,
+			"bal/prompt",
+			handle_error,
+			"bal/prompt",
+			NULL,
+			NULL);
 
-      prompt = scm_to_locale_string (ret);
+      prompt = scm_to_locale_string(ret);
       command = readline(prompt);
       
-      ret = scm_c_catch (SCM_BOOL_T,
-                         exec_string_safe_history,
-                         command,
-                         handle_error,
-                         command,
-                         NULL,
-                         NULL);
+      ret = scm_c_catch(SCM_BOOL_T,
+			exec_string_safe_history,
+			command,
+			handle_error,
+			command,
+			NULL,
+			NULL);
       
       free(prompt); free(command);
     }
