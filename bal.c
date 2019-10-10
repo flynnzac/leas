@@ -172,6 +172,10 @@ typedef enum
   {
    STRING,
    ACCOUNT,
+   EXPENSE_ACCOUNT,
+   LIABILITY_ACCOUNT,
+   ASSET_ACCOUNT,
+   INCOME_ACCOUNT,
    CURRENT_ACCOUNT,
    TYPE,
    TRANSACTION,
@@ -249,6 +253,14 @@ type_from_string (SCM type)
     t = STRING;
   else if (strcmp(type_c, "account")==0)
     t = ACCOUNT;
+  else if (strcmp(type_c, "expense_account")==0)
+    t = EXPENSE_ACCOUNT;
+  else if (strcmp(type_c, "income_account")==0)
+    t = INCOME_ACCOUNT;
+  else if (strcmp(type_c, "asset_account")==0)
+    t = ASSET_ACCOUNT;
+  else if (strcmp(type_c, "liability_account")==0)
+    t = LIABILITY_ACCOUNT;    
   else if (strcmp(type_c, "current_account")==0)
     t = CURRENT_ACCOUNT;
   else if (strcmp(type_c, "type")==0)
@@ -514,7 +526,7 @@ total_transactions (const account* acct)
 /* selection functions for bal/call */
 
 char*
-bal_select_account (const char* prompt)
+bal_select_account (const char* prompt, int kind)
 {
   int j, ndigit;
   char* c;
@@ -531,7 +543,8 @@ bal_select_account (const char* prompt)
         {
           for (j=0; j < bal_book.n_account; j++)
             {
-              printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
+	      if (bal_book.accounts[j].type == kind || kind < 0)
+		printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
             }
           c = readline(prompt);
         } while (strcmp(c,"") && (anyalpha(c) || atoi(c) < 0 ||
@@ -1072,7 +1085,7 @@ bal_call (SCM func, SCM options)
           append_to_string(&command, opt, "\"");
           break;
         case ACCOUNT:
-          opt = bal_select_account(name_c);
+          opt = bal_select_account(name_c, -1);
           if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
             {
               k = atoi(opt);
@@ -1081,6 +1094,46 @@ bal_call (SCM func, SCM options)
                                "\"");
             } else bal_prompton = 1;
           break;
+        case EXPENSE_ACCOUNT:
+          opt = bal_select_account(name_c, EXPENSE);
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
+              append_to_string(&command,
+                               bal_book.accounts[k].name,
+                               "\"");
+            } else bal_prompton = 1;
+          break;
+        case LIABILITY_ACCOUNT:
+          opt = bal_select_account(name_c, LIABILITY);
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
+              append_to_string(&command,
+                               bal_book.accounts[k].name,
+                               "\"");
+            } else bal_prompton = 1;
+          break;
+        case ASSET_ACCOUNT:
+          opt = bal_select_account(name_c, ASSET);
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
+              append_to_string(&command,
+                               bal_book.accounts[k].name,
+                               "\"");
+            } else bal_prompton = 1;
+          break;
+        case INCOME_ACCOUNT:
+          opt = bal_select_account(name_c, INCOME);
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
+              append_to_string(&command,
+                               bal_book.accounts[k].name,
+                               "\"");
+            } else bal_prompton = 1;
+          break;	  	  
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
           append_to_string(&command, opt, "\"");
@@ -1096,7 +1149,7 @@ bal_call (SCM func, SCM options)
           break;
         case TRANSACTION:
           printf("%s\n", name_c);
-          opt = bal_select_account("Account: ");
+          opt = bal_select_account("Account: ", -1);
           if (opt!=NULL && strcmp(opt,"")!=0)
             {
               if (anyalpha(opt) == 0)

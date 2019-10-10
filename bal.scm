@@ -536,9 +536,9 @@
   (lambda ()
     (bal/call "bal/pay-loan"
               (list
-               (cons "Loan Account" "account")
-               (cons "Interest Account" "account")
-               (cons "Pay from Account" "account")
+               (cons "Loan Account" "liability_account")
+               (cons "Interest Account" "expense_account")
+               (cons "Pay from Account" "asset_account")
                (cons "Principal" "real")
                (cons "Interest" "real")
                (cons "Description" "string")
