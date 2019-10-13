@@ -16,7 +16,7 @@
    <https://www.gnu.org/licenses/>.
 */
 
-#define BAL_VERSION "0.2.0-dev"
+#define BAL_VERSION "0.2.0"
 #define _XOPEN_SOURCE
 
 #include <stdio.h>
