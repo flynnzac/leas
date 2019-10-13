@@ -1195,6 +1195,7 @@ bal_call (SCM func, SCM options)
                              command,
                              NULL,
                              NULL);
+      free(command);
       return ret;
     }
 
@@ -1710,6 +1711,9 @@ bal_total_by_account_type ()
          (ret,
           scm_list_1
           (scm_cons(scm_from_locale_string(type_str), tmp))));
+
+      free(type_str);
+      
     }
 
   tmp = scm_cons(tmpallcur, tmpalltotal);
