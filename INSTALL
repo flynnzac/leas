@@ -6,7 +6,13 @@ You can install to /usr/local/ with
 
 # make install
 
-which just copies the bal executable to /usr/local/bin and the man page to /usr/local/share/man/man1/.
+which just copies the bal executable to /usr/local/bin, the man page to /usr/local/share/man/man1/, and the standard Scheme function file ot /etc/bal.scm.
+
+You can customize where to install the executable and man page with PREFIX (default: /usr/local).
+
+BAL_SCM_INSTALL controls where the standard Scheme file is installed (default: /etc/bal.scm).
+
+GUILEINC sets where the include directory is for guile (default: /usr/include/guile/2.2)
 
 bal depends on libreadline, libcsv, libguile, and libgc to compile.
 
