@@ -598,7 +598,7 @@
 	       (cons "Description" "string")
 	       (cons "Day" "day")))))
 
-(define loan
+(define borrow
   (lambda ()
     (bal/call "bal/t"
 	      (list
