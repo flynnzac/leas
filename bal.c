@@ -37,6 +37,22 @@
 
 /* convenience, manipulation functions */
 
+int
+pow_int (int base, int power)
+{
+  if (power == 0)
+    return 1;
+
+  int result = base;
+
+  for (int i = 1; i < power; i++)
+    {
+      result *= base;
+    }
+
+  return result;
+}
+  
 char*
 remove_ext (char* str)
 {
@@ -157,10 +173,10 @@ typedef struct
 
 typedef enum 
   {
-   EXPENSE,
-   INCOME,
-   ASSET,
-   LIABILITY
+   EXPENSE = 1,
+   INCOME = 2,
+   ASSET = 4,
+   LIABILITY = 8
   } account_type;
 
 typedef enum
@@ -171,6 +187,7 @@ typedef enum
    LIABILITY_ACCOUNT,
    ASSET_ACCOUNT,
    INCOME_ACCOUNT,
+   PAY_FROM_ACCOUNT,
    CURRENT_ACCOUNT,
    TYPE,
    TRANSACTION,
@@ -237,7 +254,7 @@ delete_book (book* book)
 /* convert types to other types */
 
 arg_type
-type_from_string (SCM type)
+arg_type_from_string (SCM type)
 {
   /* takes a string describing argument type
      and returns an enum arg_type */
@@ -255,7 +272,9 @@ type_from_string (SCM type)
   else if (strcmp(type_c, "asset_account")==0)
     t = ASSET_ACCOUNT;
   else if (strcmp(type_c, "liability_account")==0)
-    t = LIABILITY_ACCOUNT;    
+    t = LIABILITY_ACCOUNT;
+  else if (strcmp(type_c, "pay_from_account")==0)
+    t = PAY_FROM_ACCOUNT;
   else if (strcmp(type_c, "current_account")==0)
     t = CURRENT_ACCOUNT;
   else if (strcmp(type_c, "type")==0)
@@ -523,6 +542,8 @@ total_transactions (const account* acct)
 char*
 bal_select_account (const char* prompt, int kind)
 {
+
+
   int j, ndigit;
   char* c;
 
@@ -538,7 +559,7 @@ bal_select_account (const char* prompt, int kind)
         {
           for (j=0; j < bal_book.n_account; j++)
             {
-	      if (bal_book.accounts[j].type == kind || kind < 0)
+	      if (kind < 0 || (bal_book.accounts[j].type & kind))
 		printf("%*d: %s\n", ndigit+1, j, bal_book.accounts[j].name);
             }
           c = readline(prompt);
@@ -627,13 +648,13 @@ bal_select_account_type (char* prompt)
   int k;
   char* opt;
   
-  printf("%d: Expense\n", EXPENSE);
-  printf("%d: Income\n", INCOME);
-  printf("%d: Asset\n", ASSET);
-  printf("%d: Liability\n", LIABILITY);
+  printf("0: Expense\n");
+  printf("1: Income\n");
+  printf("2: Asset\n");
+  printf("3: Liability\n");
   opt = readline (prompt);
 
-  k = anyalpha(opt) > 0 ? -1 : atoi(opt);
+  k = anyalpha(opt) > 0 ? -1 : pow_int(2,atoi(opt));
 
   return k;
 }
@@ -1072,7 +1093,7 @@ bal_call (SCM func, SCM options)
       name_c = realloc (name_c, sizeof(char)*(strlen(name_c)+4));
       strcat(name_c, ": ");
       
-      type = type_from_string(scm_cdr(pair));
+      type = arg_type_from_string(scm_cdr(pair));
 
       switch (type)
         {
@@ -1129,7 +1150,17 @@ bal_call (SCM func, SCM options)
                                bal_book.accounts[k].name,
                                "\"");
             } else bal_prompton = 1;
-          break;	  	  
+          break;
+	case PAY_FROM_ACCOUNT:
+	  opt = bal_select_account(name_c, ASSET | LIABILITY);
+          if (opt != NULL && strcmp(opt,"") && anyalpha(opt) == 0)
+            {
+              k = atoi(opt);
+              append_to_string(&command,
+                               bal_book.accounts[k].name,
+                               "\"");
+            } else bal_prompton = 1;
+          break;
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (bal_cur_acct);
           append_to_string(&command, opt, "\"");
@@ -1683,7 +1714,7 @@ bal_total_by_account_type ()
 
   tmpallcur = scm_from_double(0.0);
   tmpalltotal = scm_from_double(0.0);
-  for (j=EXPENSE; j <= LIABILITY; j++)
+  for (j=EXPENSE; j <= LIABILITY; j = 2*j)
     {
       tmpcur = scm_from_double(0.0);
       tmptotal = scm_from_double(0.0);
