@@ -47,7 +47,6 @@ remove_ext (char* str)
       if (str[i-1] == '.')
         {
           str[i-1] = '\0';
-          str = realloc(str, (i+1)*sizeof(char));
           break;
         }
     }
@@ -106,8 +105,7 @@ create_tmp_dir ()
 {
   /* creates a temporary directory and returns a string 
      giving file location */
-  int i;
-  char* tmp_dir;
+  char* tmp_dir = NULL;
   char buffer[100];
   FILE* fp;
 
@@ -118,15 +116,18 @@ create_tmp_dir ()
       return NULL;
     }
 
-  i = 0;
-  tmp_dir = malloc(sizeof(char));
-  tmp_dir[0] = '\0';
-
   while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
     {
-      tmp_dir = realloc(tmp_dir, sizeof(char)*((i+1)*100+1));
-      strcat(tmp_dir, buffer);
-      i++;
+      if (tmp_dir == NULL)
+        {
+          tmp_dir = malloc(sizeof(char)*(strlen(buffer)+1));
+          strcpy(tmp_dir, buffer);
+        }
+      else
+        {
+          tmp_dir = realloc(tmp_dir, sizeof(char)*(strlen(tmp_dir)+strlen(buffer)+1));
+          strcat(tmp_dir, buffer);
+        }
     }
   tmp_dir[strcspn(tmp_dir, "\n")] = 0;
   pclose(fp);
