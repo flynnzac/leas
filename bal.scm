@@ -330,22 +330,22 @@
 (define lae
   (lambda ()
     (bal/display-account-totals
-     (bal/total-all-accounts-of-type 0))))
+     (bal/total-all-accounts-of-type 1))))
 
 (define lai
   (lambda ()
     (bal/display-account-totals
-     (bal/total-all-accounts-of-type 1))))
+     (bal/total-all-accounts-of-type 2))))
 
 (define laa
   (lambda ()
     (bal/display-account-totals
-     (bal/total-all-accounts-of-type 2))))
+     (bal/total-all-accounts-of-type 4))))
 
 (define lal
   (lambda ()
     (bal/display-account-totals
-     (bal/total-all-accounts-of-type 3))))
+     (bal/total-all-accounts-of-type 8))))
 
 
 (define bt
@@ -538,7 +538,7 @@
               (list
                (cons "Loan Account" "liability_account")
                (cons "Interest Account" "expense_account")
-               (cons "Pay from Account" "asset_account")
+               (cons "Pay from Account" "pay_from_account")
                (cons "Principal" "real")
                (cons "Interest" "real")
                (cons "Description" "string")
