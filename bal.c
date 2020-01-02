@@ -623,17 +623,35 @@ bal_select_day (struct tm* curtime_info)
   char* prompt;
   char* year; char* month; char* day;
 
-  prompt = copy_string_insert_int("Year [%d]: ", curtime_info->tm_year+1900);
-  year = readline(prompt);
-  free(prompt);
+  if (bal_prompton == 2)
+    {
+      prompt = copy_string_insert_int("Year [%d]: ",
+				      curtime_info->tm_year+1900);
+      year = readline(prompt);
+      free(prompt);
+    }
+  else
+    return NULL;
 
-  prompt = copy_string_insert_int("Month [%d]: ", curtime_info->tm_mon+1);
-  month = readline(prompt);
-  free(prompt);
+  if (bal_prompton == 2)
+    {
+      prompt = copy_string_insert_int("Month [%d]: ",
+				      curtime_info->tm_mon+1);
+      month = readline(prompt);
+      free(prompt);
+    }
+  else
+    return NULL;
 
-  prompt = copy_string_insert_int("Day [%d]: ", curtime_info->tm_mday);
-  day = readline(prompt);
-  free(prompt);
+  if (bal_prompton==2)
+    {
+      prompt = copy_string_insert_int("Day [%d]: ",
+				      curtime_info->tm_mday);
+      day = readline(prompt);
+      free(prompt);
+    }
+  else
+    return NULL;
 
   char* ret = malloc(sizeof(char)*(strlen("(list   )")+2+2+4+1));
   sprintf(ret, "(list %d %d %d)",
@@ -1194,7 +1212,9 @@ bal_call (SCM func, SCM options)
                       free(tmp_str);
                     }
                 }
-            } else bal_prompton = 1;
+            }
+	  else
+	    bal_prompton = 1;
           break;
         case DAY:
           time(&curtime);
@@ -1202,7 +1222,8 @@ bal_call (SCM func, SCM options)
 
           printf("%s\n", name_c);
           opt = bal_select_day (curtime_info);
-          append_to_string(&command, opt, "");
+	  if (opt != NULL)
+	    append_to_string(&command, opt, "");
           break;
         default:
           opt = readline(name_c);
@@ -1210,7 +1231,7 @@ bal_call (SCM func, SCM options)
           break;
         }
 
-      if (type != TYPE) free(opt);
+      if (type != TYPE && opt != NULL) free(opt);
       free(name_c);
       
       if (i != (len-1))
