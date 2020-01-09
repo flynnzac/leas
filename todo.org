@@ -1,3 +1,0 @@
-* TODO Allow for some other useful types in bal/call, like "expense_account" or "asset_account".  
-
-Would make it nicer to display lists of relevant accounts.
