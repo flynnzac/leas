@@ -450,7 +450,7 @@ SCM
 exec_string_safe_history (void* toeval_v)
 {
   /* execute a string and add to history */
-  if (strcmp((char*) toeval_v, "") != 0)
+  if (toeval_v != NULL && strcmp((char*) toeval_v, "") != 0)
     {
       add_history ((char*) toeval_v);
       return exec_string_safe (toeval_v);

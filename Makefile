@@ -4,7 +4,7 @@ GUILEINC=/usr/include/guile/2.2
 
 
 bal: bal.c 
-	cc  -I $(GUILEINC) bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall -DBAL_SCM_INSTALL=\"$(BAL_SCM_INSTALL)\" -lm
+	cc  -I $(GUILEINC) bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall -DBAL_SCM_INSTALL=\"$(BAL_SCM_INSTALL)\" -lm -g
 
 .FORCE:
 
