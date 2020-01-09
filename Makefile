@@ -1,10 +1,16 @@
-BAL_SCM_INSTALL=/etc/bal.scm
-PREFIX=/usr/local
-GUILEINC=/usr/include/guile/2.2
+ifndef BAL_SCM_INSTALL
+	BAL_SCM_INSTALL=/etc/bal.scm
+endif
+ifndef PREFIX
+	PREFIX=/usr/local
+endif
+ifndef GUILE_CFLAGS
+	GUILE_CFLAGS=`pkg-config --libs --cflags guile-2.2`
+endif
 
 
 bal: bal.c 
-	cc  -I $(GUILEINC) bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall -DBAL_SCM_INSTALL=\"$(BAL_SCM_INSTALL)\" -lm -g
+	cc  $(GUILE_CFLAGS) bal.c -lguile-2.2 -lgc -lcsv -lreadline -o bal -Wall -DBAL_SCM_INSTALL=\"$(BAL_SCM_INSTALL)\" -lm -g
 
 .FORCE:
 
