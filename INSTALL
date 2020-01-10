@@ -1,18 +1,14 @@
-To compile bal, type:
+bal uses Autotools to build. To compile bal, type:
 
+$ ./init_build.sh
+$ ./configure
 $ make
 
-You can install to /usr/local/ with
+The configure script takes all the standard options (including --prefix= to decide where bal is installed).
 
-# make install
+To install:
 
-which just copies the bal executable to /usr/local/bin, the man page to /usr/local/share/man/man1/, and the standard Scheme function file ot /etc/bal.scm.
-
-You can customize where to install the executable and man page with PREFIX (default: /usr/local).
-
-BAL_SCM_INSTALL controls where the standard Scheme file is installed (default: /etc/bal.scm).
-
-GUILEINC sets where the include directory is for guile (default: /usr/include/guile/2.2)
+$ sudo make install
 
 bal depends on libreadline, libcsv, libguile, and libgc to compile.
 
