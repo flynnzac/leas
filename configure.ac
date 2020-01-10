@@ -30,8 +30,6 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([floor regcomp strcspn])
 
-AC_DEFINE([BAL_SCM_INSTALL], ["/etc/bal.scm"])
-
 AM_INIT_AUTOMAKE([subdir-objects foreign])
 
 AC_CONFIG_FILES([Makefile])

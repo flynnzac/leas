@@ -2,7 +2,7 @@
 (use-modules (ice-9 textual-ports))
 
 (define README-text
-  (get-string-all (open-file "README" "r")))
+  (get-string-all (open-file "../README" "r")))
 
 (define regex-README "(\n)[^bal]*(bal)")
 
@@ -11,7 +11,7 @@
                      (string-match regex-README README-text)
                      'pre 1 2 'post))
 
-(let ((output-port (open-file "README" "w")))
+(let ((output-port (open-file "../README" "w")))
   (display README-text output-port)
   (close-port output-port))
 
