@@ -1,4 +1,4 @@
-bal(1)			    General Commands Manual			bal(1)
+leas(1) 		    General Commands Manual		       leas(1)
 leas  -	the little extensible accounting system - for keeping accounts
        in order and studying past spending habits
 
@@ -159,7 +159,7 @@ OPTIONS
        COMMAND
 	      execute COMMAND as if it was entered at leas's prompt  and  then
 	      exit.   This enables you to, for example, type "leas t" to enter
-	      a new transaction (supposing your main bal  file	is  loaded  in
+	      a new transaction (supposing your main leas file	is  loaded  in
 	      your ~/.leasrc.scm).
 
 FILES
@@ -206,4 +206,4 @@ AUTHOR
 
 
 
-				  2019-04-26				bal(1)
+				  2019-04-26			       leas(1)
