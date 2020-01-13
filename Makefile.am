@@ -1,7 +1,7 @@
-bin_PROGRAMS = bal
-bal_SOURCES = src/bal.c
-baldir = $(datadir)
-bal_DATA = src/bal.scm
-bal_CFLAGS = $(GUILE_CFLAGS) -DBAL_SCM_INSTALL='"$(datadir)/bal.scm"'
-bal_LDFLAGS = $(GUILE_LDFLAGS)
+bin_PROGRAMS = leas
+leas_SOURCES = src/leas.c
+leasdir = $(datadir)
+leas_DATA = src/leas.scm
+leas_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
+leas_LDFLAGS = $(GUILE_LDFLAGS)
 
