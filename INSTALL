@@ -12,4 +12,4 @@ $ sudo make install
 
 Leas depends on libreadline, libcsv, and libguile to compile.
 
-Leas expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
+Leas expects the programs tar and rm to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  

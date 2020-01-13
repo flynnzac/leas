@@ -33,6 +33,7 @@
 #include <string.h>
 #include <libgen.h>
 #include <signal.h>
+#include <sys/stat.h>
 
 /* convenience, manipulation functions */
 
@@ -120,32 +121,8 @@ create_tmp_dir ()
 {
   /* creates a temporary directory and returns a string 
      giving file location */
-  char* tmp_dir = NULL;
-  char buffer[1024];
-  FILE* fp;
-
-  fp = popen("mktemp -d", "r");
-  if (fp == NULL)
-    {
-      fprintf(stderr, "Could not create temporary directory.\n");
-      return NULL;
-    }
-
-  while (fgets(buffer, sizeof(buffer)-1, fp) != NULL)
-    {
-      if (tmp_dir == NULL)
-        {
-          tmp_dir = malloc(sizeof(char)*(strlen(buffer)+1));
-          strcpy(tmp_dir, buffer);
-        }
-      else
-        {
-          tmp_dir = realloc(tmp_dir, sizeof(char)*(strlen(tmp_dir)+strlen(buffer)+1));
-          strcat(tmp_dir, buffer);
-        }
-    }
-  tmp_dir[strcspn(tmp_dir, "\n")] = 0;
-  pclose(fp);
+  char* tmp_dir = copy_string("Leas_XXXXXX");
+  tmp_dir = mkdtemp(tmp_dir);
 
   return tmp_dir;
 }
@@ -918,6 +895,7 @@ read_in (char* base)
     return 1;
 
   /* untar archive */
+  
   untar_cmd = malloc(sizeof(char)*(strlen("tar xaf ")+
                                    strlen(base)+
                                    strlen(" -C ")+
@@ -1032,10 +1010,10 @@ write_out (char* base)
 
   cmd = malloc(sizeof(char)*(strlen(fn)+
                              strlen(tmp_dir)+
-                             strlen("mkdir /")+1));
+                             strlen("/")+1));
 
-  sprintf(cmd, "mkdir %s/%s", tmp_dir, fn);
-  system(cmd);
+  sprintf(cmd, "%s/%s", tmp_dir, fn);
+  mkdir(cmd, 0777);
   free(cmd);
   
   account_fn = malloc(sizeof(char)*(strlen(fn)+
