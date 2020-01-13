@@ -122,7 +122,7 @@ create_tmp_dir ()
   /* creates a temporary directory and returns a string 
      giving file location */
   char* tmp_dir = copy_string("Leas_XXXXXX");
-  tmp_dir = mkdtemp(tmp_dir);
+  mkdtemp(tmp_dir);
 
   return tmp_dir;
 }
