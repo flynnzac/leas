@@ -1,15 +1,15 @@
-bal uses Autotools to build. To compile bal, type:
+leas uses Autotools to build. To compile leas, type:
 
 $ ./init_build.sh
 $ ./configure
 $ make
 
-The configure script takes all the standard options (including --prefix= to decide where bal is installed).
+The configure script takes all the standard options (including --prefix=XX to decide where leas is installed).
 
 To install:
 
 $ sudo make install
 
-bal depends on libreadline, libcsv, libguile, and libgc to compile.
+leas depends on libreadline, libcsv, libguile, and libgc to compile.
 
-bal expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
+leas expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
