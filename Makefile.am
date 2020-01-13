@@ -4,4 +4,4 @@ leasdir = $(datadir)
 leas_DATA = src/leas.scm
 leas_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
 leas_LDFLAGS = $(GUILE_LDFLAGS)
-
+man1_MANS = doc/leas.1
