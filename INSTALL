@@ -1,15 +1,15 @@
-leas uses Autotools to build. To compile leas, type:
+Leas uses Autotools to build. To compile Leas, type:
 
 $ ./init_build.sh
 $ ./configure
 $ make
 
-The configure script takes all the standard options (including --prefix=XX to decide where leas is installed).
+The configure script takes all the standard options (including --prefix=XX to decide where Leas is installed).
 
 To install:
 
 $ sudo make install
 
-leas depends on libreadline, libcsv, libguile, and libgc to compile.
+Leas depends on libreadline, libcsv, and libguile to compile.
 
-leas expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
+Leas expects the programs tar, mkdir, rm, and mktemp to be on the path.  It has only been tested with the GNU versions of these utilities.  Let me know if I accidently used something non-portable to BSD or similar, and I will fix it.  
