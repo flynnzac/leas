@@ -1,5 +1,5 @@
 /* 
-   leas - the Little Extensible Accounting System - for keeping accounts in order and studying past spending habits
+   Leas - the Little Extensible Accounting System - for keeping accounts in order and studying past spending habits
    Copyright Zach Flynn <zlflynn@gmail.com>
 
    This program is free software: you can redistribute it and/or
@@ -121,7 +121,7 @@ create_tmp_dir ()
   /* creates a temporary directory and returns a string 
      giving file location */
   char* tmp_dir = NULL;
-  char buffer[100];
+  char buffer[1024];
   FILE* fp;
 
   fp = popen("mktemp -d", "r");
@@ -211,6 +211,15 @@ typedef struct
   int n_account;
   int n_pos; /* used in reading data */
 } book;
+
+/* prompt state */
+
+typedef enum
+  {
+   PROMPT_OFF,
+   PROMPT_COMMAND,
+   PROMPT_SELECT
+  } prompt_state;
 
 /* destructors */
 
@@ -334,21 +343,21 @@ account_type_from_string (char* type)
   return t;
 }
 
-/* set attributes and arrange leas objects */
+/* set attributes and arrange Leas objects */
 
+/* set transaction time */
 void
 set_tsct_time (tsct* t, struct tm* time)
 {
-  /* set transaction time */
   t->year = time->tm_year + 1900;
   t->month = time->tm_mon + 1;
   t->day = time->tm_mday;
 }
 
+/* set transaction time from SCM list */
 void
 set_tsct_time_from_scm (tsct* t, SCM time)
 {
-  /* set transaction time from SCM list */
   t->year = scm_to_int
     (scm_list_ref(time,scm_from_int(2)));
   t->month = scm_to_int
@@ -357,10 +366,11 @@ set_tsct_time_from_scm (tsct* t, SCM time)
     (scm_list_ref(time,scm_from_int(0)));
 }
 
+/* sort transactionis from earliest to latest */
 int
 sort_transactions (const void* a, const void* b)
 {
-  /* sort transactionis from earliest to latest */
+
   const tsct* a_t = a;
   const tsct* b_t = b;
 
@@ -375,7 +385,6 @@ sort_transactions (const void* a, const void* b)
   else return 0;
 }
 
-
 /* global vars */
 
 static book leas_book;
@@ -386,12 +395,10 @@ static int leas_prompt_exit;
 static int leas_select_tsct_num;
 static struct tm* leas_curtime;
 
-
+/* check whether an (account,transaction) exists by number */
 int
 check_account_trans (int a, int t)
 {
-  /* check whether an (account,transaction) exists by number */
-  
   if ((0 <= a) & (leas_book.n_account > a))
     {
       if ((0 <= t) & (leas_book.accounts[a].n_tsct > t))
@@ -403,9 +410,7 @@ check_account_trans (int a, int t)
     return 0;
 }
 
-
 /* send code to guile interpreter */
-
 SCM
 handle_error (void* toeval_v,
               SCM key,
@@ -419,7 +424,7 @@ handle_error (void* toeval_v,
   return SCM_UNSPECIFIED;
 }
 
-
+/* executes a piece of Guile code */
 SCM
 exec_string_safe (void* toeval_v)
 {
@@ -445,6 +450,7 @@ exec_string_safe (void* toeval_v)
   return ret;
 }
 
+/* executes a piece of Guile code and adds to history*/
 SCM
 exec_string_safe_history (void* toeval_v)
 {
@@ -458,7 +464,6 @@ exec_string_safe_history (void* toeval_v)
 }
 
 /* find accounts by name */
-
 account*
 find_account_in_book (book* book, const char* name)
 {
@@ -470,6 +475,7 @@ find_account_in_book (book* book, const char* name)
   return NULL;
 }
 
+/* find account number in book */
 int
 find_account_location_in_book (book* book, const char* name)
 {
@@ -483,6 +489,7 @@ find_account_location_in_book (book* book, const char* name)
 
 /* conversion functions to scheme objects */
 
+/* convert transaction to Scheme list containing data */
 SCM
 tsct_to_scm (const tsct t)
 {
@@ -495,6 +502,7 @@ tsct_to_scm (const tsct t)
   return scm_list_5(desc,amount,year,month,day);
 }
 
+/* convert account to Scheme list containing data */
 SCM
 acct_to_scm (const account a)
 {
@@ -539,11 +547,10 @@ total_transactions (const account* acct)
 
 /* selection functions for leas/call */
 
+/* function to interactively select account */
 char*
 leas_select_account (const char* prompt, int kind)
 {
-
-
   int j, ndigit;
   char* c;
 
@@ -570,6 +577,7 @@ leas_select_account (const char* prompt, int kind)
     }
 }
 
+/* function to interactively select transaction */
 int
 leas_select_transaction (account* acct)
 {
@@ -616,13 +624,14 @@ leas_select_transaction (account* acct)
   return -1;
 }
 
+/* function to interactively select day */
 char*
 leas_select_day (struct tm* curtime_info)
 {
   char* prompt;
   char* year; char* month; char* day;
 
-  if (leas_prompton == 2)
+  if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Year [%d]: ",
 				      curtime_info->tm_year+1900);
@@ -632,7 +641,7 @@ leas_select_day (struct tm* curtime_info)
   else
     return NULL;
 
-  if (leas_prompton == 2)
+  if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Month [%d]: ",
 				      curtime_info->tm_mon+1);
@@ -642,7 +651,7 @@ leas_select_day (struct tm* curtime_info)
   else
     return NULL;
 
-  if (leas_prompton==2)
+  if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Day [%d]: ",
 				      curtime_info->tm_mday);
@@ -660,6 +669,7 @@ leas_select_day (struct tm* curtime_info)
   return ret;
 }
 
+/* function to interactively select account type */
 account_type
 leas_select_account_type (char* prompt)
 {
@@ -676,8 +686,9 @@ leas_select_account_type (char* prompt)
 
   return k;
 }
-/* functions for reading .leas files */
+/* Functions for reading .leas files */
 
+/* Read transaction from CSV */
 void
 transaction_cb1 (void* s, size_t len, void* data)
 {
@@ -729,6 +740,7 @@ transaction_cb1 (void* s, size_t len, void* data)
     }
 }
 
+/* Read account info from CSV. */
 void
 account_cb1 (void* s, size_t len, void* data)
 {
@@ -780,6 +792,7 @@ account_cb1 (void* s, size_t len, void* data)
     }
 }
 
+/* Read Accounts into a book from CSV file. */
 void
 read_book_accounts_from_csv (book* book,
                              const char* account_file)
@@ -821,6 +834,7 @@ read_book_accounts_from_csv (book* book,
   csv_free(&p);
 }
 
+/* Read transactions into book.*/
 void
 read_all_transactions_into_book (book* book,
                                  char* base,
@@ -885,6 +899,7 @@ read_all_transactions_into_book (book* book,
   free(fn);
 }
 
+/* Top-level function to read everything a Leas book in. */
 int
 read_in (char* base)
 {
@@ -944,8 +959,9 @@ read_in (char* base)
   
 }
 
-/* functions for writing .leas files */
+/* Functions for writing .leas files */
 
+/* Write transactions from an account to a CSV file. */
 void
 write_transactions (const char* file, account* acct)
 {
@@ -970,6 +986,7 @@ write_transactions (const char* file, account* acct)
   fclose(fp);
 }
 
+/* Write accounts from leas_book to file. */
 int
 write_accounts (const char* file)
 {
@@ -996,6 +1013,7 @@ write_accounts (const char* file)
   return 0;
 }
 
+/* Write everything out to a file. */
 int
 write_out (char* base)
 {
@@ -1071,8 +1089,7 @@ write_out (char* base)
   return 0;
 }
 
-/* function to call a function with options specified interactively */
-
+/* Used to call a function with options specified interactively */
 SCM
 leas_call (SCM func, SCM options)
 {
@@ -1097,10 +1114,10 @@ leas_call (SCM func, SCM options)
   
   append_to_string(&command, " ", "");
 
-  leas_prompton = 2;
+  leas_prompton = PROMPT_SELECT;
   for (i=0; i < len; i++)
     {
-      if (leas_prompton != 2)
+      if (leas_prompton != PROMPT_SELECT)
         break;
 
       pair = scm_list_ref (options, scm_from_int(i));
@@ -1127,7 +1144,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case EXPENSE_ACCOUNT:
           opt = leas_select_account(name_c, EXPENSE);
@@ -1137,7 +1154,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case LIABILITY_ACCOUNT:
           opt = leas_select_account(name_c, LIABILITY);
@@ -1147,7 +1164,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case ASSET_ACCOUNT:
           opt = leas_select_account(name_c, ASSET);
@@ -1157,7 +1174,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case INCOME_ACCOUNT:
           opt = leas_select_account(name_c, INCOME);
@@ -1167,7 +1184,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case PAY_FROM_ACCOUNT:
           opt = leas_select_account(name_c, ASSET | LIABILITY);
@@ -1177,7 +1194,7 @@ leas_call (SCM func, SCM options)
               append_to_string(&command,
                                leas_book.accounts[k].name,
                                "\"");
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case CURRENT_ACCOUNT:
           opt = scm_to_locale_string (leas_cur_acct);
@@ -1190,7 +1207,7 @@ leas_call (SCM func, SCM options)
               tmp_str = account_type_to_string(k);
               append_to_string(&command, tmp_str, "\"");
               free(tmp_str);
-            } else leas_prompton = 1;
+            } else leas_prompton = PROMPT_COMMAND;
           break;
         case TRANSACTION:
           printf("%s\n", name_c);
@@ -1213,7 +1230,7 @@ leas_call (SCM func, SCM options)
                 }
             }
 	  else
-	    leas_prompton = 1;
+	    leas_prompton = PROMPT_COMMAND;
           break;
         case DAY:
           time(&curtime);
@@ -1238,7 +1255,7 @@ leas_call (SCM func, SCM options)
 
     }
 
-  if (leas_prompton == 2)
+  if (leas_prompton == PROMPT_SELECT)
     {
       SCM ret = scm_c_catch (SCM_BOOL_T,
                              exec_string_safe,
@@ -1252,14 +1269,14 @@ leas_call (SCM func, SCM options)
     }
 
   free(command);
-  leas_prompton = 1;
+  leas_prompton = PROMPT_COMMAND;
 
   return SCM_UNDEFINED;
 }
 
 /* Main Scheme interface functions */
 
-/* Add transactions and accounts */
+/* Add a transaction to an account. */
 SCM
 leas_at (SCM account_name,
         SCM amount,
@@ -1295,6 +1312,7 @@ leas_at (SCM account_name,
   return SCM_UNDEFINED;
 }
 
+/* Add an account. */
 SCM
 leas_aa (SCM name,
         SCM type,
@@ -1329,7 +1347,6 @@ leas_aa (SCM name,
 }
 
 /* Rename existing accounts and adjust opening balances */
-
 SCM
 leas_ea (SCM cur_name,
         SCM name,
@@ -1364,8 +1381,7 @@ leas_ea (SCM cur_name,
   return SCM_UNDEFINED;
 }
 
-/* Delete existing transactions and accounts */
-
+/* Delete an existing transaction. */
 SCM
 leas_dt (SCM at_pair)
 {
@@ -1387,7 +1403,7 @@ leas_dt (SCM at_pair)
 
 }
 
-
+/* Delete an existing account. */
 SCM
 leas_da (SCM account)
 {
@@ -1431,7 +1447,6 @@ leas_da (SCM account)
 }
 
 /* Get the current account name */
-
 SCM
 leas_get_current_account ()
 {
@@ -1461,8 +1476,7 @@ leas_get_account_location (SCM name_scm)
     return SCM_UNDEFINED;
 }
 
-/* get "num" most recent transactions */
-
+/* Get "num" most recent transactions from "acct" */
 SCM
 leas_get_transactions (SCM acct, SCM num)
 {
@@ -1516,6 +1530,7 @@ leas_get_all_transactions (SCM acct)
   return ret;
 }
 
+/* Get all transactions from an account whose description matches a regular expression. */
 SCM
 leas_get_transactions_by_regex (SCM acct_s, SCM regex_s)
 {
@@ -1563,7 +1578,6 @@ leas_get_transactions_by_regex (SCM acct_s, SCM regex_s)
 }
 
 /* Get account information by name */
-
 SCM
 leas_get_account (SCM name)
 {
@@ -1578,7 +1592,6 @@ leas_get_account (SCM name)
 }
 
 /* Get account information for all accounts */
-
 SCM
 leas_get_all_accounts ()
 {
@@ -1657,7 +1670,6 @@ leas_get_transactions_by_day (SCM acct, SCM first_day, SCM last_day)
 }
 
 /* Get total of an account by name */
-
 SCM
 leas_total_account (SCM acct)
 {
@@ -1674,7 +1686,6 @@ leas_total_account (SCM acct)
 }
 
 /* Get total for all accounts */
-
 SCM
 leas_total_all_accounts ()
 {
@@ -1697,7 +1708,6 @@ leas_total_all_accounts ()
 }
 
 /* Get total for all accounts of a certain type*/
-
 SCM
 leas_total_all_accounts_of_type (SCM type_s)
 {
@@ -1791,19 +1801,17 @@ leas_total_by_account_type ()
   return ret;
 }
 
-/* Quit prompt */
-
+/* Quit */
 SCM
-leas_quit ()
+leas_q ()
 {
-  leas_prompton = 0;
+  leas_prompton = PROMPT_OFF;
   return SCM_UNDEFINED;
 }
 
 /* Print to screen */
-
 SCM
-leas_print (SCM x)
+leas_p (SCM x)
 {
   scm_display(x, scm_current_output_port());
   printf("\n");
@@ -1812,7 +1820,6 @@ leas_print (SCM x)
 }
 
 /* Set current account */
-
 SCM
 leas_set_account (SCM acct)
 {
@@ -1821,7 +1828,6 @@ leas_set_account (SCM acct)
 }
 
 /* Write to file */
-
 SCM
 leas_write (SCM file)
 {
@@ -1843,7 +1849,6 @@ leas_write (SCM file)
 }
 
 /* Read file */
-
 SCM
 leas_read (SCM file)
 {
@@ -1875,7 +1880,7 @@ leas_get_current_file ()
   return leas_cur_file;
 }
 
-/* set number of transactions to print when selecting transact */
+/* Set number of transactions to print when selecting transaction */
 SCM
 leas_set_select_transact_num (SCM num)
 {
@@ -1883,14 +1888,14 @@ leas_set_select_transact_num (SCM num)
   return num;
 }
 
-/* retrieve version number */
+/* Retrieve version number */
 SCM
 leas_v ()
 {
   return scm_from_locale_string(PACKAGE_VERSION);
 }
 
-/* set the day to be the dividing day between "past" and "future" */
+/* Set the day to be the dividing day between "past" and "future" */
 SCM
 leas_set_current_day (SCM dmy)
 {
@@ -1903,7 +1908,7 @@ leas_set_current_day (SCM dmy)
   return dmy;
 }
 
-/* get the current day */
+/* Get the current day */
 SCM
 leas_get_current_day ()
 {
@@ -1979,8 +1984,8 @@ register_guile_functions (void* data)
                      &leas_get_current_day);
 
   /* interface commands */
-  scm_c_define_gsubr("q", 0, 0, 0, &leas_quit);
-  scm_c_define_gsubr("p", 1, 0, 0, &leas_print);
+  scm_c_define_gsubr("q", 0, 0, 0, &leas_q);
+  scm_c_define_gsubr("p", 1, 0, 0, &leas_p);
   scm_c_define_gsubr("leas/set-account", 1, 0, 0, &leas_set_account);
   scm_c_define_gsubr("leas/write", 1, 0, 0, &leas_write);
   scm_c_define_gsubr("leas/read", 1, 0, 0, &leas_read);
@@ -1994,17 +1999,23 @@ register_guile_functions (void* data)
   return NULL;
 }
 
+/* Exit Leas */
 void
 leas_exit ()
 {
-  int c;
+  char* quit;
 
   if (leas_prompt_exit)
     {
-      printf("Save file? (y/n) ");
-      c = getchar();
-
-      if (c=='y')
+      quit = readline("Save file? (yes/no) ");
+      while ((strcmp(quit,"yes") != 0) &&
+	     (strcmp(quit, "no") != 0))
+	{
+	  free(quit);
+	  quit = readline("Save file? (yes/no) ");
+	}
+	  
+      if (strcmp(quit, "yes")==0)
         {
           (void) leas_write(leas_cur_file);
         }
@@ -2012,20 +2023,23 @@ leas_exit ()
   delete_book(&leas_book);
 }
 
+/* Dummy event for signals */
 int
 dummy_event ()
 {
   return 0;
 }
 
+/* What to do on interrupt */
 void
 interrupt_handler (int status)
 {
   rl_replace_line("",0);
-  if (leas_prompton==2) leas_prompton = 1;
+  if (leas_prompton==PROMPT_SELECT) leas_prompton = PROMPT_COMMAND;
   rl_done = 1;
 }
 
+/* Load standard Leas functions */
 void
 leas_standard_func (char* file)
 {
@@ -2141,9 +2155,9 @@ main (int argc, char** argv)
              scm_from_double(0.0));
     }
   
-  leas_prompton = 1;
+  leas_prompton = PROMPT_COMMAND;
 
-  while (leas_prompton)
+  while (leas_prompton != PROMPT_OFF)
     {
       ret = scm_c_catch(SCM_BOOL_T,
                         exec_string_safe,
