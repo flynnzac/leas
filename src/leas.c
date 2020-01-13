@@ -2049,6 +2049,7 @@ leas_standard_func (char* file)
   free(command);
 }
 
+
 int
 main (int argc, char** argv)
 {
@@ -2074,7 +2075,7 @@ main (int argc, char** argv)
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
   
-  while ((k = getopt(argc, argv, "f:l:sn")) != -1)
+  while ((k = getopt(argc, argv, "f:l:snv")) != -1)
     {
       switch (k)
         {
@@ -2112,6 +2113,14 @@ main (int argc, char** argv)
 	  
           exit(1);
           break;
+	case 'v':
+	  printf("%s\n", PACKAGE_STRING);
+	  printf("Copyright (C) 2020 Zach Flynn.\n");
+	  printf("License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>\n");
+	  printf("This is free software: you are free to change and redistribute it.\n");
+	  printf("There is NO WARRANTY, to the extent permitted by law.\n");
+	  exit(0);
+	  break;
         default:
           abort();
           break;

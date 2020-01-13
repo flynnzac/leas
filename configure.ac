@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([leas], [0.1.0], [github.com/flynnzac/leas])
+AC_INIT([Leas], [0.1.0], [github.com/flynnzac/leas])
 AC_CONFIG_SRCDIR([src/leas.c])
 
 # Checks for programs.
