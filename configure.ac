@@ -30,7 +30,7 @@ AC_FUNC_MALLOC
 AC_FUNC_REALLOC
 AC_CHECK_FUNCS([floor regcomp strcspn])
 
-AM_INIT_AUTOMAKE([subdir-objects foreign])
+AM_INIT_AUTOMAKE([subdir-objects])
 
 AC_CONFIG_FILES([Makefile])
 AC_OUTPUT
