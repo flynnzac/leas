@@ -611,7 +611,7 @@ leas_select_day (struct tm* curtime_info)
   if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Year [%d]: ",
-				      curtime_info->tm_year+1900);
+                                      curtime_info->tm_year+1900);
       year = readline(prompt);
       free(prompt);
     }
@@ -621,7 +621,7 @@ leas_select_day (struct tm* curtime_info)
   if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Month [%d]: ",
-				      curtime_info->tm_mon+1);
+                                      curtime_info->tm_mon+1);
       month = readline(prompt);
       free(prompt);
     }
@@ -631,7 +631,7 @@ leas_select_day (struct tm* curtime_info)
   if (leas_prompton == PROMPT_SELECT)
     {
       prompt = copy_string_insert_int("Day [%d]: ",
-				      curtime_info->tm_mday);
+                                      curtime_info->tm_mday);
       day = readline(prompt);
       free(prompt);
     }
@@ -923,14 +923,9 @@ read_in (char* base)
 
   /* clean up */
   rm_cmd = malloc(sizeof(char)*(strlen("rm -R ") +
-                                strlen(tmp_dir) +
-                                strlen("/") +
-                                strlen(fn)+
-                                1));
-
-  sprintf(rm_cmd, "rm -R %s/%s", tmp_dir, fn);
+                                strlen(tmp_dir) + 1));
+  sprintf(rm_cmd, "rm -R %s", tmp_dir);
   system(rm_cmd);
-
   free(rm_cmd); free(tmp_dir); free(fn);
   /* return success */
   return 0;
@@ -1207,8 +1202,8 @@ leas_call (SCM func, SCM options)
                     }
                 }
             }
-	  else
-	    leas_prompton = PROMPT_COMMAND;
+          else
+            leas_prompton = PROMPT_COMMAND;
           break;
         case DAY:
           time(&curtime);
@@ -1216,8 +1211,8 @@ leas_call (SCM func, SCM options)
 
           printf("%s\n", name_c);
           opt = leas_select_day (curtime_info);
-	  if (opt != NULL)
-	    append_to_string(&command, opt, "");
+          if (opt != NULL)
+            append_to_string(&command, opt, "");
           break;
         default:
           opt = readline(name_c);
@@ -1257,9 +1252,9 @@ leas_call (SCM func, SCM options)
 /* Add a transaction to an account. */
 SCM
 leas_at (SCM account_name,
-        SCM amount,
-        SCM desc,
-        SCM day)
+         SCM amount,
+         SCM desc,
+         SCM day)
 {
   char* account_c = scm_to_locale_string (account_name);
   account* acct = find_account_in_book (&leas_book, account_c);
@@ -1293,8 +1288,8 @@ leas_at (SCM account_name,
 /* Add an account. */
 SCM
 leas_aa (SCM name,
-        SCM type,
-        SCM ob)
+         SCM type,
+         SCM ob)
 {
 
   char* type_str = scm_to_locale_string(type);
@@ -1308,7 +1303,7 @@ leas_aa (SCM name,
     leas_book.accounts = malloc(sizeof(account));
   else
     leas_book.accounts = realloc(leas_book.accounts,
-                                sizeof(account)*(leas_book.n_account+1));
+                                 sizeof(account)*(leas_book.n_account+1));
 
   leas_book.accounts[leas_book.n_account].type = type_c;
   leas_book.accounts[leas_book.n_account].n_tsct = 0;
@@ -1327,8 +1322,8 @@ leas_aa (SCM name,
 /* Rename existing accounts and adjust opening balances */
 SCM
 leas_ea (SCM cur_name,
-        SCM name,
-        SCM ob)
+         SCM name,
+         SCM ob)
 {
   char* cur_name_c = scm_to_locale_string (cur_name);
   account* acct = find_account_in_book(&leas_book, cur_name_c);
@@ -1987,11 +1982,11 @@ leas_exit ()
     {
       quit = readline("Save file? (yes/no) ");
       while ((strcmp(quit,"yes") != 0) &&
-	     (strcmp(quit, "no") != 0))
-	{
-	  free(quit);
-	  quit = readline("Save file? (yes/no) ");
-	}
+             (strcmp(quit, "no") != 0))
+        {
+          free(quit);
+          quit = readline("Save file? (yes/no) ");
+        }
 	  
       if (strcmp(quit, "yes")==0)
         {
@@ -2053,7 +2048,7 @@ main (int argc, char** argv)
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
   
-  while ((k = getopt(argc, argv, "f:l:snv")) != -1)
+  while ((k = getopt(argc, argv, "f:l:snvh")) != -1)
     {
       switch (k)
         {
@@ -2081,6 +2076,24 @@ main (int argc, char** argv)
         case 's':
           leas_prompt_exit = 0;
           break;
+        case 'v':
+          printf("%s\n", PACKAGE_STRING);
+          printf("Copyright (C) 2020 Zach Flynn.\n");
+          printf("License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>\n");
+          printf("This is free software: you are free to change and redistribute it.\n");
+          printf("There is NO WARRANTY, to the extent permitted by law.\n");
+          exit(0);
+        case 'h':
+          printf("Usage: leas [-f FILE] [-l FILE] [-s] [-n] [-v] [-h] [COMMAND]\n");
+          printf("Leas %s - the Little Extensible Accounting System\n",
+                 PACKAGE_VERSION);
+          printf("\n");
+          printf("-f FILE  Load Leas save file.\n");
+          printf("-l FILE  Load Scheme code at start up.\n");
+          printf("-s  Do not prompt to save file on exit.\n");
+          printf("-n  Do not load ~/.leasrc.scm.\n");
+          printf("COMMAND Execute bal command.\n");
+          break;
         case '?':
           if (optopt=='l')
             fprintf(stderr, "Option -l requires an argument.\n");
@@ -2091,14 +2104,7 @@ main (int argc, char** argv)
 	  
           exit(1);
           break;
-	case 'v':
-	  printf("%s\n", PACKAGE_STRING);
-	  printf("Copyright (C) 2020 Zach Flynn.\n");
-	  printf("License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>\n");
-	  printf("This is free software: you are free to change and redistribute it.\n");
-	  printf("There is NO WARRANTY, to the extent permitted by law.\n");
-	  exit(0);
-	  break;
+          break;
         default:
           abort();
           break;
@@ -2138,8 +2144,8 @@ main (int argc, char** argv)
     {
       /* create cash account if no other account */
       leas_aa(scm_from_locale_string("Cash"),
-             scm_from_locale_string("asset"),
-             scm_from_double(0.0));
+              scm_from_locale_string("asset"),
+              scm_from_double(0.0));
     }
   
   leas_prompton = PROMPT_COMMAND;
