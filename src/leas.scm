@@ -2,7 +2,7 @@
 (use-modules (srfi srfi-1))
 (use-modules (srfi srfi-19))
 
-;; parameters
+;; Parameters
 (define leas/number-to-quick-list 20)
 (define leas/prompt
   (lambda ()
@@ -14,10 +14,12 @@
          ") :> "))))
 
 
-;; non-interactive functions
+;; Non-interactive functions
 
-;;; utility functions
+;;; Utility Functions
 
+
+;;;; Pretty print transactions
 (define leas/print-tscts
   (lambda (tsct-list)
     (if (list? tsct-list)
@@ -43,11 +45,13 @@
                "\n")))
            tsct-list)))))
 
+;;;; Create a (day month year) list from a time object.
 (define leas/day-from-time
   (lambda (x)
     (let ((xdate (time-utc->date x 0)))
       (list (date-day xdate) (date-month xdate) (date-year xdate)))))
 
+;;;; Creates a list of days
 (define leas/seq-days
   (lambda (first-day last-day by)
     (let ((first-time (date->time-utc (make-date 0 0 0 0
