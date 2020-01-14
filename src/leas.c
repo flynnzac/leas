@@ -34,6 +34,7 @@
 #include <libgen.h>
 #include <signal.h>
 #include <sys/stat.h>
+#include <getopt.h>
 
 /* convenience, manipulation functions */
 
@@ -2035,6 +2036,18 @@ main (int argc, char** argv)
   time_t curtime_time;
   int load = 1;
 
+  struct option leas_options[] =
+    {
+     {"version", no_argument, 0, 'v'},
+     {"no-rc", no_argument, 0, 'n'},
+     {"load", required_argument, 0, 'l'},
+     {"file", required_argument, 0, 'f'},
+     {"no-prompt-on-quit", no_argument, 0, 's'},
+     {"help", no_argument, 0, 'h'}
+    };
+
+  int option_index = 0;
+
   time(&curtime_time);
   leas_curtime = localtime(&curtime_time);
 
@@ -2048,7 +2061,8 @@ main (int argc, char** argv)
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
   
-  while ((k = getopt(argc, argv, "f:l:snvh")) != -1)
+  while ((k = getopt_long(argc, argv, "f:l:snvh", leas_options,
+			  &option_index)) != -1)
     {
       switch (k)
         {
@@ -2088,11 +2102,14 @@ main (int argc, char** argv)
           printf("Leas %s - the Little Extensible Accounting System\n",
                  PACKAGE_VERSION);
           printf("\n");
-          printf("-f FILE  Load Leas save file.\n");
-          printf("-l FILE  Load Scheme code at start up.\n");
-          printf("-s  Do not prompt to save file on exit.\n");
-          printf("-n  Do not load ~/.leasrc.scm.\n");
-          printf("COMMAND Execute bal command.\n");
+          printf("--file,-f FILE  Load Leas save file.\n");
+          printf("--load,-l FILE  Load Scheme code at start up.\n");
+          printf("--no-prompt-on-quit,-s  Do not prompt to save file on exit.\n");
+          printf("--no--rc, -n  Do not load ~/.leasrc.scm.\n");
+	  printf("--help,-h Print this help message.\n");
+	  printf("--version,-v Print the version of Leas and exit.\n");
+          printf("COMMAND Execute Leas command on startup and exit.\n");
+	  exit(0);
           break;
         case '?':
           if (optopt=='l')

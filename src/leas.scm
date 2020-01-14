@@ -74,13 +74,15 @@
                            by))))))
 
 
-;;; add and delete functions
+;;; Add and Delete functions
 
+;;;; Transfer From one account to another account
 (define leas/t
   (lambda (to-account from-account amount desc day)
     (leas/at to-account amount desc day)
     (leas/at from-account (* -1 amount) desc day)))
 
+;;;; Delete transfer from one account to another 
 (define leas/dtr
   (lambda (from-account location)
     (let ((transaction
@@ -96,6 +98,10 @@
                                    (cdr u) (cdr transaction)))) all-from)))
       (leas/dt location))))
 
+;;;; Pay a loan by deducting the pricipal from the loan account,
+;;;; adding the interest to the interest-account (an Expense account),
+;;;; and deducting the total from an asset or another liability
+;;;; account (from-account)
 (define leas/pay-loan
   (lambda (loan-account interest-account from-account
                         principal interest desc day)
@@ -103,6 +109,9 @@
     (leas/at interest-account interest desc day)
     (leas/at from-account (* -1 (+ principal interest)) desc day)))
 
+;;;; Update balances in "account" after a change in stock price by
+;;;; moving money from an Income account (like "Stock Income") to the
+;;;; account
 (define leas/change-stock-price
   (lambda (account from-account stock-price number day)
     (let* ((value (list-ref (leas/total-account account) 1))
@@ -111,8 +120,10 @@
       (leas/t account from-account trval
              "Stock Price Change" day))))
 
-;;; modification functions
+;;; Modification functions
 
+;;;; Edit a transaction by deleting it and replacing it with something
+;;;; new
 (define leas/edit-transact
   (lambda (tsct-loc day amount desc)
     (let ((tsct (leas/get-transaction-by-location
@@ -127,8 +138,9 @@
                   desc)
               day))))
 
-;;; summary functions
+;;; Summary functions
 
+;;;; Print out totals of a list of accounts
 (define leas/display-account-totals
   (lambda (accts)
     (let ((len
@@ -150,6 +162,7 @@
            "\n")))
        accts))))           
 
+;;;; Display totals for all accounts of a certain type
 (define leas/current-total-of-type
   (lambda (n)
     (lambda ()
@@ -162,8 +175,9 @@
                               el))
                   "\n"))))))
 
-;;; over time functions
+;;; Over Time functions
 
+;;;; A syntax to apply a function for each day
 (define-syntax leas/loop-days
   (lambda (x)
     (syntax-case x ()
