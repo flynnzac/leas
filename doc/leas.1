@@ -185,17 +185,23 @@ archive of CSV files that record transactions and characteristics of accounts.  
 The prompt is whatever is returned by the evaluating the Scheme expression "(leas/prompt)" so redefining this function will customize your prompt.
 .SH OPTIONS
 .TP
-.BR \-f " " FILE
+.BR \-\-file, \-f " " FILE
 load accounts from FILE
 .TP
-.BR \-l " " CODE
+.BR \-\-load, \-l " " CODE
 execute Scheme code in file CODE
 .TP
-.BR \-s
+.BR \-\-no-prompt-on-quit, \-s
 do not prompt to save on exit, will not save on exit
 .TP
-.BR \-n
+.BR \-\-no-rc, \-n
 do not load ~/.leasrc.scm
+.TP
+.BR \-\-help, \-h
+print help message giving command line options.
+.TP
+.BR \-\-version, \-v
+print the version of Leas and copyright info
 .TP
 .BR COMMAND
 execute COMMAND as if it was entered at
