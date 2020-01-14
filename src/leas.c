@@ -2105,7 +2105,7 @@ main (int argc, char** argv)
           printf("--file,-f FILE  Load Leas save file.\n");
           printf("--load,-l FILE  Load Scheme code at start up.\n");
           printf("--no-prompt-on-quit,-s  Do not prompt to save file on exit.\n");
-          printf("--no--rc, -n  Do not load ~/.leasrc.scm.\n");
+          printf("--no-rc, -n  Do not load ~/.leasrc.scm.\n");
 	  printf("--help,-h Print this help message.\n");
 	  printf("--version,-v Print the version of Leas and exit.\n");
           printf("COMMAND Execute Leas command on startup and exit.\n");
