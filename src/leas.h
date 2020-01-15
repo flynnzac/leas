@@ -331,7 +331,9 @@ set_tsct_time_from_scm (tsct* t, SCM time)
     (scm_list_ref(time,scm_from_int(0)));
 }
 
-/* sort transactionis from earliest to latest */
+/* sort transactionis from earliest to latest,
+   return 1 if a > b, -1 if a < b, and 0 if a=b.
+ */
 int
 sort_transactions (const void* a, const void* b)
 {

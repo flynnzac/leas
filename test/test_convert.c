@@ -1,6 +1,6 @@
 #include "../src/leas.h"
 #include <assert.h>
-/* Test of all Convenience/Manipulation/Utility Functions */
+/* Test of Conversion Functions */
 
 int
 main (int argc, char** argv)

@@ -6,7 +6,7 @@ leas_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
 leas_LDFLAGS = $(GUILE_LDFLAGS)
 man1_MANS = doc/leas.1
 
-check_PROGRAMS=test_util test_convert
+check_PROGRAMS=test_util test_convert test_transaction_times
 
 test_util_SOURCES=test/test_util.c
 test_util_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
@@ -16,5 +16,9 @@ test_convert_SOURCES=test/test_convert.c
 test_convert_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
 test_convert_LDFLAGS = $(GUILE_LDFLAGS)
 
+test_transaction_times_SOURCES=test/test_transaction_times.c
+test_transaction_times_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
+test_transaction_times_LDFLAGS = $(GUILE_LDFLAGS)
 
-TESTS=test_util test_convert
+
+TESTS=test_util test_convert test_transaction_times
