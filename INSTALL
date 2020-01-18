@@ -6,7 +6,7 @@ $ make
 
 The configure script takes all the standard options (including --prefix=XX to decide where Leas is installed).
 
-To install:
+You should install the program before using it to put the Scheme file used by leas in its proper place. To install:
 
 $ sudo make install
 
