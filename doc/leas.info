@@ -1,8 +1,9 @@
-This is leas.info, produced by makeinfo version 6.6 from leas.texinfo.
+This is leas.info, produced by makeinfo version 6.5 from leas.texinfo.
 
-This is the manual for leas, a personal account manager.
+This is the manual for Leas, the Little Extensible Accounting System, a
+personal account manager.
 
-   Copying (C) 2019 Zach Flynn.
+   Copying (C) 2020 Zach Flynn.
 
 
 File: leas.info,  Node: Top,  Next: Introduction,  Up: (dir)
@@ -10,14 +11,14 @@ File: leas.info,  Node: Top,  Next: Introduction,  Up: (dir)
 leas
 ****
 
-This is the leas reference manual.
+This is the Leas reference manual.
 
 * Menu:
 
-* Introduction:: introduction to leas, what it is, and an outline of manual
-* Tutorial:: tutorial explaining basic interactive usage of leas
-* Btar file format:: documentation of file format for leas for other programs and scripts to modify them
-* Programming leas:: full documentation of the functions leas exposes for use when writing custom leas commands
+* Introduction:: introduction to Leas, what it is, and an outline of manual
+* Tutorial:: tutorial explaining basic interactive usage of Leas
+* Leas file format:: documentation of file format for Leas for other programs and scripts to modify them
+* Programming Leas:: full documentation of the functions Leas exposes for use when writing custom Leas commands
 
 
 File: leas.info,  Node: Introduction,  Next: Tutorial,  Prev: Top,  Up: Top
@@ -31,11 +32,16 @@ helping you keep track of your spending and an aid in making future
 plans.  leas was conceived from the need to track my own personal
 finances leading up to my wedding and finding that most free software
 personal finance packages were large, complicated GUI programs that were
-difficult to hack to make work the way I wanted them to.  leas is a
-command-line program, but it is possible to write a GUI on top of the
-program.  It is possible because leas can be extended arbitrarily using
-the Guile Scheme programming language.  If you make a neat extension
-like this, let me know and I will reference it in this manual.
+difficult to hack to make work the way I wanted them to.  I have been
+using leas for my personal account management since October 2018 and
+have it found it useful for keeping track of things.  Hopefully, you
+will find it useful too!
+
+   leas is a command-line program, but it is possible to write a GUI on
+top of the program.  It is possible because leas can be extended
+arbitrarily using the Guile Scheme programming language.  If you make a
+neat extension like this, let me know and I will reference it in this
+manual.
 
    No knowledge of Scheme or programming in general is required to use
 leas.  I have included almost all the functions I use personally in the
@@ -75,7 +81,7 @@ exported by leas which is more useful if you are trying to write your
 own commands.
 
 
-File: leas.info,  Node: Tutorial,  Next: Btar file format,  Prev: Introduction,  Up: Top
+File: leas.info,  Node: Tutorial,  Next: Leas file format,  Prev: Introduction,  Up: Top
 
 2 Tutorial
 **********
@@ -563,9 +569,9 @@ prompt.  For example, try adding the following to see the current date,
                 ") :> ")))))
 
 
-File: leas.info,  Node: Btar file format,  Next: Programming leas,  Prev: Tutorial,  Up: Top
+File: leas.info,  Node: Leas file format,  Next: Programming Leas,  Prev: Tutorial,  Up: Top
 
-3 Btar file format
+3 Leas file format
 ******************
 
 The leas save file is a tar archive containing the following files in a
@@ -591,9 +597,9 @@ book.leas would, when un-tarred, be a directory called book):
         * Description - a description of the transaction
 
 
-File: leas.info,  Node: Programming leas,  Prev: Btar file format,  Up: Top
+File: leas.info,  Node: Programming Leas,  Prev: Leas file format,  Up: Top
 
-4 Programming leas
+4 Programming Leas
 ******************
 
 This chapter will be more of a reference manual for the various Scheme
@@ -602,20 +608,20 @@ functions available in leas.
 
 
 Tag Table:
-Node: Top163
-Node: Introduction642
-Node: Tutorial3607
-Node: Adding a cash asset account3919
-Node: Paying for expenses4925
-Node: Earning income7625
-Node: Managing debt8713
-Node: Non-cash assets11272
-Node: Saving loading and quitting13320
-Node: Scheme code14564
-Node: Common customizations15326
-Node: Set default file15653
-Node: Customize prompt15972
-Node: Btar file format16908
-Node: Programming leas18248
+Node: Top204
+Node: Introduction683
+Node: Tutorial3827
+Node: Adding a cash asset account4139
+Node: Paying for expenses5145
+Node: Earning income7845
+Node: Managing debt8933
+Node: Non-cash assets11492
+Node: Saving loading and quitting13540
+Node: Scheme code14784
+Node: Common customizations15546
+Node: Set default file15873
+Node: Customize prompt16192
+Node: Leas file format17128
+Node: Programming Leas18468
 
 End Tag Table
