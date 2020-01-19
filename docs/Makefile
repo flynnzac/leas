@@ -3,4 +3,4 @@ doc: leas.1 leas.texinfo
 	guile postdoc.scm
 	makeinfo leas.texinfo -o leas.info
 	makeinfo --pdf leas.texinfo -o leas.pdf
-	makeinfo --html leas.texinfo -o doc
+	makeinfo --html leas.texinfo -o .
