@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Paying for expenses (Leas manual)</title>
+
+<meta name="description" content="Paying for expenses (Leas manual)">
+<meta name="keywords" content="Paying for expenses (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tutorial.html#Tutorial" rel="up" title="Tutorial">
+<link href="Earning-income.html#Earning-income" rel="next" title="Earning income">
+<link href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account" rel="prev" title="Adding a cash asset account">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Paying-for-expenses"></a>
+<div class="header">
+<p>
+Next: <a href="Earning-income.html#Earning-income" accesskey="n" rel="next">Earning income</a>, Previous: <a href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account" accesskey="p" rel="prev">Adding a cash asset account</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Paying-for-expenses-1"></a>
+<h3 class="section">2.2 Paying for expenses</h3>
+
+<p>Now that we have an asset account, we can use it to pay for our expenses.
+</p>
+<p>First, we add an expense account, say an account for our Rent.
+</p>
+<div class="example">
+<pre class="example">(Checking) :&gt; aa
+Account: <i>Rent</i>
+0: Expense
+1: Income
+2: Asset
+3: Liability
+Type: <i>0</i>
+Opening Balance: <i>0</i>
+(Rent) :&gt;
+</pre></div>
+
+<p>Now, to pay the Rent.  The main command you use in <b>leas</b> after getting your accounts set up is the &quot;transfer&quot; command, <tt>t</tt>.  <tt>t</tt> transfers money from one account to another account.  Making a payment is transferring money from your asset accounts to your expense accounts.
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; <i>t</i>
+ 0: Checking
+ 1: Rent
+To Account: <i>1</i>
+ 0: Checking
+ 1: Rent
+From Account: <i>0</i>
+Amount: <i>2000</i>
+Description: <i>The rent</i>
+Day: 
+Year [2019]: 
+Month [4]: 
+Day [30]:
+(Checking) :&gt;
+</pre></div>
+
+<p>By default, the prompt tells you what the <i>current account</i> is and, when you add an account, the current account is set to the account you just created.  <b>leas</b> has several commands that act on the current account.  You can change the current account with the <tt>sa</tt> (&quot;switch account&quot;) command,
+</p>
+<div class="example">
+<pre class="example">(Checking) :&gt; sa
+ 0: Checking
+ 1: Rent
+Account: 1
+(Rent) :&gt; 
+</pre></div>
+
+<p>Another command you commonly use in <b>leas</b> is the &quot;list transactions&quot; command, <tt>lt</tt>.  <tt>lt</tt> lists the transactions in the current account,
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; lt
+2019-04-30 The rent        2000.00
+</pre></div>
+
+<p>To see how much money is in your accounts, type <tt>la</tt> (for &quot;list account&quot;).
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; la
+Checking         8000.00    8000.00
+Rent             2000.00    2000.00
+</pre></div>
+
+<p>The output has two columns.  The first gives the balance in your account on the <i>current day</i>, and the second gives the balance in your account in the future.
+</p>
+<p>To see the current day, use the command <tt>cd</tt>.  To set the current day, use <tt>sd</tt>.
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; sd
+Current Day: 
+Year [2019]: 2018
+Month [4]: 12
+Day [30]: 31
+(Rent) :&gt; cd
+2018-12-31
+</pre></div>
+
+<p>Now, if we type <tt>la</tt>, we can see what the account balance would have looked like on 2018-12-31 and what it would be in the future.
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; la
+Checking        10000.00    8000.00
+Rent                0.00    2000.00
+</pre></div>
+
+<p>To change the day back to the current day, type <tt>sd</tt> and take all the default options,
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; sd
+Current Day: 
+Year [2019]: 
+Month [4]: 
+Day [30]:
+(Rent) :&gt;
+</pre></div>
+
+<p>To list only expense accounts (useful for getting an understanding of where you are spending your money),
+</p>
+<div class="example">
+<pre class="example">(Rent) :&gt; lae
+Rent         2000.00    2000.00
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Earning-income.html#Earning-income" accesskey="n" rel="next">Earning income</a>, Previous: <a href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account" accesskey="p" rel="prev">Adding a cash asset account</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+
+
+
+</body>
+</html>

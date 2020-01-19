@@ -19,7 +19,7 @@ Copying @copyright{} 2020 Zach Flynn.
 
 @ifnottex
 @node Top
-@top leas
+@top Leas
 
 This is the Leas reference manual.
 @end ifnottex

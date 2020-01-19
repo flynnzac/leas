@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Saving loading and quitting (Leas manual)</title>
+
+<meta name="description" content="Saving loading and quitting (Leas manual)">
+<meta name="keywords" content="Saving loading and quitting (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tutorial.html#Tutorial" rel="up" title="Tutorial">
+<link href="Scheme-code.html#Scheme-code" rel="next" title="Scheme code">
+<link href="Non_002dcash-assets.html#Non_002dcash-assets" rel="prev" title="Non-cash assets">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Saving-loading-and-quitting"></a>
+<div class="header">
+<p>
+Next: <a href="Scheme-code.html#Scheme-code" accesskey="n" rel="next">Scheme code</a>, Previous: <a href="Non_002dcash-assets.html#Non_002dcash-assets" accesskey="p" rel="prev">Non-cash assets</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Saving_002c-loading_002c-and-quitting"></a>
+<h3 class="section">2.6 Saving, loading, and quitting</h3>
+
+<p>To save your <b>leas</b> accounts, use the <tt>w</tt> command.
+</p>
+<div class="example">
+<pre class="example">(Mutual Fund Income) :&gt; w
+File: example.leas
+(Mutual Fund Income) :&gt; 
+</pre></div>
+
+<p>To do so non-interactively, type <tt>leas/write &quot;example.leas&quot;</tt>.
+</p>
+<p>To quit <b>leas</b>, use the <tt>q</tt> command,
+</p>
+<div class="example">
+<pre class="example">(Mutual Fund Income) :&gt; q
+Save file? (y/n) n
+</pre></div>
+
+<p>To load the file you just saved, you can use the interactive command <tt>r</tt>,
+</p>
+<div class="example">
+<pre class="example">$ leas
+:&gt; r
+File: example.leas
+(Checking) :&gt; la
+Checking                  23900.00   23900.00
+Rent                       2000.00    2000.00
+Salary                    -6000.00   -6000.00
+Loan                      -9930.00   -9930.00
+Interest                     30.00      30.00
+Mutual Fund               10500.00   10500.00
+Mutual Fund Income         -500.00    -500.00
+(Checking) :&gt; 
+</pre></div>
+
+<p>To load the file non-interactively, you can use the command <tt>leas/read &quot;example.leas&quot;</tt>.  This command is particularly useful to include in <b>leas</b>&rsquo;s init file <tt>~/.leasrc.scm</tt>.  Usually, this file will include the line,
+</p>
+<div class="example">
+<pre class="example">(leas/read &quot;leasfile.leas&quot;)
+</pre></div>
+
+
+
+
+</body>
+</html>

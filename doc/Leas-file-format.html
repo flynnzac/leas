@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Leas file format (Leas manual)</title>
+
+<meta name="description" content="Leas file format (Leas manual)">
+<meta name="keywords" content="Leas file format (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="index.html#Top" rel="up" title="Top">
+<link href="Programming-Leas.html#Programming-Leas" rel="next" title="Programming Leas">
+<link href="Customize-prompt.html#Customize-prompt" rel="prev" title="Customize prompt">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Leas-file-format"></a>
+<div class="header">
+<p>
+Next: <a href="Programming-Leas.html#Programming-Leas" accesskey="n" rel="next">Programming Leas</a>, Previous: <a href="Tutorial.html#Tutorial" accesskey="p" rel="prev">Tutorial</a>, Up: <a href="index.html#Top" accesskey="u" rel="up">Top</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Leas-file-format-1"></a>
+<h2 class="chapter">3 Leas file format</h2>
+
+<p>The <b>leas</b> save file is a <b>tar</b> archive containing the following files in a directory named after the save file&rsquo;s filename (e.g. a save file named <i>book.leas</i> would, when un-tarred, be a directory called <i>book</i>):
+</p>
+<ul>
+<li> accounts - a CSV file containing the metadata for each account, one line for each account.  There is no header line giving column names. The fields are (in this order):
+<ul>
+<li> Account Type - one of expense, income, asset, liability.
+</li><li> Account Name - the name of the account
+</li><li> Opening Balance - the opening balance of the account.
+</li></ul>
+</li><li> <i>account_name</i>.csv - for each account, there is a separate CSV file (the format of the filename for this CSV file implies that account names in leas need to be valid filenames). There is no header line giving column names.  Each row in the file is a transaction. The fields are (in this order):
+<ul>
+<li> Account Name - will be the same for all transactions in the file, just the account name.
+</li><li> Amount - the amount of money added to or subtracted from the account.
+</li><li> Day - the day of the transaction (YYYY-MM-DD)
+</li><li> Description - a description of the transaction
+</li></ul>
+</li></ul>
+
+
+
+
+
+</body>
+</html>

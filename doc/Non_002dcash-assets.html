@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Non-cash assets (Leas manual)</title>
+
+<meta name="description" content="Non-cash assets (Leas manual)">
+<meta name="keywords" content="Non-cash assets (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tutorial.html#Tutorial" rel="up" title="Tutorial">
+<link href="Saving-loading-and-quitting.html#Saving-loading-and-quitting" rel="next" title="Saving loading and quitting">
+<link href="Managing-debt.html#Managing-debt" rel="prev" title="Managing debt">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Non_002dcash-assets"></a>
+<div class="header">
+<p>
+Next: <a href="Saving-loading-and-quitting.html#Saving-loading-and-quitting" accesskey="n" rel="next">Saving loading and quitting</a>, Previous: <a href="Managing-debt.html#Managing-debt" accesskey="p" rel="prev">Managing debt</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Non_002dcash-assets-1"></a>
+<h3 class="section">2.5 Non-cash assets</h3>
+
+<p>You may own some non-cash assets, like stocks, mutual funds, or bonds.  The value of these assets in terms of currency changes over time.  <b>leas</b> provides a command for updating the currency value of these assets.
+</p>
+<p>First, let&rsquo;s add our mutual fund,
+</p><div class="example">
+<pre class="example">(Checking) :&gt; aa
+Account: Mutual Fund
+0: Expense
+1: Income
+2: Asset
+3: Liability
+Type: 2
+Opening Balance: 10000
+(Mutual Fund) :&gt;
+</pre></div>
+
+<p>Then, let&rsquo;s add an income account for our fund.
+</p><div class="example">
+<pre class="example">(Mutual Fund) :&gt; aa
+Account: Mutual Fund Income
+0: Expense
+1: Income
+2: Asset
+3: Liability
+Type: 1
+Opening Balance: 0
+(Mutual Fund Income) :&gt;
+</pre></div>
+
+<p>Now, say we own 500 shares of the mutual fund each worth 20 currency units. Say the value of a share in the mutual fund increased to 21 currency units. We can then use the <tt>csp</tt> (&quot;change share price&quot;) command to change the value of the shares in our mutual fund,
+</p><div class="example">
+<pre class="example">(Mutual Fund Income) :&gt; sa
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+ 4: Interest
+ 5: Mutual Fund
+ 6: Mutual Fund Income
+Account: 5
+(Mutual Fund) :&gt; csp
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+ 4: Interest
+ 5: Mutual Fund
+ 6: Mutual Fund Income
+From Account: 6
+Stock Price: 21
+Number of Shares: 500
+Day: 
+Year [2019]: 
+Month [4]: 
+Day [30]: 
+(Mutual Fund Income) :&gt; lt
+2019-04-30 Stock Price Change         -500.00
+(Mutual Fund Income) :&gt; la
+Checking                  23900.00   23900.00
+Rent                       2000.00    2000.00
+Salary                    -6000.00   -6000.00
+Loan                      -9930.00   -9930.00
+Interest                     30.00      30.00
+Mutual Fund               10500.00   10500.00
+Mutual Fund Income         -500.00    -500.00
+(Mutual Fund Income) :&gt; 
+</pre></div>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Saving-loading-and-quitting.html#Saving-loading-and-quitting" accesskey="n" rel="next">Saving loading and quitting</a>, Previous: <a href="Managing-debt.html#Managing-debt" accesskey="p" rel="prev">Managing debt</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+
+
+
+</body>
+</html>

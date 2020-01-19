@@ -1,0 +1,169 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn. -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Managing debt (Leas manual)</title>
+
+<meta name="description" content="Managing debt (Leas manual)">
+<meta name="keywords" content="Managing debt (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Tutorial.html#Tutorial" rel="up" title="Tutorial">
+<link href="Non_002dcash-assets.html#Non_002dcash-assets" rel="next" title="Non-cash assets">
+<link href="Earning-income.html#Earning-income" rel="prev" title="Earning income">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Managing-debt"></a>
+<div class="header">
+<p>
+Next: <a href="Non_002dcash-assets.html#Non_002dcash-assets" accesskey="n" rel="next">Non-cash assets</a>, Previous: <a href="Earning-income.html#Earning-income" accesskey="p" rel="prev">Earning income</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Managing-debt-1"></a>
+<h3 class="section">2.4 Managing debt</h3>
+
+<p>Adding debt follows the same pattern as paying expenses and receiving income.
+</p><div class="example">
+<pre class="example">(Salary) :&gt; aa
+Account: Loan
+0: Expense
+1: Income
+2: Asset
+3: Liability
+Type: 3
+Opening Balance: 0
+(Loan) :&gt; t
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+To Account: 0
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+From Account: 3
+Amount: 10000
+Description: Personal Loan
+Day: 
+Year [2019]: 
+Month [4]: 
+Day [30]: 
+(Loan) :&gt; la
+Checking        24000.00   24000.00
+Rent             2000.00    2000.00
+Salary          -6000.00   -6000.00
+Loan           -10000.00  -10000.00
+(Loan) :&gt; lt
+2019-04-30 Personal Loan       -10000.00
+</pre></div>
+
+<p>Usually, people do not give you interest-free loans.  So you will also need an <i>expense</i> account for paying interest.
+</p><div class="example">
+<pre class="example">(Loan) :&gt; aa
+Account: Interest
+0: Expense
+1: Income
+2: Asset
+3: Liability
+Type: 0
+Opening Balance: 0
+(Interest) :&gt;
+</pre></div>
+
+<p>To pay back loans, use the command <tt>pl</tt>.  This command allows you to split your payment on the loan between interest and principal.
+</p><div class="example">
+<pre class="example">(Interest) :&gt; pl
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+ 4: Interest
+Loan Account: 3
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+ 4: Interest
+Interest Account: 4
+ 0: Checking
+ 1: Rent
+ 2: Salary
+ 3: Loan
+ 4: Interest
+Pay from Account: 0
+Principal: 70
+Interest: 30
+Description: Loan Payment
+Day: 
+Year [2019]: 
+Month [4]: 
+Day [30]:
+(Checking) :&gt; la
+Checking        23900.00   23900.00
+Rent             2000.00    2000.00
+Salary          -6000.00   -6000.00
+Loan            -9930.00   -9930.00
+Interest           30.00      30.00
+</pre></div>
+
+<p>It is useful to see broadly how much we are spending, how much we are making, and how in debt we are.  To do so, we can use the command <tt>bt</tt>.
+</p><div class="example">
+<pre class="example">(Checking) :&gt; bt
+Expense           2030.00    2030.00
+Income           -6000.00   -6000.00
+Asset            23900.00   23900.00
+Liability        -9930.00   -9930.00
+Worth            13970.00   13970.00
+Balances         10000.00
+</pre></div>
+
+<p>Note that income is measured as a <i>negative</i> number as are <i>liabilities</i>.  <i>Worth</i> is <i>Assets</i> - <i>Liabilities</i>.  Balances gives the total of the opening balances.
+</p>
+<hr>
+<div class="header">
+<p>
+Next: <a href="Non_002dcash-assets.html#Non_002dcash-assets" accesskey="n" rel="next">Non-cash assets</a>, Previous: <a href="Earning-income.html#Earning-income" accesskey="p" rel="prev">Earning income</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+
+
+
+</body>
+</html>
