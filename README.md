@@ -1,4 +1,10 @@
+Leas is an interactive, command-line program for managing personal finances.  I have been using it to manage mine for about a year and a half now so it has been well-used... there shouldn't be too many bugs.  Let me know if you find any issues!
+
 To see a full manual for Leas in a tutorial format, see: zflynn.com/leas/index.html
+
+The manpage is replicated below to give an overview of the basic commands.  See the file INSTALL for installation instructions.
+
+```
 Leas(1) 		    General Commands Manual		       Leas(1)
 
 
@@ -218,3 +224,5 @@ AUTHOR
 
 
 				  2019-04-26			       Leas(1)
+
+```
