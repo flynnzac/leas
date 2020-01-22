@@ -3,7 +3,7 @@
 <!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
 
 Copying (C) 2020 Zach Flynn. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.6, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Scheme code (Leas manual)</title>
@@ -22,23 +22,14 @@ Copying (C) 2020 Zach Flynn. -->
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -50,32 +41,28 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Scheme-code"></a>
-<div class="header">
+<span id="Scheme-code"></span><div class="header">
 <p>
 Next: <a href="Common-customizations.html#Common-customizations" accesskey="n" rel="next">Common customizations</a>, Previous: <a href="Saving-loading-and-quitting.html#Saving-loading-and-quitting" accesskey="p" rel="prev">Saving loading and quitting</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Scheme-code-1"></a>
-<h3 class="section">2.7 Scheme code</h3>
+<span id="Scheme-code-1"></span><h3 class="section">2.7 Scheme code</h3>
 
 <p>The prompt is a Scheme interpreter and can execute arbitrary code.  The only difference is that the outer expression should not be enclosed in parenthesis.  For example,
 </p><div class="example">
-<pre class="example">(Checking) :&gt; display (string-append (number-&gt;string (+ 1 2)) &quot;\n&quot;)
+<pre class="example">(Checking) :&gt; begin (display (+ 1 2)) (display &quot;\n&quot;)
 3
 (Checking) :&gt;
 </pre></div>
 
-<p><b>leas</b> provides a useful function <tt>p</tt> for displaying expressions and then adding a newline like the above,
+<p><b>Leas</b> provides a useful function <tt>p</tt> for displaying expressions and then adding a newline like the above,
 </p><div class="example">
 <pre class="example">(Checking) :&gt; p (+ 1 2)
 3
 (Checking) :&gt;
 </pre></div>
 
-<p>In interactive functions, the prompt for the various arguments allows
-Scheme expressions as well.  For example, you can enter the value of a
-transaction as <tt>(- 15.29 13.99)</tt>.
+<p>In interactive functions, the prompt for the various arguments allows Scheme expressions as well.  For example, you can enter the value of a transaction as <tt>(- 15.29 13.99)</tt> or <tt>(* 0.08 123)</tt> (for calculating a tax, for example).
 </p>
 
 

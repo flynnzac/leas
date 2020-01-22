@@ -1,4 +1,4 @@
-This is leas.info, produced by makeinfo version 6.5 from leas.texinfo.
+This is leas.info, produced by makeinfo version 6.6 from leas.texinfo.
 
 This is the manual for Leas, the Little Extensible Accounting System, a
 personal account manager.
@@ -26,59 +26,65 @@ File: leas.info,  Node: Introduction,  Next: Tutorial,  Prev: Top,  Up: Top
 1 Introduction
 **************
 
-leas is an interactive, command-line program for managing personal
-finances.  Its goal is to be a simple but easily-extensible tool for
-helping you keep track of your spending and an aid in making future
-plans.  leas was conceived from the need to track my own personal
-finances leading up to my wedding and finding that most free software
-personal finance packages were large, complicated GUI programs that were
-difficult to hack to make work the way I wanted them to.  I have been
-using leas for my personal account management since October 2018 and
-have it found it useful for keeping track of things.  Hopefully, you
-will find it useful too!
+Leas is an interactive, command-line program for managing personal
+finances.  Its goal is to be an extensible tool for helping you keep
+track of your spending and to aid in making plans.  I started Leas to
+keep track of my finances leading up to my wedding.  I found most free
+software personal finance packages were large GUI programs that had a
+long Time-to-Enter-Transaction: it took time to boot up an application
+that was not usually running and enter a transaction.  This small
+friction made it harder for me to build the habit of keeping track of
+things.  The programs were also difficult to change to make work the way
+I wanted them to.  So I wrote Leas to solve this problem.  I have been
+using it personally since October 2018 so it now works pretty much the
+way I want it to.  It has a low Time-to-Enter-Transaction because you
+can just enter the transaction interactively at a command prompt.  It is
+also easy to extend and script to automate different transactions or
+update the price of stocks, mutual funds, and ETF's.  Hopefully, you
+will find it useful.
 
-   leas is a command-line program, but it is possible to write a GUI on
-top of the program.  It is possible because leas can be extended
-arbitrarily using the Guile Scheme programming language.  If you make a
-neat extension like this, let me know and I will reference it in this
-manual.
+   Leas is a command-line program, but it is possible to write a GUI on
+top of the program if you are looking for a project.  It is possible
+because Leas can be extended using the Guile Scheme programming
+language.  The program's prompt can execute arbitrary Scheme code.  If
+you make a neat extension like this, let me know and I will reference it
+in this manual.
 
-   No knowledge of Scheme or programming in general is required to use
-leas.  I have included almost all the functions I use personally in the
-leas distribution itself.  In other words, I use leas without any
-programming in Scheme on a day-to-day basis.  The only commands I have
-written that are not included in the main leas distribution are some
-commands to fetch the price of various stocks I own and update their
-value automatically, but I will show how to write such a command later
-in this document as an example.
+   No knowledge of Scheme or programming in general is needed to use
+Leas.  I have included almost all the functions I use personally in the
+distribution itself.  In other words, I use it without any programming
+in Scheme on a day-to-day basis.  The only commands I have written that
+are not included in the main Leas distribution are some commands to
+fetch the price of various stocks I own and update their value
+automatically, but I will show how to write such a command later in this
+document as an example.
 
-   The other extreme in the accounting software world were programs that
-required the user to edit text files to add transactions (the best
-example being ledger).  I found this to be difficult to use as a user
-and wanted something more interactive.  Of course, you may have your own
-preference.  Like ledger, leas stores data in human-readable text files.
-leas's save files are particularly easy to analyze with statistical
-software, like R or Libreoffice.  The leas save file is simply a tar
+   When searching for existing Free Software solutions, I found at the
+other extreme programs that operated by users editing text files to add
+transactions (the best example being ledger).  I found this difficult to
+use and wanted something more interactive.  Of course, you may have your
+own preference.  Like ledger, Leas stores data in human-readable text
+files.  Leas' save files are particularly easy to analyze with
+statistical or spreadsheet software.  The save file is simply a tar
 archive of comma-separated data files with data about your various
-transactions.  You can open these files in R, for example, and analyze
+transactions.  You can open these files in R or Libreoffice and analyze
 your past spending that way.
 
-   All commands that ship with leas are small Guile Scheme commands
-which call a few functions exported by leas from C and a built-in
-function leas/call which lets the user enter the function arguments
-interactively (it fills the role of interactive in Emacs, if you are
-familiar with it).  These functions are documented in the reference
-manual to help you construct your own commands.  The leas prompt, in
-fact, is a Scheme interpreter.  Any Scheme expression can be written
-there.
+   All standard Leas commands are small Scheme functions.  They use a
+built-in function leas/call which lets the user enter the function
+arguments interactively (it fills the role of interactive in Emacs, if
+you are familiar with it).  These functions are documented in the
+reference manual to help you construct your own commands.  The Leas
+prompt, in fact, is a Scheme interpreter.  Any Scheme expression can be
+written there.
 
    This document has two main sections.  In the first, I describe the
-basic workflow for using leas.  This section is more in-depth than the
+basic workflow for using Leas.  This section is more in-depth than the
 manpage and gives some examples of how to add accounts and make
 transactions.  It is a tutorial that will help get you up-and-running
-using leas.  In the second section, I describe all the Scheme commands
-exported by leas which is more useful if you are trying to write your
-own commands.
+using Leas.  In the second section, I describe all the Scheme commands
+exported by Leas which is more useful if you are trying to write your
+own functions.
 
 
 File: leas.info,  Node: Tutorial,  Next: Leas file format,  Prev: Introduction,  Up: Top
@@ -103,12 +109,12 @@ File: leas.info,  Node: Adding a cash asset account,  Next: Paying for expenses,
 2.1 Adding a cash asset account
 ===============================
 
-A leas file is made up of several "accounts".  To start using leas, you
-will want to add some asset accounts.  Assets can be wherever you store
-your money.  Asset accounts can be Checking accounts, Savings accounts,
-Stocks, Bonds, Cash, and anything else you own.  To see how this works
-in leas, let's look at an example of adding a checking account to a
-fresh leas file.
+A file is made up of several "accounts".  To start, you will want to add
+some asset accounts.  Assets can be wherever you store your money or
+your property.  Asset accounts can be Checking accounts, Savings
+accounts, Stocks, Bonds, Cash, and anything else you own.  To see how
+this works in Leas, let's look at an example of adding a checking
+account to a fresh file.
 
      :> aa
      Account: Checking
@@ -147,10 +153,10 @@ expenses.
      Opening Balance: 0
      (Rent) :>
 
-   Now, to pay the Rent.  The main command you use in leas after getting
-your accounts set up is the "transfer" command, t.  t transfers money
-from one account to another account.  Making a payment is transferring
-money from your asset accounts to your expense accounts.
+   Now, to pay the Rent.  The general "payment" command in Leas is the
+"transfer" command, t.  t transfers money from one account to another
+account.  Making a payment is transferring money from your asset
+accounts to your expense accounts.
 
      (Rent) :> t
       0: Checking
@@ -167,11 +173,28 @@ money from your asset accounts to your expense accounts.
      Day [30]:
      (Checking) :>
 
+   You can also use the spend command which is like the t command except
+that it only lists assets in the from account and expenses in the to
+account.  This is useful when you have lots of accounts.  We could have
+done the following with an equivalent result:
+     (Rent) :> spend
+      2: Rent
+     To Account: 2
+      0: Cash
+      1: Checking
+     From Account: 1
+     Amount: 2000
+     Description: The rent
+     Day:
+     Year [2020]:
+     Month [1]:
+     Day [22]:
+     (Checking) :>
+
    By default, the prompt tells you what the current account is and,
 when you add an account, the current account is set to the account you
-just created.  leas has several commands that act on the current
-account.  You can change the current account with the sa ("switch
-account") command,
+just created.  Several commands act on the current account.  You can
+change the current account with the sa ("switch account") command,
 
      (Checking) :> sa
       0: Checking
@@ -179,14 +202,15 @@ account") command,
      Account: 1
      (Rent) :>
 
-   Another command you commonly use in leas is the "list transactions"
-command, lt.  lt lists the transactions in the current account,
+   The "list transactions" command is lt.  It lists the transactions in
+the current account,
 
      (Rent) :> lt
      2019-04-30 The rent        2000.00
 
    To see how much money is in your accounts, type la (for "list
-account").
+account") (laa lists only Asset accounts, lal lists only Liability
+accounts, and so on).
 
      (Rent) :> la
      Checking         8000.00    8000.00
@@ -373,8 +397,8 @@ making, and how in debt we are.  To do so, we can use the command bt.
      Balances         10000.00
 
    Note that income is measured as a negative number as are liabilities.
-Worth is Assets - Liabilities.  Balances gives the total of the opening
-balances.
+Worth is Assets + Liabilities (because Liabilities are written as
+negative in Leas).  Balances gives the total of the opening balances.
 
 
 File: leas.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Prev: Managing debt,  Up: Tutorial
@@ -383,7 +407,7 @@ File: leas.info,  Node: Non-cash assets,  Next: Saving loading and quitting,  Pr
 ===================
 
 You may own some non-cash assets, like stocks, mutual funds, or bonds.
-The value of these assets in terms of currency changes over time.  leas
+The value of these assets in terms of currency changes over time.  Leas
 provides a command for updating the currency value of these assets.
 
    First, let's add our mutual fund,
@@ -448,13 +472,16 @@ to change the value of the shares in our mutual fund,
      Mutual Fund Income         -500.00    -500.00
      (Mutual Fund Income) :>
 
+   You can automate this procedure by writing a script in Scheme to
+fetch the new price of the fund.
+
 
 File: leas.info,  Node: Saving loading and quitting,  Next: Scheme code,  Prev: Non-cash assets,  Up: Tutorial
 
 2.6 Saving, loading, and quitting
 =================================
 
-To save your leas accounts, use the w command.
+To save your accounts to disk, use the w command.
 
      (Mutual Fund Income) :> w
      File: example.leas
@@ -462,10 +489,10 @@ To save your leas accounts, use the w command.
 
    To do so non-interactively, type leas/write "example.leas".
 
-   To quit leas, use the q command,
+   To quit, use the q command,
 
      (Mutual Fund Income) :> q
-     Save file? (y/n) n
+     Save file? (yes/no) no
 
    To load the file you just saved, you can use the interactive command
 r,
@@ -485,10 +512,10 @@ r,
 
    To load the file non-interactively, you can use the command leas/read
 "example.leas".  This command is particularly useful to include in
-leas's init file ~/.leasrc.scm.  Usually, this file will include the
+Leas's init file ~/.leasrc.scm.  Usually, this file will include the
 line,
 
-     (leas/read "leasfile.leas")
+     (leas/read "/path/to/my-account.leas")
 
 
 File: leas.info,  Node: Scheme code,  Next: Common customizations,  Prev: Saving loading and quitting,  Up: Tutorial
@@ -499,11 +526,11 @@ File: leas.info,  Node: Scheme code,  Next: Common customizations,  Prev: Saving
 The prompt is a Scheme interpreter and can execute arbitrary code.  The
 only difference is that the outer expression should not be enclosed in
 parenthesis.  For example,
-     (Checking) :> display (string-append (number->string (+ 1 2)) "\n")
+     (Checking) :> begin (display (+ 1 2)) (display "\n")
      3
      (Checking) :>
 
-   leas provides a useful function p for displaying expressions and then
+   Leas provides a useful function p for displaying expressions and then
 adding a newline like the above,
      (Checking) :> p (+ 1 2)
      3
@@ -511,7 +538,8 @@ adding a newline like the above,
 
    In interactive functions, the prompt for the various arguments allows
 Scheme expressions as well.  For example, you can enter the value of a
-transaction as (- 15.29 13.99).
+transaction as (- 15.29 13.99) or (* 0.08 123) (for calculating a tax,
+for example).
 
 
 File: leas.info,  Node: Common customizations,  Prev: Scheme code,  Up: Tutorial
@@ -537,7 +565,7 @@ File: leas.info,  Node: Set default file,  Next: Customize prompt,  Up: Common c
 You will probably want to load the same file almost everytime you load
 leas.  To do so, add the following to ~/.leasrc.scm:
 
-     (leas/read "/path/to/file/myfinances.leas")
+     (leas/read "/path/to/file/my-account.leas")
 
 
 File: leas.info,  Node: Customize prompt,  Prev: Set default file,  Up: Common customizations
@@ -545,9 +573,9 @@ File: leas.info,  Node: Customize prompt,  Prev: Set default file,  Up: Common c
 2.8.2 Customize prompt
 ----------------------
 
-The leas prompt is generated by calling the Scheme function
-(leas/prompt).  If you change this function, you can customize the
-prompt.  For example, try adding the following to see the current date,
+The prompt is generated by calling the Scheme function (leas/prompt).
+If you change this function, you can customize the prompt.  For example,
+try adding the following to see the current date,
 
      (define leas/prompt
        (lambda ()
@@ -574,7 +602,7 @@ File: leas.info,  Node: Leas file format,  Next: Programming Leas,  Prev: Tutori
 3 Leas file format
 ******************
 
-The leas save file is a tar archive containing the following files in a
+The save file is a tar archive containing the following files in a
 directory named after the save file's filename (e.g.  a save file named
 book.leas would, when un-tarred, be a directory called book):
 
@@ -603,25 +631,25 @@ File: leas.info,  Node: Programming Leas,  Prev: Leas file format,  Up: Top
 ******************
 
 This chapter will be more of a reference manual for the various Scheme
-functions available in leas.
+functions available in Leas.
 
 
 
 Tag Table:
 Node: Top204
 Node: Introduction683
-Node: Tutorial3827
-Node: Adding a cash asset account4139
-Node: Paying for expenses5145
-Node: Earning income7845
-Node: Managing debt8933
-Node: Non-cash assets11492
-Node: Saving loading and quitting13540
-Node: Scheme code14784
-Node: Common customizations15546
-Node: Set default file15873
-Node: Customize prompt16192
-Node: Leas file format17128
-Node: Programming Leas18468
+Node: Tutorial4265
+Node: Adding a cash asset account4577
+Node: Paying for expenses5579
+Node: Earning income8762
+Node: Managing debt9850
+Node: Non-cash assets12463
+Node: Saving loading and quitting14613
+Node: Scheme code15870
+Node: Common customizations16670
+Node: Set default file16997
+Node: Customize prompt17316
+Node: Leas file format18246
+Node: Programming Leas19581
 
 End Tag Table

@@ -17,7 +17,7 @@
 */
 
 
-/* The function definitions are only in a header to facilitate testing */
+/* The function definitions are in a header to facilitate testing */
 #include "leas.h"
 
 /* Exit Leas */

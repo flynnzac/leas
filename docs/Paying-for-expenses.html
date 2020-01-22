@@ -3,7 +3,7 @@
 <!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
 
 Copying (C) 2020 Zach Flynn. -->
-<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.6, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Paying for expenses (Leas manual)</title>
@@ -22,23 +22,14 @@ Copying (C) 2020 Zach Flynn. -->
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
-blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
-blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
-div.smalldisplay {margin-left: 3.2em}
-div.smallexample {margin-left: 3.2em}
-div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
-pre.smalldisplay {font-family: inherit; font-size: smaller}
-pre.smallexample {font-size: smaller}
-pre.smallformat {font-family: inherit; font-size: smaller}
-pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -50,14 +41,12 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<a name="Paying-for-expenses"></a>
-<div class="header">
+<span id="Paying-for-expenses"></span><div class="header">
 <p>
 Next: <a href="Earning-income.html#Earning-income" accesskey="n" rel="next">Earning income</a>, Previous: <a href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account" accesskey="p" rel="prev">Adding a cash asset account</a>, Up: <a href="Tutorial.html#Tutorial" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<a name="Paying-for-expenses-1"></a>
-<h3 class="section">2.2 Paying for expenses</h3>
+<span id="Paying-for-expenses-1"></span><h3 class="section">2.2 Paying for expenses</h3>
 
 <p>Now that we have an asset account, we can use it to pay for our expenses.
 </p>
@@ -75,7 +64,7 @@ Opening Balance: <i>0</i>
 (Rent) :&gt;
 </pre></div>
 
-<p>Now, to pay the Rent.  The main command you use in <b>leas</b> after getting your accounts set up is the &quot;transfer&quot; command, <tt>t</tt>.  <tt>t</tt> transfers money from one account to another account.  Making a payment is transferring money from your asset accounts to your expense accounts.
+<p>Now, to pay the Rent.  The general &quot;payment&quot; command in <b>Leas</b> is the &quot;transfer&quot; command, <tt>t</tt>.  <tt>t</tt> transfers money from one account to another account.  Making a payment is transferring money from your asset accounts to your expense accounts.
 </p>
 <div class="example">
 <pre class="example">(Rent) :&gt; <i>t</i>
@@ -94,7 +83,24 @@ Day [30]:
 (Checking) :&gt;
 </pre></div>
 
-<p>By default, the prompt tells you what the <i>current account</i> is and, when you add an account, the current account is set to the account you just created.  <b>leas</b> has several commands that act on the current account.  You can change the current account with the <tt>sa</tt> (&quot;switch account&quot;) command,
+<p>You can also use the <tt>spend</tt> command which is like the <tt>t</tt> command except that it only lists assets in the <i>from</i> account and expenses in the <i>to</i> account.  This is useful when you have lots of accounts.  We could have done the following with an equivalent result:
+</p><div class="example">
+<pre class="example">(Rent) :&gt; spend
+ 2: Rent
+To Account: 2
+ 0: Cash
+ 1: Checking
+From Account: 1
+Amount: 2000
+Description: The rent
+Day:
+Year [2020]:
+Month [1]:
+Day [22]:
+(Checking) :&gt;
+</pre></div>
+
+<p>By default, the prompt tells you what the <i>current account</i> is and, when you add an account, the current account is set to the account you just created.  Several commands act on the current account.  You can change the current account with the <tt>sa</tt> (&quot;switch account&quot;) command,
 </p>
 <div class="example">
 <pre class="example">(Checking) :&gt; sa
@@ -104,14 +110,14 @@ Account: 1
 (Rent) :&gt; 
 </pre></div>
 
-<p>Another command you commonly use in <b>leas</b> is the &quot;list transactions&quot; command, <tt>lt</tt>.  <tt>lt</tt> lists the transactions in the current account,
+<p>The &quot;list transactions&quot; command is <tt>lt</tt>.  It lists the transactions in the current account,
 </p>
 <div class="example">
 <pre class="example">(Rent) :&gt; lt
 2019-04-30 The rent        2000.00
 </pre></div>
 
-<p>To see how much money is in your accounts, type <tt>la</tt> (for &quot;list account&quot;).
+<p>To see how much money is in your accounts, type <tt>la</tt> (for &quot;list account&quot;) (<tt>laa</tt> lists only Asset accounts, <tt>lal</tt> lists only Liability accounts, and so on).
 </p>
 <div class="example">
 <pre class="example">(Rent) :&gt; la

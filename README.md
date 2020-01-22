@@ -5,7 +5,7 @@ To see a full manual for Leas in a tutorial format, see: http://zflynn.com/leas/
 The manpage is replicated below to give an overview of the basic commands.  See the file INSTALL for installation instructions.
 
 ```
-Leas(1) 		    General Commands Manual		       Leas(1)
+Leas(1)			    General Commands Manual		       Leas(1)
 
 
 
@@ -20,7 +20,7 @@ DESCRIPTION
 
 
        Text entry at the Leas console follows standard line editor conventions
-       (it  has  Emacs-like  key  bindings, uses the GNU readline library). To
+       (it  has	 Emacs-like  key  bindings, uses the GNU readline library). To
        cancel a command, type: Control-C.
 
 
@@ -39,8 +39,8 @@ DESCRIPTION
 
        at     add transaction to current account
 
-       et [n] edit transaction, optionally setting  how  many  of  the	latest
-	      transaction  numbers  to	list  (any  transaction  can be chosen
+       et [n] edit transaction, optionally setting  how	 many  of  the	latest
+	      transaction  numbers  to	list  (any  transaction	 can be chosen
 	      whether it is listed or not).
 
        lt     list most recent transactions in current account (change	number
@@ -99,7 +99,7 @@ DESCRIPTION
 
        v      print version
 
-       sd     set "current" day, changing it allows you  to  see  how  account
+       sd     set "current" day, changing it allows you	 to  see  how  account
 	      values have changed over time
 
        cd     print current day out in YYYY-MM-DD format
@@ -116,10 +116,10 @@ DESCRIPTION
 
        ttbd   prints total of all transactions between a sequence of days
 
-       ttre   prints  total  of  all  transactions  between a sequence of days
+       ttre   prints  total  of	 all  transactions  between a sequence of days
 	      matching a regular expression
 
-       pl     pay a loan, allows you to split a payment  between  a  principal
+       pl     pay a loan, allows you to split a payment	 between  a  principal
 	      account  (liability account) and an interest account (an expense
 	      account)
 
@@ -136,7 +136,7 @@ DESCRIPTION
        q      quit, unless -s specified, prompt to save before quit
 
        The  command  prompt is a full Guile Scheme interpreter except that you
-       do not need to enclose the outer-most expression  in  parenthesis.  Any
+       do not need to enclose the outer-most expression	 in  parenthesis.  Any
        valid  Scheme  code can be executed at the prompt.  For example, typing
        display "hello" will print the text "hello".   Leas  loads  the	Scheme
        functions in the /usr/local/share/leas.scm file at startup. These func-
@@ -184,7 +184,7 @@ FILES
        file is present.
 
 EXAMPLES
-       leas   start the Leas  interpreter  and	execute  any  Scheme  code  in
+       leas   start the Leas  interpreter  and	execute	 any  Scheme  code  in
 	      ~/.leasrc.scm  (potentially  including  code to load data from a
 	      default file).
 
@@ -192,14 +192,14 @@ EXAMPLES
 	      load the file myaccounts.leas from the current directory.
 
        leas -s v
-	      quits  and  exists  after  displaying  version  number  (without
+	      quits  and  exists  after	 displaying  version  number  (without
 	      prompting to save data).
 
        leas aa
 	      displays	 prompts   to	add   new   account  after  evaluating
 	      ~/.leasrc.scm and then exits (prompting to save)
 
-       leas t displays	prompts  to  add  new  transaction  after   evaluating
+       leas t displays	prompts	 to  add  new  transaction  after   evaluating
 	      ~/.leasrc.scm and then exits (prompting to save)
 
        leas -s la
