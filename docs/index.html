@@ -10,7 +10,7 @@ any later version published by the Free Software Foundation; with no
 Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.  A
 copy of the license is included in the section entitled "GNU Free
 Documentation License". -->
-<!-- Created by GNU Texinfo 6.6, http://www.gnu.org/software/texinfo/ -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Top (Leas manual)</title>
@@ -28,14 +28,23 @@ Documentation License". -->
 <!--
 a.summary-letter {text-decoration: none}
 blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
 div.display {margin-left: 3.2em}
 div.example {margin-left: 3.2em}
 div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
 kbd {font-style: oblique}
 pre.display {font-family: inherit}
 pre.format {font-family: inherit}
 pre.menu-comment {font-family: serif}
 pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
 span.nolinebreak {white-space: nowrap}
 span.roman {font-family: initial; font-weight: normal}
 span.sansserif {font-family: sans-serif; font-weight: normal}
@@ -50,55 +59,57 @@ ul.no-bullet {list-style: none}
 <h1 class="settitle" align="center">Leas manual</h1>
 
 
-<span id="SEC_Contents"></span>
+<a name="SEC_Contents"></a>
 <h2 class="contents-heading">Table of Contents</h2>
 
 <div class="contents">
 
 <ul class="no-bullet">
-  <li><a id="toc-Introduction-1" href="Introduction.html#Introduction">1 Introduction</a></li>
-  <li><a id="toc-Tutorial-1" href="Tutorial.html#Tutorial">2 Tutorial</a>
+  <li><a name="toc-Introduction-1" href="Introduction.html#Introduction">1 Introduction</a></li>
+  <li><a name="toc-Tutorial-1" href="Tutorial.html#Tutorial">2 Tutorial</a>
   <ul class="no-bullet">
-    <li><a id="toc-Adding-a-cash-asset-account-1" href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account">2.1 Adding a cash asset account</a></li>
-    <li><a id="toc-Paying-for-expenses-1" href="Paying-for-expenses.html#Paying-for-expenses">2.2 Paying for expenses</a></li>
-    <li><a id="toc-Earning-income-1" href="Earning-income.html#Earning-income">2.3 Earning income</a></li>
-    <li><a id="toc-Managing-debt-1" href="Managing-debt.html#Managing-debt">2.4 Managing debt</a></li>
-    <li><a id="toc-Non_002dcash-assets-1" href="Non_002dcash-assets.html#Non_002dcash-assets">2.5 Non-cash assets</a></li>
-    <li><a id="toc-Saving_002c-loading_002c-and-quitting" href="Saving-loading-and-quitting.html#Saving-loading-and-quitting">2.6 Saving, loading, and quitting</a></li>
-    <li><a id="toc-Scheme-code-1" href="Scheme-code.html#Scheme-code">2.7 Scheme code</a></li>
-    <li><a id="toc-Common-customizations-1" href="Common-customizations.html#Common-customizations">2.8 Common customizations</a>
+    <li><a name="toc-Adding-a-cash-asset-account-1" href="Adding-a-cash-asset-account.html#Adding-a-cash-asset-account">2.1 Adding a cash asset account</a></li>
+    <li><a name="toc-Paying-for-expenses-1" href="Paying-for-expenses.html#Paying-for-expenses">2.2 Paying for expenses</a></li>
+    <li><a name="toc-Earning-income-1" href="Earning-income.html#Earning-income">2.3 Earning income</a></li>
+    <li><a name="toc-Managing-debt-1" href="Managing-debt.html#Managing-debt">2.4 Managing debt</a></li>
+    <li><a name="toc-Non_002dcash-assets-1" href="Non_002dcash-assets.html#Non_002dcash-assets">2.5 Non-cash assets</a></li>
+    <li><a name="toc-Saving_002c-loading_002c-and-quitting" href="Saving-loading-and-quitting.html#Saving-loading-and-quitting">2.6 Saving, loading, and quitting</a></li>
+    <li><a name="toc-Scheme-code-1" href="Scheme-code.html#Scheme-code">2.7 Scheme code</a></li>
+    <li><a name="toc-Common-customizations-1" href="Common-customizations.html#Common-customizations">2.8 Common customizations</a>
     <ul class="no-bullet">
-      <li><a id="toc-Set-default-file-1" href="Set-default-file.html#Set-default-file">2.8.1 Set default file</a></li>
-      <li><a id="toc-Customize-prompt-1" href="Customize-prompt.html#Customize-prompt">2.8.2 Customize prompt</a></li>
+      <li><a name="toc-Set-default-file-1" href="Set-default-file.html#Set-default-file">2.8.1 Set default file</a></li>
+      <li><a name="toc-Customize-prompt-1" href="Customize-prompt.html#Customize-prompt">2.8.2 Customize prompt</a></li>
     </ul></li>
   </ul></li>
-  <li><a id="toc-Leas-file-format-1" href="Leas-file-format.html#Leas-file-format">3 Leas file format</a></li>
-  <li><a id="toc-Programming-Leas-1" href="Programming-Leas.html#Programming-Leas">4 Programming Leas</a></li>
-  <li><a id="toc-GNU-Free-Documentation-License-1" href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">Appendix A GNU Free Documentation License</a></li>
+  <li><a name="toc-Leas-file-format-1" href="Leas-file-format.html#Leas-file-format">3 Leas file format</a></li>
+  <li><a name="toc-Programming-Leas-1" href="Programming-Leas.html#Programming-Leas">4 Programming Leas</a></li>
+  <li><a name="toc-GNU-Free-Documentation-License-1" href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License">Appendix A GNU Free Documentation License</a></li>
 </ul>
 </div>
 
 
-<span id="Top"></span><div class="header">
+<a name="Top"></a>
+<div class="header">
 <p>
 Up: <a href="../dir/index.html" accesskey="u" rel="up">(dir)</a> &nbsp; [<a href="#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<span id="Leas"></span><h1 class="top">Leas</h1>
+<a name="Leas"></a>
+<h1 class="top">Leas</h1>
 
 <p>This is the Leas reference manual.
 </p>
 
 <table class="menu" border="0" cellspacing="0">
-<tr><td align="left" valign="top">&bull; <a href="Introduction.html#Introduction" accesskey="1">Introduction</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Introduction.html#Introduction" accesskey="1">Introduction</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Tutorial.html#Tutorial" accesskey="2">Tutorial</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Tutorial.html#Tutorial" accesskey="2">Tutorial</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Leas-file-format.html#Leas-file-format" accesskey="3">Leas file format</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Leas-file-format.html#Leas-file-format" accesskey="3">Leas file format</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="Programming-Leas.html#Programming-Leas" accesskey="4">Programming Leas</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="Programming-Leas.html#Programming-Leas" accesskey="4">Programming Leas</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
-<tr><td align="left" valign="top">&bull; <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License" accesskey="5">GNU Free Documentation License</a></td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
+<tr><td align="left" valign="top">&bull; <a href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License" accesskey="5">GNU Free Documentation License</a>:</td><td>&nbsp;&nbsp;</td><td align="left" valign="top">
 </td></tr>
 </table>
 
