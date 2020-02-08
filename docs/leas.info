@@ -44,11 +44,12 @@ that was not usually running and enter a transaction.  This small
 friction made it harder for me to build the habit of keeping track of
 things.  I also found the programs difficult to extend.  So I wrote Leas
 to solve this problem.  I have been using it personally since October
-2018 so it now works pretty much the way I want it to.  It has a low
-Time-to-Enter-Transaction because you can just enter the transaction
-interactively at a command prompt.  It is also easy to extend and script
-to automate different transactions or update the price of stocks, mutual
-funds, and ETF's.  Hopefully, you will find it useful.
+2018 so it works, but I'm sure there is room for improvement: make
+suggestions!  It has a low Time-to-Enter-Transaction because you can
+just enter the transaction interactively at a command prompt.  It is
+also easy to extend and script to automate different transactions or
+update the price of stocks, mutual funds, and ETF's.  Hopefully, you
+will find it useful.
 
    Leas is a command-line program, but it is possible to write a GUI on
 top of the program if you are looking for a project.  It is possible
@@ -638,7 +639,111 @@ File: leas.info,  Node: Programming Leas,  Next: GNU Free Documentation License,
 ******************
 
 This chapter will be more of a reference manual for the various Scheme
-functions available in Leas.
+functions available in Leas.  It is incomplete, but will be completed
+soon.  Eventually functions will be organized by, well, function or
+purpose, but for now, they are categorized by whether they are C or
+Guile functions to make it easy for me to add them systematically to the
+section.
+
+* Menu:
+
+* Built-in C functions available from Scheme::
+* Scheme functions provided in the package::
+
+
+File: leas.info,  Node: Built-in C functions available from Scheme,  Next: Scheme functions provided in the package,  Up: Programming Leas
+
+4.1 Built-in C functions available from Scheme
+==============================================
+
+   * (leas/at account-name amount desc day)
+
+     Adds a transaction to the account with name account-name with the
+     transaction amount being amount, description desc, and day given as
+     day (a list with three elements, in this order: day, month, year).
+     This is a primitive function that does not add a counterbalancing
+     transaction in any other account.  Just adds or subtracts the
+     amount from a certain account.  It doesn't take the money from
+     anywhere.
+
+   * (leas/aa account-name type opening-balance)
+
+     Adds an account with name account-name of type type (one of
+     "asset", "liability", "income", "expense") with opening balance
+     opening-balance.
+
+   * (leas/ea account-name new-account-name new-opening-balance)
+
+     Edits the account that currently has account-name to have a new
+     name and a new opening balance.
+
+   * (leas/da account-name)
+
+     Delete the account with account-name.
+
+   * (leas/get-current-account)
+
+     Returns the account name of the current account.
+
+   * (leas/get-current-file)
+
+     Returns the path to the current save file (the last save file
+     loaded or written to).
+
+   * (leas/get-transactions account-name number)
+
+     Returns the most recent number transactions from account-name.  A
+     transaction in Scheme is a five element list with elements in this
+     order: (description amount year month day).
+
+   * (leas/get-all-transactions account-name)
+
+     Returns all transactions from the account with name account-name.
+
+   * (leas/get-transactions-by-regex account-name regex)
+
+     Returns all transactions from the account with name account-name
+     where the transaction's description matches the regular expression
+     regex.
+
+   * (leas/get-transaction-by-location account-number
+     transaction-number)
+
+     Return the transaction from the account numbered account-number
+     with the transaction numbered transaction-number.
+
+   * (leas/get-transactions-by-day account-name first-day last-day)
+
+     Return the transactions from account account-name that occurred
+     between first-day and last-day.
+
+   * (leas/get-account account-name)
+
+     Return the account with name account-name.  An account in Scheme is
+     a list with four elements in this order: (name type
+     number-of-transactions opening-balance).
+
+   * (leas/get-number-of-accounts)
+
+     Return the total number of accounts.
+
+   * (leas/get-account-by-location account-number)
+
+     Return account at location account-number.
+
+   * (leas/get-account-location account-name)
+
+     Return the location of the account with name account-name.
+
+   * (leas/total-account account-name)
+
+     Return the sum of all transactions in account-name.
+
+
+File: leas.info,  Node: Scheme functions provided in the package,  Prev: Built-in C functions available from Scheme,  Up: Programming Leas
+
+4.2 Scheme functions provided in the package
+============================================
 
 
 File: leas.info,  Node: GNU Free Documentation License,  Prev: Programming Leas,  Up: Top
@@ -1127,19 +1232,21 @@ their use in free software.
 Tag Table:
 Node: Top577
 Node: Introduction1182
-Node: Tutorial4729
-Node: Adding a cash asset account5041
-Node: Paying for expenses6043
-Node: Earning income9226
-Node: Managing debt10314
-Node: Non-cash assets12927
-Node: Saving loading and quitting15077
-Node: Scheme code16334
-Node: Common customizations17134
-Node: Set default file17461
-Node: Customize prompt17780
-Node: Leas file format18710
-Node: Programming Leas20045
-Node: GNU Free Documentation License20303
+Node: Tutorial4754
+Node: Adding a cash asset account5066
+Node: Paying for expenses6068
+Node: Earning income9251
+Node: Managing debt10339
+Node: Non-cash assets12952
+Node: Saving loading and quitting15102
+Node: Scheme code16359
+Node: Common customizations17159
+Node: Set default file17486
+Node: Customize prompt17805
+Node: Leas file format18735
+Node: Programming Leas20070
+Node: Built-in C functions available from Scheme20689
+Node: Scheme functions provided in the package23637
+Node: GNU Free Documentation License23870
 
 End Tag Table

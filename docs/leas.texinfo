@@ -44,7 +44,7 @@ This is the Leas reference manual.
 @node Introduction
 @chapter Introduction
 
-@b{Leas} is an interactive, command-line program for managing personal finances.  Its goal is to be an extensible tool for helping you keep track of your spending and to aid in making plans.  I started @b{Leas} to keep track of my finances leading up to my wedding. I found most free software personal finance packages were large GUI programs that had a long Time-to-Enter-Transaction: it took time to boot up an application that was not usually running and enter a transaction.  This small friction made it harder for me to build the habit of keeping track of things.  I also found the programs difficult to extend. So I wrote @b{Leas} to solve this problem. I have been using it personally since October 2018 so it now works pretty much the way I want it to.  It has a low Time-to-Enter-Transaction because you can just enter the transaction interactively at a command prompt.  It is also easy to extend and script to automate different transactions or update the price of stocks, mutual funds, and ETF's. Hopefully, you will find it useful.
+@b{Leas} is an interactive, command-line program for managing personal finances.  Its goal is to be an extensible tool for helping you keep track of your spending and to aid in making plans.  I started @b{Leas} to keep track of my finances leading up to my wedding. I found most free software personal finance packages were large GUI programs that had a long Time-to-Enter-Transaction: it took time to boot up an application that was not usually running and enter a transaction.  This small friction made it harder for me to build the habit of keeping track of things.  I also found the programs difficult to extend. So I wrote @b{Leas} to solve this problem. I have been using it personally since October 2018 so it works, but I'm sure there is room for improvement: make suggestions!  It has a low Time-to-Enter-Transaction because you can just enter the transaction interactively at a command prompt.  It is also easy to extend and script to automate different transactions or update the price of stocks, mutual funds, and ETF's. Hopefully, you will find it useful.
 
 @b{Leas} is a command-line program, but it is possible to write a GUI on top of the program if you are looking for a project.  It is possible because @b{Leas} can be extended using the Guile Scheme programming language.  The program's prompt can execute arbitrary Scheme code. If you make a neat extension like this, let me know and I will reference it in this manual.
 
@@ -542,7 +542,83 @@ The save file is a @b{tar} archive containing the following files in a directory
 @node Programming Leas
 @chapter Programming Leas
 
-This chapter will be more of a reference manual for the various Scheme functions available in @b{Leas}.
+This chapter will be more of a reference manual for the various Scheme functions available in @b{Leas}.  It is incomplete, but will be completed soon.  Eventually functions will be organized by, well, function or purpose, but for now, they are categorized by whether they are C or Guile functions to make it easy for me to add them systematically to the section.
+
+@node Built-in C functions available from Scheme
+@section Built-in C functions available from Scheme
+
+@itemize
+@item @t{(leas/at account-name amount desc day)}
+
+Adds a transaction to the account with name @t{account-name} with the transaction amount being @t{amount}, description @t{desc}, and day given as @t{day} (a list with three elements, in this order: day, month, year).  This is a primitive function that does not add a counterbalancing transaction in any other account.  Just adds or subtracts the amount from a certain account.  It doesn't take the money from anywhere.
+
+@item @t{(leas/aa account-name type opening-balance)}
+
+Adds an account with name @t{account-name} of type @t{type} (one of ``asset'', ``liability'', ``income'', ``expense'') with opening balance @t{opening-balance}.
+
+@item @t{(leas/ea account-name new-account-name new-opening-balance)}
+
+Edits the account that currently has @t{account-name} to have a new name and a new opening balance.
+
+@item @t{(leas/da account-name)}
+
+Delete the account with @t{account-name}.
+
+@item @t{(leas/get-current-account)}
+
+Returns the account name of the current account.
+
+@item @t{(leas/get-current-file)}
+
+Returns the path to the current save file (the last save file loaded or written to).
+
+@item @t{(leas/get-transactions account-name number)}
+
+Returns the most recent @t{number} transactions from @t{account-name}.  A transaction in Scheme is a five element list with elements in this order: @t{(description amount year month day)}.
+
+@item @t{(leas/get-all-transactions account-name)}
+
+Returns all transactions from the account with name @t{account-name}.
+
+@item @t{(leas/get-transactions-by-regex account-name regex)}
+
+Returns all transactions from the account with name @t{account-name} where the transaction's description matches the regular expression @t{regex}.
+
+@item @t{(leas/get-transaction-by-location account-number transaction-number)}
+
+Return the transaction from the account numbered @t{account-number} with the transaction numbered @t{transaction-number}.
+
+@item @t{(leas/get-transactions-by-day account-name first-day last-day)}
+
+Return the transactions from account @t{account-name} that occurred between @t{first-day} and @t{last-day}.
+
+@item @t{(leas/get-account account-name)}
+
+Return the account with name @t{account-name}.  An account in Scheme is a list with four elements in this order: @t{(name type number-of-transactions opening-balance)}.
+
+@item @t{(leas/get-number-of-accounts)}
+
+Return the total number of accounts.
+
+@item @t{(leas/get-account-by-location account-number)}
+
+Return account at location @t{account-number}.
+
+@item @t{(leas/get-account-location account-name)}
+
+Return the location of the account with name @t{account-name}.
+
+@item @t{(leas/total-account account-name)}
+
+Return the sum of all transactions in @t{account-name}.
+
+@end itemize
+
+
+@node Scheme functions provided in the package
+@section Scheme functions provided in the package
+
+
 
 @node GNU Free Documentation License
 @appendix GNU Free Documentation License
