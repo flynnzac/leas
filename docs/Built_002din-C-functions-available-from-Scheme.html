@@ -23,7 +23,7 @@ Documentation License". -->
 <link href="index.html#Top" rel="start" title="Top">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Programming-Leas.html#Programming-Leas" rel="up" title="Programming Leas">
-<link href="Scheme-functions-provided-in-the-package.html#Scheme-functions-provided-in-the-package" rel="next" title="Scheme functions provided in the package">
+<link href="Scheme-functions-and-variables-provided-in-the-package.html#Scheme-functions-and-variables-provided-in-the-package" rel="next" title="Scheme functions and variables provided in the package">
 <link href="Programming-Leas.html#Programming-Leas" rel="prev" title="Programming Leas">
 <style type="text/css">
 <!--
@@ -60,7 +60,7 @@ ul.no-bullet {list-style: none}
 <a name="Built_002din-C-functions-available-from-Scheme"></a>
 <div class="header">
 <p>
-Next: <a href="Scheme-functions-provided-in-the-package.html#Scheme-functions-provided-in-the-package" accesskey="n" rel="next">Scheme functions provided in the package</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Scheme-functions-and-variables-provided-in-the-package.html#Scheme-functions-and-variables-provided-in-the-package" accesskey="n" rel="next">Scheme functions and variables provided in the package</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
 <a name="Built_002din-C-functions-available-from-Scheme-1"></a>
@@ -131,13 +131,91 @@ Next: <a href="Scheme-functions-provided-in-the-package.html#Scheme-functions-pr
 
 <p>Return the sum of all transactions in <tt>account-name</tt>.
 </p>
+</li><li> <tt>(leas/total-all-accounts)</tt>
+
+<p>Return the sum of all transactions across all accounts.
+</p>
+</li><li> <tt>(leas/total-all-accounts-of-type type-number)</tt>
+
+<p>Return the sum of all transactions of a certain type (expense = 1, income = 2, asset = 4, liability = 8).
+</p>
+</li><li> <tt>(leas/total-by-account-type)</tt>
+
+<p>Return totals for each account type as a list of pairs with the first element of the pair (the <tt>car</tt>) containing the name of the account type and the second element containing the total.
+</p>
+</li><li> <tt>(leas/set-select-transaction-number number)</tt>
+
+<p>Set the number of recent transactions to display when selecting a transaction for any operation.
+</p>
+</li><li> <tt>(leas/set-current-day day)</tt>
+
+<p>Set the curent day to <tt>day</tt>, a list of three elements in this order: (day month year).
+</p>
+</li><li> <tt>(leas/get-current-day)</tt>
+
+<p>Return a three-element list of (day month year) representing the current day.
+</p>
+</li><li> <tt>(q)</tt>
+
+<p>Quit Leas.
+</p>
+</li><li> <tt>(p x)</tt>
+
+<p>Print out the object <tt>x</tt>.  This is essentially just Guile&rsquo;s <tt>display</tt> function which also inserts a newline after the output.
+</p>
+</li><li> <tt>(leas/set-account account-name)</tt>
+
+<p>Sets the current account to <tt>account-name</tt>.
+</p>
+</li><li> <tt>(leas/write file-name)</tt>
+
+<p>Write the current <b>Leas</b> accounts to a file called <tt>file-name</tt>.
+</p>
+</li><li> <tt>(leas/read file-name)</tt>
+
+<p>Read accounts into memory from the file named <tt>file-name</tt>.
+</p>
+</li><li> <tt>(leas/v)</tt>
+
+<p>Return the version string for <b>Leas</b>.
+</p>
+</li><li> <tt>(leas/call function-name options)</tt>
+
+<p>Calls the Scheme function with name <tt>function-name</tt> (a string) with arguments described by the list <tt>options</tt> entered interactively by the user. <tt>options</tt> is a list of pairs.  Each element of the list has the following structure: the first element gives the &ldquo;name&rdquo; of the option (what <b>Leas</b> will prompt for) and the second element gives the &ldquo;type&rdquo; of the option: the kind of value it should contain.  Both elements should be strings.  The following are the current types allowed for <tt>options</tt>.  If you use a type not in this list, whatever the user enters will be passed as-is to the function.
+</p>
+<ul>
+<li> string
+- Pass whatever the user enters to the Scheme function as a string.
+</li><li> account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of accounts to select from.
+</li><li> expense_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>expense</i> accounts to select from.
+</li><li> income_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>income</i> accounts to select from.
+</li><li> asset_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>asset</i> accounts to select from.
+</li><li> liability_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>liability</i> accounts to select from.
+</li><li> pay_from_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>liability</i> and <i>asset</i> accounts to select from.
+</li><li> current_account
+- Pass the name of the current account to the Scheme function.  Does not prompt the user.
+</li><li> type
+- Prompts the user to select an account type (asset, liability, income, expense).  Passes the type as a string.
+</li><li> transaction
+- Prompts the user to select a transaction.  Passes a pair of account number and transaction number to label the transaction to the Scheme function.
+</li><li> day
+- Prompts the user to select a day. Passes a three-element list elements &mdash; (day month year) &mdash; to the function.
+</li></ul>
+
+
 </li></ul>
 
 
 <hr>
 <div class="header">
 <p>
-Next: <a href="Scheme-functions-provided-in-the-package.html#Scheme-functions-provided-in-the-package" accesskey="n" rel="next">Scheme functions provided in the package</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Scheme-functions-and-variables-provided-in-the-package.html#Scheme-functions-and-variables-provided-in-the-package" accesskey="n" rel="next">Scheme functions and variables provided in the package</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 
 

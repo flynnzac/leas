@@ -648,10 +648,10 @@ section.
 * Menu:
 
 * Built-in C functions available from Scheme::
-* Scheme functions provided in the package::
+* Scheme functions and variables provided in the package::
 
 
-File: leas.info,  Node: Built-in C functions available from Scheme,  Next: Scheme functions provided in the package,  Up: Programming Leas
+File: leas.info,  Node: Built-in C functions available from Scheme,  Next: Scheme functions and variables provided in the package,  Up: Programming Leas
 
 4.1 Built-in C functions available from Scheme
 ==============================================
@@ -739,11 +739,152 @@ File: leas.info,  Node: Built-in C functions available from Scheme,  Next: Schem
 
      Return the sum of all transactions in account-name.
 
-
-File: leas.info,  Node: Scheme functions provided in the package,  Prev: Built-in C functions available from Scheme,  Up: Programming Leas
+   * (leas/total-all-accounts)
 
-4.2 Scheme functions provided in the package
-============================================
+     Return the sum of all transactions across all accounts.
+
+   * (leas/total-all-accounts-of-type type-number)
+
+     Return the sum of all transactions of a certain type (expense = 1,
+     income = 2, asset = 4, liability = 8).
+
+   * (leas/total-by-account-type)
+
+     Return totals for each account type as a list of pairs with the
+     first element of the pair (the car) containing the name of the
+     account type and the second element containing the total.
+
+   * (leas/set-select-transaction-number number)
+
+     Set the number of recent transactions to display when selecting a
+     transaction for any operation.
+
+   * (leas/set-current-day day)
+
+     Set the curent day to day, a list of three elements in this order:
+     (day month year).
+
+   * (leas/get-current-day)
+
+     Return a three-element list of (day month year) representing the
+     current day.
+
+   * (q)
+
+     Quit Leas.
+
+   * (p x)
+
+     Print out the object x.  This is essentially just Guile's display
+     function which also inserts a newline after the output.
+
+   * (leas/set-account account-name)
+
+     Sets the current account to account-name.
+
+   * (leas/write file-name)
+
+     Write the current Leas accounts to a file called file-name.
+
+   * (leas/read file-name)
+
+     Read accounts into memory from the file named file-name.
+
+   * (leas/v)
+
+     Return the version string for Leas.
+
+   * (leas/call function-name options)
+
+     Calls the Scheme function with name function-name (a string) with
+     arguments described by the list options entered interactively by
+     the user.  options is a list of pairs.  Each element of the list
+     has the following structure: the first element gives the "name" of
+     the option (what Leas will prompt for) and the second element gives
+     the "type" of the option: the kind of value it should contain.
+     Both elements should be strings.  The following are the current
+     types allowed for options.  If you use a type not in this list,
+     whatever the user enters will be passed as-is to the function.
+
+        * string - Pass whatever the user enters to the Scheme function
+          as a string.
+        * account - Pass the name of an account to the Scheme function.
+          Prompts the user with a menu of accounts to select from.
+        * expense_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of expense accounts to
+          select from.
+        * income_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of income accounts to
+          select from.
+        * asset_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of asset accounts to
+          select from.
+        * liability_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of liability accounts
+          to select from.
+        * pay_from_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of liability and asset
+          accounts to select from.
+        * current_account - Pass the name of the current account to the
+          Scheme function.  Does not prompt the user.
+        * type - Prompts the user to select an account type (asset,
+          liability, income, expense).  Passes the type as a string.
+        * transaction - Prompts the user to select a transaction.
+          Passes a pair of account number and transaction number to
+          label the transaction to the Scheme function.
+        * day - Prompts the user to select a day.  Passes a
+          three-element list elements -- (day month year) -- to the
+          function.
+
+
+File: leas.info,  Node: Scheme functions and variables provided in the package,  Prev: Built-in C functions available from Scheme,  Up: Programming Leas
+
+4.2 Scheme functions and variables provided in the package
+==========================================================
+
+   * leas/number-to-quick-list
+
+     The number of transactions to list when using lt and similar
+     commands.  Modify this variable to get more or less transactions.
+     By default, it is 20.
+
+   * leas/prompt
+
+     A function that gets called (without arguments) to produce the
+     prompt.  You can modify this to whatever you would like.  By
+     default, it indicates what the current account is.
+
+   * (leas/print-tscts tsct-list)
+
+     Prints out a list of transactions in a pretty way (well, at least,
+     in a standard way).
+
+   * (leas/day-from-time time)
+
+     Return a (day month year) list from a Scheme time object.
+
+   * (leas/seq-days first-day last-day by)
+
+     Return a list of days starting at first-day and going to at most
+     last-day where each element is separated by by days.
+
+   * (leas/t to-account from-account amount desc day)
+
+     Create a transfer from one account to another by creating
+     offsetting transactions in both accounts.
+
+   * (leas/dtr from-account to-location)
+
+     Delete a transaction that went from from-account to to-location (a
+     pair giving account number and transaction number).
+
+   * (leas/pay-loan loan-account interest-account from-account principal
+     interest desc day)
+
+     Create a loan payment transaction with takes money from
+     from-account and pays interest to interest-account and principal to
+     loan-account.  The description and day of the transaction are given
+     by the other two arguments.
 
 
 File: leas.info,  Node: GNU Free Documentation License,  Prev: Programming Leas,  Up: Top
@@ -1245,8 +1386,8 @@ Node: Set default file17486
 Node: Customize prompt17805
 Node: Leas file format18735
 Node: Programming Leas20070
-Node: Built-in C functions available from Scheme20689
-Node: Scheme functions provided in the package23637
-Node: GNU Free Documentation License23870
+Node: Built-in C functions available from Scheme20703
+Node: Scheme functions and variables provided in the package27418
+Node: GNU Free Documentation License29178
 
 End Tag Table

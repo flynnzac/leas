@@ -612,11 +612,125 @@ Return the location of the account with name @t{account-name}.
 
 Return the sum of all transactions in @t{account-name}.
 
+@item @t{(leas/total-all-accounts)}
+
+Return the sum of all transactions across all accounts.
+
+@item @t{(leas/total-all-accounts-of-type type-number)}
+
+Return the sum of all transactions of a certain type (expense = 1, income = 2, asset = 4, liability = 8).
+
+@item @t{(leas/total-by-account-type)}
+
+Return totals for each account type as a list of pairs with the first element of the pair (the @t{car}) containing the name of the account type and the second element containing the total.
+
+@item @t{(leas/set-select-transaction-number number)}
+
+Set the number of recent transactions to display when selecting a transaction for any operation.
+
+@item @t{(leas/set-current-day day)}
+
+Set the curent day to @t{day}, a list of three elements in this order: (day month year).
+
+@item @t{(leas/get-current-day)}
+
+Return a three-element list of (day month year) representing the current day.
+
+@item @t{(q)}
+
+Quit Leas.
+
+@item @t{(p x)}
+
+Print out the object @t{x}.  This is essentially just Guile's @t{display} function which also inserts a newline after the output.
+
+@item @t{(leas/set-account account-name)}
+
+Sets the current account to @t{account-name}.
+
+@item @t{(leas/write file-name)}
+
+Write the current @b{Leas} accounts to a file called @t{file-name}.
+
+@item @t{(leas/read file-name)}
+
+Read accounts into memory from the file named @t{file-name}.
+
+@item @t{(leas/v)}
+
+Return the version string for @b{Leas}.
+
+@item @t{(leas/call function-name options)}
+
+Calls the Scheme function with name @t{function-name} (a string) with arguments described by the list @t{options} entered interactively by the user. @t{options} is a list of pairs.  Each element of the list has the following structure: the first element gives the ``name'' of the option (what @b{Leas} will prompt for) and the second element gives the ``type'' of the option: the kind of value it should contain.  Both elements should be strings.  The following are the current types allowed for @t{options}.  If you use a type not in this list, whatever the user enters will be passed as-is to the function.
+
+@itemize
+@item string
+- Pass whatever the user enters to the Scheme function as a string.
+@item account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of accounts to select from.
+@item expense_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of @i{expense} accounts to select from.
+@item income_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of @i{income} accounts to select from.
+@item asset_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of @i{asset} accounts to select from.
+@item liability_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of @i{liability} accounts to select from.
+@item pay_from_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of @i{liability} and @i{asset} accounts to select from.
+@item current_account
+- Pass the name of the current account to the Scheme function.  Does not prompt the user.
+@item type
+- Prompts the user to select an account type (asset, liability, income, expense).  Passes the type as a string.
+@item transaction
+- Prompts the user to select a transaction.  Passes a pair of account number and transaction number to label the transaction to the Scheme function.
+@item day
+- Prompts the user to select a day. Passes a three-element list elements --- (day month year) --- to the function.
 @end itemize
 
 
-@node Scheme functions provided in the package
-@section Scheme functions provided in the package
+@end itemize
+
+
+@node Scheme functions and variables provided in the package
+@section Scheme functions and variables provided in the package
+
+@itemize
+@item @t{leas/number-to-quick-list}
+
+The number of transactions to list when using @t{lt} and similar commands. Modify this variable to get more or less transactions.  By default, it is @t{20}.
+
+@item @t{leas/prompt}
+
+A function that gets called (without arguments) to produce the prompt.  You can modify this to whatever you would like.  By default, it indicates what the current account is.
+
+@item @t{(leas/print-tscts tsct-list)}
+
+Prints out a list of transactions in a pretty way (well, at least, in a standard way).  
+
+@item @t{(leas/day-from-time time)}
+
+Return a (day month year) list from a Scheme time object.
+
+@item @t{(leas/seq-days first-day last-day by)}
+
+Return a list of days starting at @t{first-day} and going to at most @t{last-day} where each element is separated by @t{by} days.
+
+@item @t{(leas/t to-account from-account amount desc day)}
+
+Create a transfer from one account to another by creating offsetting transactions in both accounts.
+
+@item @t{(leas/dtr from-account to-location)}
+
+Delete a transaction that went from @t{from-account} to @t{to-location} (a pair giving account number and transaction number).
+
+@item @t{(leas/pay-loan loan-account interest-account from-account principal interest desc day)}
+
+Create a loan payment transaction with takes money from @t{from-account} and pays @t{interest} to @t{interest-account} and @t{principal} to @t{loan-account}.  The description and day of the transaction are given by the other two arguments.
+
+
+@end itemize
 
 
 
