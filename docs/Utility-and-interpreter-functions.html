@@ -1,0 +1,128 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.  A
+copy of the license is included in the section entitled "GNU Free
+Documentation License". -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Utility and interpreter functions (Leas manual)</title>
+
+<meta name="description" content="Utility and interpreter functions (Leas manual)">
+<meta name="keywords" content="Utility and interpreter functions (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Programming-Leas.html#Programming-Leas" rel="up" title="Programming Leas">
+<link href="GNU-Free-Documentation-License.html#GNU-Free-Documentation-License" rel="next" title="GNU Free Documentation License">
+<link href="Saving-and-loading-functions.html#Saving-and-loading-functions" rel="prev" title="Saving and loading functions">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Utility-and-interpreter-functions"></a>
+<div class="header">
+<p>
+Previous: <a href="Saving-and-loading-functions.html#Saving-and-loading-functions" accesskey="p" rel="prev">Saving and loading functions</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Utility-and-interpreter-functions-1"></a>
+<h3 class="section">4.8 Utility and interpreter functions</h3>
+
+<ul>
+<li> <tt>(q)</tt>
+
+<p>Quit Leas.
+</p>
+</li><li> <tt>(p x)</tt>
+
+<p>Print out the object <tt>x</tt>.  This is essentially just Guile&rsquo;s <tt>display</tt> function which also inserts a newline after the output.
+</p>
+
+
+</li><li> <tt>(leas/v)</tt>
+
+<p>Return the version string for <b>Leas</b>.
+</p>
+</li><li> <tt>(leas/call function-name options)</tt>
+
+<p>Calls the Scheme function with name <tt>function-name</tt> (a string) with arguments described by the list <tt>options</tt> entered interactively by the user. <tt>options</tt> is a list of pairs.  Each element of the list has the following structure: the first element gives the &ldquo;name&rdquo; of the option (what <b>Leas</b> will prompt for) and the second element gives the &ldquo;type&rdquo; of the option: the kind of value it should contain.  Both elements should be strings.  The following are the current types allowed for <tt>options</tt>.  If you use a type not in this list, whatever the user enters will be passed as-is to the function.
+</p>
+<ul>
+<li> string
+- Pass whatever the user enters to the Scheme function as a string.
+</li><li> account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of accounts to select from.
+</li><li> expense_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>expense</i> accounts to select from.
+</li><li> income_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>income</i> accounts to select from.
+</li><li> asset_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>asset</i> accounts to select from.
+</li><li> liability_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>liability</i> accounts to select from.
+</li><li> pay_from_account
+- Pass the name of an account to the Scheme function.  Prompts the user with a menu of <i>liability</i> and <i>asset</i> accounts to select from.
+</li><li> current_account
+- Pass the name of the current account to the Scheme function.  Does not prompt the user.
+</li><li> type
+- Prompts the user to select an account type (asset, liability, income, expense).  Passes the type as a string.
+</li><li> transaction
+- Prompts the user to select a transaction.  Passes a pair of account number and transaction number to label the transaction to the Scheme function.
+</li><li> day
+- Prompts the user to select a day. Passes a three-element list elements &mdash; (day month year) &mdash; to the function.
+</li></ul>
+
+</li><li> <tt>(leas/day-from-time time)</tt>
+
+<p>Return a (day month year) list from a Scheme time object.
+</p>
+</li></ul>
+
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Saving-and-loading-functions.html#Saving-and-loading-functions" accesskey="p" rel="prev">Saving and loading functions</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+
+
+
+</body>
+</html>

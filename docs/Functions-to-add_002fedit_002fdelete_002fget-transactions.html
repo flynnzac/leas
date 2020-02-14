@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<!-- This is the manual for Leas, the Little Extensible Accounting System, a personal account manager.
+
+Copying (C) 2020 Zach Flynn.
+
+Permission is granted to copy, distribute and/or modify this document
+under the terms of the GNU Free Documentation License, Version 1.3 or
+any later version published by the Free Software Foundation; with no
+Invariant Sections, no Front-Cover Texts, and no Back-Cover Texts.  A
+copy of the license is included in the section entitled "GNU Free
+Documentation License". -->
+<!-- Created by GNU Texinfo 6.5, http://www.gnu.org/software/texinfo/ -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Functions to add/edit/delete/get transactions (Leas manual)</title>
+
+<meta name="description" content="Functions to add/edit/delete/get transactions (Leas manual)">
+<meta name="keywords" content="Functions to add/edit/delete/get transactions (Leas manual)">
+<meta name="resource-type" content="document">
+<meta name="distribution" content="global">
+<meta name="Generator" content="makeinfo">
+<link href="index.html#Top" rel="start" title="Top">
+<link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
+<link href="Programming-Leas.html#Programming-Leas" rel="up" title="Programming Leas">
+<link href="Functions-to-add_002fedit_002fdelete_002fget-accounts.html#Functions-to-add_002fedit_002fdelete_002fget-accounts" rel="next" title="Functions to add/edit/delete/get accounts">
+<link href="Programming-Leas.html#Programming-Leas" rel="prev" title="Programming Leas">
+<style type="text/css">
+<!--
+a.summary-letter {text-decoration: none}
+blockquote.indentedblock {margin-right: 0em}
+blockquote.smallindentedblock {margin-right: 0em; font-size: smaller}
+blockquote.smallquotation {font-size: smaller}
+div.display {margin-left: 3.2em}
+div.example {margin-left: 3.2em}
+div.lisp {margin-left: 3.2em}
+div.smalldisplay {margin-left: 3.2em}
+div.smallexample {margin-left: 3.2em}
+div.smalllisp {margin-left: 3.2em}
+kbd {font-style: oblique}
+pre.display {font-family: inherit}
+pre.format {font-family: inherit}
+pre.menu-comment {font-family: serif}
+pre.menu-preformatted {font-family: serif}
+pre.smalldisplay {font-family: inherit; font-size: smaller}
+pre.smallexample {font-size: smaller}
+pre.smallformat {font-family: inherit; font-size: smaller}
+pre.smalllisp {font-size: smaller}
+span.nolinebreak {white-space: nowrap}
+span.roman {font-family: initial; font-weight: normal}
+span.sansserif {font-family: sans-serif; font-weight: normal}
+ul.no-bullet {list-style: none}
+-->
+</style>
+
+
+</head>
+
+<body lang="en">
+<a name="Functions-to-add_002fedit_002fdelete_002fget-transactions"></a>
+<div class="header">
+<p>
+Next: <a href="Functions-to-add_002fedit_002fdelete_002fget-accounts.html#Functions-to-add_002fedit_002fdelete_002fget-accounts" accesskey="n" rel="next">Functions to add/edit/delete/get accounts</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+<hr>
+<a name="Functions-to-add_002fedit_002fdelete_002fget-transactions-1"></a>
+<h3 class="section">4.1 Functions to add/edit/delete/get transactions</h3>
+
+<ul>
+<li> <tt>(leas/at account-name amount desc day)</tt>
+
+<p>Adds a transaction to the account with name <tt>account-name</tt> with the transaction amount being <tt>amount</tt>, description <tt>desc</tt>, and day given as <tt>day</tt> (a list with three elements, in this order: day, month, year).  This is a primitive function that does not add a counterbalancing transaction in any other account.  Just adds or subtracts the amount from a certain account.  It doesn&rsquo;t take the money from anywhere.
+</p>
+</li><li> <tt>(leas/get-transactions account-name number)</tt>
+
+<p>Returns the most recent <tt>number</tt> transactions from <tt>account-name</tt>.  A transaction in Scheme is a five element list with elements in this order: <tt>(description amount year month day)</tt>.
+</p>
+</li><li> <tt>(leas/get-all-transactions account-name)</tt>
+
+<p>Returns all transactions from the account with name <tt>account-name</tt>.
+</p>
+</li><li> <tt>(leas/get-transactions-by-regex account-name regex)</tt>
+
+<p>Returns all transactions from the account with name <tt>account-name</tt> where the transaction&rsquo;s description matches the regular expression <tt>regex</tt>.
+</p>
+</li><li> <tt>(leas/get-transaction-by-location account-number transaction-number)</tt>
+
+<p>Return the transaction from the account numbered <tt>account-number</tt> with the transaction numbered <tt>transaction-number</tt>.
+</p>
+</li><li> <tt>(leas/get-transactions-by-day account-name first-day last-day)</tt>
+
+<p>Return the transactions from account <tt>account-name</tt> that occurred between <tt>first-day</tt> and <tt>last-day</tt>.
+</p>
+</li><li> <tt>(leas/t to-account from-account amount desc day)</tt>
+
+<p>Create a transfer from one account to another by creating offsetting transactions in both accounts.
+</p>
+</li><li> <tt>(leas/dtr from-account to-location)</tt>
+
+<p>Delete a transaction that went from <tt>from-account</tt> to <tt>to-location</tt> (a pair giving account number and transaction number).
+</p>
+</li><li> <tt>(leas/pay-loan loan-account interest-account from-account principal interest desc day)</tt>
+
+<p>Create a loan payment transaction with takes money from <tt>from-account</tt> and pays <tt>interest</tt> to <tt>interest-account</tt> and <tt>principal</tt> to <tt>loan-account</tt>.  The description and day of the transaction are given by the other two arguments.
+</p>
+</li><li> <tt>(leas/change-stock-price stock-account from-account stock-price number day)</tt>
+
+<p>Updates the stock price to <tt>stock-price</tt> of a stock account taking the money from <tt>from-account</tt> (usually an income account called something like &ldquo;Stock Income&rdquo;).  The stock account is assumed to hold <tt>number</tt> shares.  The <tt>day</tt> is the day of the transaction.
+</p>
+</li><li> <tt>(leas/edit-transact transaction-location day amount desc)</tt>
+
+<p>Edits the transaction at <tt>transaction-location</tt> (a pair of account number and transaction number) to have <tt>day</tt>, <tt>amount</tt>, and <tt>desc</tt> set to the given values.
+</p>
+</li><li> <tt>(leas/print-tscts tsct-list)</tt>
+
+<p>Prints out a list of transactions in a pretty way (well, at least, in a standard way).  
+</p>
+</li></ul>
+
+<hr>
+<div class="header">
+<p>
+Next: <a href="Functions-to-add_002fedit_002fdelete_002fget-accounts.html#Functions-to-add_002fedit_002fdelete_002fget-accounts" accesskey="n" rel="next">Functions to add/edit/delete/get accounts</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
+
+
+
+</body>
+</html>
