@@ -639,10 +639,7 @@ File: leas.info,  Node: Programming Leas,  Next: GNU Free Documentation License,
 ******************
 
 This chapter is a reference manual for the various Scheme functions
-available in Leas.  It is complete now, but not yet organized.
-Eventually functions will be organized by, well, function or purpose,
-but for now, they are categorized by whether they are C or Guile
-functions which made it easy to make sure all were included.
+available in Leas.  It is now complete.
 
    Only non-interactive functions are documented here because the
 interactive functions are mostly just wrappers of these that call
@@ -1504,14 +1501,14 @@ Node: Set default file17486
 Node: Customize prompt17805
 Node: Leas file format18735
 Node: Programming Leas20070
-Node: Functions to add/edit/delete/get transactions21031
-Node: Functions to add/edit/delete/get accounts24118
-Node: Functions to get/modify current day/account/file25374
-Node: Total accounts26200
-Node: Repeat commands on different days27373
-Node: Set Leas parameters29639
-Node: Saving and loading functions30401
-Node: Utility and interpreter functions30803
-Node: GNU Free Documentation License33674
+Node: Functions to add/edit/delete/get transactions20812
+Node: Functions to add/edit/delete/get accounts23899
+Node: Functions to get/modify current day/account/file25155
+Node: Total accounts25981
+Node: Repeat commands on different days27154
+Node: Set Leas parameters29420
+Node: Saving and loading functions30182
+Node: Utility and interpreter functions30584
+Node: GNU Free Documentation License33455
 
 End Tag Table
