@@ -99,11 +99,66 @@ Previous: <a href="Built_002din-C-functions-available-from-Scheme.html#Built_002
 
 <p>Create a loan payment transaction with takes money from <tt>from-account</tt> and pays <tt>interest</tt> to <tt>interest-account</tt> and <tt>principal</tt> to <tt>loan-account</tt>.  The description and day of the transaction are given by the other two arguments.
 </p>
+</li><li> <tt>(leas/change-stock-price stock-account from-account stock-price number day)</tt>
+
+<p>Updates the stock price to <tt>stock-price</tt> of a stock account taking the money from <tt>from-account</tt> (usually an income account called something like &ldquo;Stock Income&rdquo;).  The stock account is assumed to hold <tt>number</tt> shares.  The <tt>day</tt> is the day of the transaction.
+</p>
+</li><li> <tt>(leas/edit-transact transaction-location day amount desc)</tt>
+
+<p>Edits the transaction at <tt>transaction-location</tt> (a pair of account number and transaction number) to have <tt>day</tt>, <tt>amount</tt>, and <tt>desc</tt> set to the given values.
+</p>
+</li><li> <tt>(leas/display-account-totals accts)</tt>
+
+<p>Display the total of a list of accounts (<tt>accts</tt>) in the Scheme format for an account (as returned by say <tt>leas/get-account</tt>.
+</p>
+</li><li> <tt>(leas/current-total-of-type n)</tt>
+
+<p>Display the total for all accounts of type <tt>n</tt>, an integer, where 0 = expense, 1 = income, 2 = asset, 3 = income, 4 = worth, 5 = opening balances.
+</p>
+</li><li> <tt>(leas/loop-days days current-day number exp)</tt>
+
+<p>A Scheme macro with executes the expression <tt>exp</tt> with each element of <tt>days</tt> being set to the current day.  For elements of <tt>days</tt> after <tt>number</tt>, set the current day to <tt>current-day</tt> and return an empty list (i.e. stop looping after <tt>number</tt> days).  Returns a list of pairs of the day and the results of the expression executed with that as the current day.
+</p>
+</li><li> <tt>(leas/balance-account-on-days first-day last-day by account)</tt>
+
+<p>Returns a list of pairs going from <tt>first-day</tt> to <tt>last-day</tt> by <tt>by</tt> days where the first element of each pair is the day and the second element is the account balance on that day.
+</p>
+</li><li> <tt>(leas/total-transact-in-account-between-days first-day last-day by account)</tt>
+
+<p>Return the same list of pairs where the second element of the pairs is instead the total amount of transactions between each day.
+</p>
+</li><li> <tt>(leas/total-transact-in-account-re first-day last-day by account regex)</tt>
+
+<p>Return the total transactions in acccount on each day in set in the <tt>account</tt> that match the regular expression <tt>regex</tt>.
+</p>
+</li><li> <tt>(leas/output-by-day day amount)</tt>
+
+<p>Display an amount on day.  Used for formatting (day amount) pairs.
+</p>
+</li><li> <tt>(leas/get-by-type-over-days first-day last-day by element)</tt>
+
+<p>Returns the same list of pairs where the second element of the pairs is the total transactions of the <tt>element</tt> number of the return value of <tt>(leas/total-by-account-type)</tt>.
+</p>
+</li><li> <tt>(leas/get-by-type-over-days-for-type element)</tt>
+
+<p>Returns a function taking arguments <tt>(first-day last-day by)</tt> which calls <tt>leas/get-by-type-over-days</tt> fixing the <tt>element</tt> argument.
+</p>
+</li><li> <tt>(leas/over-day-cmd element)</tt>
+
+<p>A Scheme macro which uses <tt>leas/call</tt> to interactively get <tt>(first-day last-day by)</tt> arguments for <tt>(leas/get-by-type-over-days)</tt> and calls it for <tt>element</tt>.
+</p>
+
+
 
 </li></ul>
 
 
 
+<hr>
+<div class="header">
+<p>
+Previous: <a href="Built_002din-C-functions-available-from-Scheme.html#Built_002din-C-functions-available-from-Scheme" accesskey="p" rel="prev">Built-in C functions available from Scheme</a>, Up: <a href="Programming-Leas.html#Programming-Leas" accesskey="u" rel="up">Programming Leas</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+</div>
 
 
 

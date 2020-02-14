@@ -542,7 +542,9 @@ The save file is a @b{tar} archive containing the following files in a directory
 @node Programming Leas
 @chapter Programming Leas
 
-This chapter will be more of a reference manual for the various Scheme functions available in @b{Leas}.  It is incomplete, but will be completed soon.  Eventually functions will be organized by, well, function or purpose, but for now, they are categorized by whether they are C or Guile functions to make it easy for me to add them systematically to the section.
+This chapter is a reference manual for the various Scheme functions available in @b{Leas}.  It is complete now, but not yet organized.  Eventually functions will be organized by, well, function or purpose, but for now, they are categorized by whether they are C or Guile functions which made it easy to make sure all were included.
+
+Only non-interactive functions are documented here because the interactive functions are mostly just wrappers of these that call @t{leas/call} to get the arguments.
 
 @node Built-in C functions available from Scheme
 @section Built-in C functions available from Scheme
@@ -728,6 +730,56 @@ Delete a transaction that went from @t{from-account} to @t{to-location} (a pair 
 @item @t{(leas/pay-loan loan-account interest-account from-account principal interest desc day)}
 
 Create a loan payment transaction with takes money from @t{from-account} and pays @t{interest} to @t{interest-account} and @t{principal} to @t{loan-account}.  The description and day of the transaction are given by the other two arguments.
+
+@item @t{(leas/change-stock-price stock-account from-account stock-price number day)}
+
+Updates the stock price to @t{stock-price} of a stock account taking the money from @t{from-account} (usually an income account called something like ``Stock Income'').  The stock account is assumed to hold @t{number} shares.  The @t{day} is the day of the transaction.
+
+@item @t{(leas/edit-transact transaction-location day amount desc)}
+
+Edits the transaction at @t{transaction-location} (a pair of account number and transaction number) to have @t{day}, @t{amount}, and @t{desc} set to the given values.
+
+@item @t{(leas/display-account-totals accts)}
+
+Display the total of a list of accounts (@t{accts}) in the Scheme format for an account (as returned by say @t{leas/get-account}.
+
+@item @t{(leas/current-total-of-type n)}
+
+Display the total for all accounts of type @t{n}, an integer, where 0 = expense, 1 = income, 2 = asset, 3 = income, 4 = worth, 5 = opening balances.
+
+@item @t{(leas/loop-days days current-day number exp)}
+
+A Scheme macro with executes the expression @t{exp} with each element of @t{days} being set to the current day.  For elements of @t{days} after @t{number}, set the current day to @t{current-day} and return an empty list (i.e. stop looping after @t{number} days).  Returns a list of pairs of the day and the results of the expression executed with that as the current day.
+
+@item @t{(leas/balance-account-on-days first-day last-day by account)}
+
+Returns a list of pairs going from @t{first-day} to @t{last-day} by @t{by} days where the first element of each pair is the day and the second element is the account balance on that day.
+
+@item @t{(leas/total-transact-in-account-between-days first-day last-day by account)}
+
+Return the same list of pairs where the second element of the pairs is instead the total amount of transactions between each day.
+
+@item @t{(leas/total-transact-in-account-re first-day last-day by account regex)}
+
+Return the total transactions in acccount on each day in set in the @t{account} that match the regular expression @t{regex}.
+
+@item @t{(leas/output-by-day day amount)}
+
+Display an amount on day.  Used for formatting (day amount) pairs.
+
+@item @t{(leas/get-by-type-over-days first-day last-day by element)}
+
+Returns the same list of pairs where the second element of the pairs is the total transactions of the @t{element} number of the return value of @t{(leas/total-by-account-type)}.
+
+@item @t{(leas/get-by-type-over-days-for-type element)}
+
+Returns a function taking arguments @t{(first-day last-day by)} which calls @t{leas/get-by-type-over-days} fixing the @t{element} argument.
+
+@item @t{(leas/over-day-cmd element)}
+
+A Scheme macro which uses @t{leas/call} to interactively get @t{(first-day last-day by)} arguments for @t{(leas/get-by-type-over-days)} and calls it for @t{element}.
+
+
 
 
 @end itemize

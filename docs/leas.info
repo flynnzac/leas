@@ -638,12 +638,15 @@ File: leas.info,  Node: Programming Leas,  Next: GNU Free Documentation License,
 4 Programming Leas
 ******************
 
-This chapter will be more of a reference manual for the various Scheme
-functions available in Leas.  It is incomplete, but will be completed
-soon.  Eventually functions will be organized by, well, function or
-purpose, but for now, they are categorized by whether they are C or
-Guile functions to make it easy for me to add them systematically to the
-section.
+This chapter is a reference manual for the various Scheme functions
+available in Leas.  It is complete now, but not yet organized.
+Eventually functions will be organized by, well, function or purpose,
+but for now, they are categorized by whether they are C or Guile
+functions which made it easy to make sure all were included.
+
+   Only non-interactive functions are documented here because the
+interactive functions are mostly just wrappers of these that call
+leas/call to get the arguments.
 
 * Menu:
 
@@ -885,6 +888,79 @@ File: leas.info,  Node: Scheme functions and variables provided in the package, 
      from-account and pays interest to interest-account and principal to
      loan-account.  The description and day of the transaction are given
      by the other two arguments.
+
+   * (leas/change-stock-price stock-account from-account stock-price
+     number day)
+
+     Updates the stock price to stock-price of a stock account taking
+     the money from from-account (usually an income account called
+     something like "Stock Income").  The stock account is assumed to
+     hold number shares.  The day is the day of the transaction.
+
+   * (leas/edit-transact transaction-location day amount desc)
+
+     Edits the transaction at transaction-location (a pair of account
+     number and transaction number) to have day, amount, and desc set to
+     the given values.
+
+   * (leas/display-account-totals accts)
+
+     Display the total of a list of accounts (accts) in the Scheme
+     format for an account (as returned by say leas/get-account.
+
+   * (leas/current-total-of-type n)
+
+     Display the total for all accounts of type n, an integer, where 0 =
+     expense, 1 = income, 2 = asset, 3 = income, 4 = worth, 5 = opening
+     balances.
+
+   * (leas/loop-days days current-day number exp)
+
+     A Scheme macro with executes the expression exp with each element
+     of days being set to the current day.  For elements of days after
+     number, set the current day to current-day and return an empty list
+     (i.e.  stop looping after number days).  Returns a list of pairs of
+     the day and the results of the expression executed with that as the
+     current day.
+
+   * (leas/balance-account-on-days first-day last-day by account)
+
+     Returns a list of pairs going from first-day to last-day by by days
+     where the first element of each pair is the day and the second
+     element is the account balance on that day.
+
+   * (leas/total-transact-in-account-between-days first-day last-day by
+     account)
+
+     Return the same list of pairs where the second element of the pairs
+     is instead the total amount of transactions between each day.
+
+   * (leas/total-transact-in-account-re first-day last-day by account
+     regex)
+
+     Return the total transactions in acccount on each day in set in the
+     account that match the regular expression regex.
+
+   * (leas/output-by-day day amount)
+
+     Display an amount on day.  Used for formatting (day amount) pairs.
+
+   * (leas/get-by-type-over-days first-day last-day by element)
+
+     Returns the same list of pairs where the second element of the
+     pairs is the total transactions of the element number of the return
+     value of (leas/total-by-account-type).
+
+   * (leas/get-by-type-over-days-for-type element)
+
+     Returns a function taking arguments (first-day last-day by) which
+     calls leas/get-by-type-over-days fixing the element argument.
+
+   * (leas/over-day-cmd element)
+
+     A Scheme macro which uses leas/call to interactively get (first-day
+     last-day by) arguments for (leas/get-by-type-over-days) and calls
+     it for element.
 
 
 File: leas.info,  Node: GNU Free Documentation License,  Prev: Programming Leas,  Up: Top
@@ -1386,8 +1462,8 @@ Node: Set default file17486
 Node: Customize prompt17805
 Node: Leas file format18735
 Node: Programming Leas20070
-Node: Built-in C functions available from Scheme20703
-Node: Scheme functions and variables provided in the package27418
-Node: GNU Free Documentation License29178
+Node: Built-in C functions available from Scheme20836
+Node: Scheme functions and variables provided in the package27551
+Node: GNU Free Documentation License32156
 
 End Tag Table
