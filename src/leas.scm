@@ -466,7 +466,7 @@
   (lambda ()
     (display
      (string-append
-      "leas version: "
+      "Leas version: "
       (leas/v)
       "\n"))))
 

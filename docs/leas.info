@@ -24,6 +24,7 @@ This is the Leas reference manual.
 
 * Introduction:: introduction to Leas, what it is, and an outline of manual
 * Tutorial:: tutorial explaining basic interactive usage of Leas
+* All Interactive Commands:: reference for all interactive commands
 * Leas file format:: documentation of file format for Leas for other programs and scripts to modify them
 * Programming Leas:: full documentation of the functions Leas exposes for use when writing custom Leas commands
 * GNU Free Documentation License:: full documentation of the functions Leas exposes for use when writing custom Leas commands
@@ -95,7 +96,7 @@ exported by Leas which is more useful if you are trying to write your
 own functions.
 
 
-File: leas.info,  Node: Tutorial,  Next: Leas file format,  Prev: Introduction,  Up: Top
+File: leas.info,  Node: Tutorial,  Next: All Interactive Commands,  Prev: Introduction,  Up: Top
 
 2 Tutorial
 **********
@@ -605,9 +606,126 @@ try adding the following to see the current date,
                 ") :> ")))))
 
 
-File: leas.info,  Node: Leas file format,  Next: Programming Leas,  Prev: Tutorial,  Up: Top
+File: leas.info,  Node: All Interactive Commands,  Next: Leas file format,  Prev: Tutorial,  Up: Top
 
-3 Leas file format
+3 All Interactive Commands
+**************************
+
+This chapter documents all the interactive commands available in Leas.
+Its contents are similar to the manpage.
+
+   * aa add account
+
+   * at add transaction to current account
+
+   * ltn list latest transactions in current account
+
+   * et X edit transaction.  X can be omitted, if it is not, display X
+     most recent transactions instead of the default number.
+
+   * lt list transactions in current-account.
+
+   * ea edit account
+
+   * da delete account
+
+   * dt delete transaction
+
+   * la list accounts and their balances
+
+   * lae list expense accounts and their balances
+
+   * lai list income accounts and their balances
+
+   * laa list asset accounts and their balances
+
+   * lal list liability accounts and their balances
+
+   * bt current balances totaled by account type
+
+   * cex current total of expense accounts
+
+   * cin current total of income accounts
+
+   * cas current total of asset accounts
+
+   * cli current total of liability accounts
+
+   * cwo current assets - liabilities
+
+   * cba total balances
+
+   * re list transactions in current account matching a regular
+     expression
+
+   * sa set current account
+
+   * ca display current account
+
+   * w save to file
+
+   * r read from file
+
+   * dtr delete transfer originating from a given account
+
+   * ltbd print transactions between two dates
+
+   * v display version of Leas
+
+   * sd set current day
+
+   * cd display current day
+
+   * baod find the balance of the current account over several days (ex:
+     used for seeing weekly balances for the last month)
+
+   * exod see expenses over date range
+
+   * inod see income over date range
+
+   * asod see assets over date range
+
+   * liod see liabilities over date range
+
+   * wood see worth over date range
+
+   * ttbd see total transactions in an account between dates, over a
+     date range
+
+   * ttre see total transactions in current account over a date range
+     that match a regular expression
+
+   * pl pay a loan, splitting payments between interest (an expense) and
+     the principal liability
+
+   * fn print current file name
+
+   * csp change the price of a stock in the current account
+
+   * cal X prints the result of the UNIX command (string-append ``cal ''
+     X).
+
+   * t transfer money between two accounts
+
+   * spend Create a transfer from an asset account to an expense account
+
+   * charge Create a transfer from a liability account to an expense
+     account
+
+   * earn Create a transfer from an income account to an asset account
+
+   * borrow Create a transfer from a liability account to an asset
+     account.
+
+   * q quit
+
+   * p X print X, followed by a newline, for example: p (+ 1 2) will
+     print 3.
+
+
+File: leas.info,  Node: Leas file format,  Next: Programming Leas,  Prev: All Interactive Commands,  Up: Top
+
+4 Leas file format
 ******************
 
 The save file is a tar archive containing the following files in a
@@ -635,7 +753,7 @@ book.leas would, when un-tarred, be a directory called book):
 
 File: leas.info,  Node: Programming Leas,  Next: GNU Free Documentation License,  Prev: Leas file format,  Up: Top
 
-4 Programming Leas
+5 Programming Leas
 ******************
 
 This chapter is a reference manual for the various Scheme functions
@@ -647,6 +765,7 @@ leas/call to get the arguments.
 
 * Menu:
 
+* Make Scheme functions interactive::
 * Functions to add/edit/delete/get transactions::
 * Functions to add/edit/delete/get accounts::
 * Functions to get/modify current day/account/file::
@@ -657,9 +776,57 @@ leas/call to get the arguments.
 * Utility and interpreter functions::
 
 
-File: leas.info,  Node: Functions to add/edit/delete/get transactions,  Next: Functions to add/edit/delete/get accounts,  Up: Programming Leas
+File: leas.info,  Node: Make Scheme functions interactive,  Next: Functions to add/edit/delete/get transactions,  Up: Programming Leas
 
-4.1 Functions to add/edit/delete/get transactions
+5.1 Make Scheme functions interactive
+=====================================
+
+   * (leas/call function-name options)
+
+     Calls the Scheme function with name function-name (a string) with
+     arguments described by the list options entered interactively by
+     the user.  options is a list of pairs.  Each element of the list
+     has the following structure: the first element gives the "name" of
+     the option (what Leas will prompt for) and the second element gives
+     the "type" of the option: the kind of value it should contain.
+     Both elements should be strings.  The following are the current
+     types allowed for options.  If you use a type not in this list,
+     whatever the user enters will be passed as-is to the function.
+
+        * string - Pass whatever the user enters to the Scheme function
+          as a string.
+        * account - Pass the name of an account to the Scheme function.
+          Prompts the user with a menu of accounts to select from.
+        * expense_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of expense accounts to
+          select from.
+        * income_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of income accounts to
+          select from.
+        * asset_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of asset accounts to
+          select from.
+        * liability_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of liability accounts
+          to select from.
+        * pay_from_account - Pass the name of an account to the Scheme
+          function.  Prompts the user with a menu of liability and asset
+          accounts to select from.
+        * current_account - Pass the name of the current account to the
+          Scheme function.  Does not prompt the user.
+        * type - Prompts the user to select an account type (asset,
+          liability, income, expense).  Passes the type as a string.
+        * transaction - Prompts the user to select a transaction.
+          Passes a pair of account number and transaction number to
+          label the transaction to the Scheme function.
+        * day - Prompts the user to select a day.  Passes a
+          three-element list elements -- (day month year) -- to the
+          function.
+
+
+File: leas.info,  Node: Functions to add/edit/delete/get transactions,  Next: Functions to add/edit/delete/get accounts,  Prev: Make Scheme functions interactive,  Up: Programming Leas
+
+5.2 Functions to add/edit/delete/get transactions
 =================================================
 
    * (leas/at account-name amount desc day)
@@ -739,7 +906,7 @@ File: leas.info,  Node: Functions to add/edit/delete/get transactions,  Next: Fu
 
 File: leas.info,  Node: Functions to add/edit/delete/get accounts,  Next: Functions to get/modify current day/account/file,  Prev: Functions to add/edit/delete/get transactions,  Up: Programming Leas
 
-4.2 Functions to add/edit/delete/get accounts
+5.3 Functions to add/edit/delete/get accounts
 =============================================
 
    * (leas/aa account-name type opening-balance)
@@ -778,7 +945,7 @@ File: leas.info,  Node: Functions to add/edit/delete/get accounts,  Next: Functi
 
 File: leas.info,  Node: Functions to get/modify current day/account/file,  Next: Total accounts,  Prev: Functions to add/edit/delete/get accounts,  Up: Programming Leas
 
-4.3 Functions to get/modify current day/account/file
+5.4 Functions to get/modify current day/account/file
 ====================================================
 
    * (leas/get-current-file)
@@ -807,7 +974,7 @@ File: leas.info,  Node: Functions to get/modify current day/account/file,  Next:
 
 File: leas.info,  Node: Total accounts,  Next: Repeat commands on different days,  Prev: Functions to get/modify current day/account/file,  Up: Programming Leas
 
-4.4 Total accounts
+5.5 Total accounts
 ==================
 
    * (leas/total-account account-name)
@@ -843,7 +1010,7 @@ File: leas.info,  Node: Total accounts,  Next: Repeat commands on different days
 
 File: leas.info,  Node: Repeat commands on different days,  Next: Set Leas parameters,  Prev: Total accounts,  Up: Programming Leas
 
-4.5 Repeat commands on different days
+5.6 Repeat commands on different days
 =====================================
 
    * (leas/seq-days first-day last-day by)
@@ -902,7 +1069,7 @@ File: leas.info,  Node: Repeat commands on different days,  Next: Set Leas param
 
 File: leas.info,  Node: Set Leas parameters,  Next: Saving and loading functions,  Prev: Repeat commands on different days,  Up: Programming Leas
 
-4.6 Set Leas parameters
+5.7 Set Leas parameters
 =======================
 
    * (leas/set-select-transaction-number number)
@@ -925,7 +1092,7 @@ File: leas.info,  Node: Set Leas parameters,  Next: Saving and loading functions
 
 File: leas.info,  Node: Saving and loading functions,  Next: Utility and interpreter functions,  Prev: Set Leas parameters,  Up: Programming Leas
 
-4.7 Saving and loading functions
+5.8 Saving and loading functions
 ================================
 
    * (leas/write file-name)
@@ -939,7 +1106,7 @@ File: leas.info,  Node: Saving and loading functions,  Next: Utility and interpr
 
 File: leas.info,  Node: Utility and interpreter functions,  Prev: Saving and loading functions,  Up: Programming Leas
 
-4.8 Utility and interpreter functions
+5.9 Utility and interpreter functions
 =====================================
 
    * (q)
@@ -954,48 +1121,6 @@ File: leas.info,  Node: Utility and interpreter functions,  Prev: Saving and loa
    * (leas/v)
 
      Return the version string for Leas.
-
-   * (leas/call function-name options)
-
-     Calls the Scheme function with name function-name (a string) with
-     arguments described by the list options entered interactively by
-     the user.  options is a list of pairs.  Each element of the list
-     has the following structure: the first element gives the "name" of
-     the option (what Leas will prompt for) and the second element gives
-     the "type" of the option: the kind of value it should contain.
-     Both elements should be strings.  The following are the current
-     types allowed for options.  If you use a type not in this list,
-     whatever the user enters will be passed as-is to the function.
-
-        * string - Pass whatever the user enters to the Scheme function
-          as a string.
-        * account - Pass the name of an account to the Scheme function.
-          Prompts the user with a menu of accounts to select from.
-        * expense_account - Pass the name of an account to the Scheme
-          function.  Prompts the user with a menu of expense accounts to
-          select from.
-        * income_account - Pass the name of an account to the Scheme
-          function.  Prompts the user with a menu of income accounts to
-          select from.
-        * asset_account - Pass the name of an account to the Scheme
-          function.  Prompts the user with a menu of asset accounts to
-          select from.
-        * liability_account - Pass the name of an account to the Scheme
-          function.  Prompts the user with a menu of liability accounts
-          to select from.
-        * pay_from_account - Pass the name of an account to the Scheme
-          function.  Prompts the user with a menu of liability and asset
-          accounts to select from.
-        * current_account - Pass the name of the current account to the
-          Scheme function.  Does not prompt the user.
-        * type - Prompts the user to select an account type (asset,
-          liability, income, expense).  Passes the type as a string.
-        * transaction - Prompts the user to select a transaction.
-          Passes a pair of account number and transaction number to
-          label the transaction to the Scheme function.
-        * day - Prompts the user to select a day.  Passes a
-          three-element list elements -- (day month year) -- to the
-          function.
 
    * (leas/day-from-time time)
 
@@ -1487,28 +1612,30 @@ their use in free software.
 
 Tag Table:
 Node: Top577
-Node: Introduction1182
-Node: Tutorial4754
-Node: Adding a cash asset account5066
-Node: Paying for expenses6068
-Node: Earning income9251
-Node: Managing debt10339
-Node: Non-cash assets12952
-Node: Saving loading and quitting15102
-Node: Scheme code16359
-Node: Common customizations17159
-Node: Set default file17486
-Node: Customize prompt17805
-Node: Leas file format18735
-Node: Programming Leas20070
-Node: Functions to add/edit/delete/get transactions20812
-Node: Functions to add/edit/delete/get accounts23899
-Node: Functions to get/modify current day/account/file25155
-Node: Total accounts25981
-Node: Repeat commands on different days27154
-Node: Set Leas parameters29420
-Node: Saving and loading functions30182
-Node: Utility and interpreter functions30584
-Node: GNU Free Documentation License33455
+Node: Introduction1250
+Node: Tutorial4822
+Node: Adding a cash asset account5142
+Node: Paying for expenses6144
+Node: Earning income9327
+Node: Managing debt10415
+Node: Non-cash assets13028
+Node: Saving loading and quitting15178
+Node: Scheme code16435
+Node: Common customizations17235
+Node: Set default file17562
+Node: Customize prompt17881
+Node: All Interactive Commands18811
+Node: Leas file format21623
+Node: Programming Leas22974
+Node: Make Scheme functions interactive23754
+Node: Functions to add/edit/delete/get transactions26317
+Node: Functions to add/edit/delete/get accounts29446
+Node: Functions to get/modify current day/account/file30702
+Node: Total accounts31528
+Node: Repeat commands on different days32701
+Node: Set Leas parameters34967
+Node: Saving and loading functions35729
+Node: Utility and interpreter functions36131
+Node: GNU Free Documentation License36654
 
 End Tag Table
