@@ -38,19 +38,19 @@ File: leas.info,  Node: Introduction,  Next: Tutorial,  Prev: Top,  Up: Top
 Leas is an interactive, command-line program for managing personal
 finances.  Its goal is to be an extensible tool for helping you keep
 track of your spending and to aid in making plans.  I started Leas to
-keep track of my finances leading up to my wedding.  I found most free
-software personal finance packages were large GUI programs that had a
+keep track of my finances leading up to my wedding.  I found most Free
+Software personal finance packages were large GUI programs that had a
 long Time-to-Enter-Transaction: it took time to boot up an application
 that was not usually running and enter a transaction.  This small
 friction made it harder for me to build the habit of keeping track of
 things.  I also found the programs difficult to extend.  So I wrote Leas
 to solve this problem.  I have been using it personally since October
-2018 so it works, but I'm sure there is room for improvement: make
+2018 so it works, but I'm sure it has lots of room for improvement: make
 suggestions!  It has a low Time-to-Enter-Transaction because you can
 just enter the transaction interactively at a command prompt.  It is
 also easy to extend and script to automate different transactions or
-update the price of stocks, mutual funds, and ETF's.  Hopefully, you
-will find it useful.
+update the price of stocks, mutual funds, and ETF's you own.  Hopefully,
+you will find it useful.
 
    Leas is a command-line program, but it is possible to write a GUI on
 top of the program if you are looking for a project.  It is possible
@@ -69,15 +69,16 @@ automatically, but I will show how to write such a command later in this
 document as an example.
 
    When searching for existing Free Software solutions, I found at the
-other extreme programs that operated by users editing text files to add
-transactions (the best example being ledger).  I found this difficult to
-use and wanted something more interactive.  Of course, you may have your
-own preference.  Like ledger, Leas stores data in human-readable text
-files.  Leas' save files are particularly easy to analyze with
-statistical or spreadsheet software.  The save file is simply a tar
-archive of comma-separated data files with data about your various
-transactions.  You can open these files in R or Libreoffice and analyze
-your past spending that way.
+opposite extreme of GUI's, programs that operated by users editing text
+files to add transactions.  I found this difficult to use and wanted
+something more interactive.  Of course, you may have your own
+preference.
+
+   Leas stores data in human-readable text files.  Leas' save files are
+particularly easy to analyze with statistical or spreadsheet software.
+The save file is simply a tar archive of comma-separated data files with
+data about your various transactions.  You can open these files in R or
+Libreoffice and analyze your past spending that way.
 
    All standard Leas commands are small Scheme functions.  They use a
 built-in function leas/call which lets the user enter the function
@@ -87,13 +88,13 @@ reference manual to help you construct your own commands.  The Leas
 prompt, in fact, is a Scheme interpreter.  Any Scheme expression can be
 written there.
 
-   This document has two main sections.  In the first, I describe the
-basic workflow for using Leas.  This section is more in-depth than the
-manpage and gives some examples of how to add accounts and make
-transactions.  It is a tutorial that will help get you up-and-running
-using Leas.  In the second section, I describe all the Scheme commands
-exported by Leas which is more useful if you are trying to write your
-own functions.
+   This document has two parts.  In the first, I describe the basic
+workflow for using Leas.  This part is more in-depth than the manpage
+and gives some examples of how to add accounts and make transactions.
+It includes a tutorial that will help get you up-and-running using Leas
+as well as a reference of all interactive commands.  In the second part,
+I describe all the Scheme functions exported by Leas which is more
+useful if you are trying to write your own commands.
 
 
 File: leas.info,  Node: Tutorial,  Next: All Interactive Commands,  Prev: Introduction,  Up: Top
@@ -1613,29 +1614,29 @@ their use in free software.
 Tag Table:
 Node: Top577
 Node: Introduction1250
-Node: Tutorial4822
-Node: Adding a cash asset account5142
-Node: Paying for expenses6144
-Node: Earning income9327
-Node: Managing debt10415
-Node: Non-cash assets13028
-Node: Saving loading and quitting15178
-Node: Scheme code16435
-Node: Common customizations17235
-Node: Set default file17562
-Node: Customize prompt17881
-Node: All Interactive Commands18811
-Node: Leas file format21623
-Node: Programming Leas22974
-Node: Make Scheme functions interactive23754
-Node: Functions to add/edit/delete/get transactions26317
-Node: Functions to add/edit/delete/get accounts29446
-Node: Functions to get/modify current day/account/file30702
-Node: Total accounts31528
-Node: Repeat commands on different days32701
-Node: Set Leas parameters34967
-Node: Saving and loading functions35729
-Node: Utility and interpreter functions36131
-Node: GNU Free Documentation License36654
+Node: Tutorial4848
+Node: Adding a cash asset account5168
+Node: Paying for expenses6170
+Node: Earning income9353
+Node: Managing debt10441
+Node: Non-cash assets13054
+Node: Saving loading and quitting15204
+Node: Scheme code16461
+Node: Common customizations17261
+Node: Set default file17588
+Node: Customize prompt17907
+Node: All Interactive Commands18837
+Node: Leas file format21649
+Node: Programming Leas23000
+Node: Make Scheme functions interactive23780
+Node: Functions to add/edit/delete/get transactions26343
+Node: Functions to add/edit/delete/get accounts29472
+Node: Functions to get/modify current day/account/file30728
+Node: Total accounts31554
+Node: Repeat commands on different days32727
+Node: Set Leas parameters34993
+Node: Saving and loading functions35755
+Node: Utility and interpreter functions36157
+Node: GNU Free Documentation License36680
 
 End Tag Table
