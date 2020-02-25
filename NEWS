@@ -1,5 +1,6 @@
-* Initial public version (2020-01-14)
+* Initial public version (2020-03-01)
 
-The Little Extensible Accounting System (Leas) is a small program I wrote to manage my finances.  I have used it for over a year and a half daily, and I like it better than other things I have used.  So I thought I would see if others wanted to use it.
+[Going to freeze initial public version on Mar 1]
 
-I recently did some work to smooth over the rough edges that you are allowed to have in a "personal program".  I have used it for a long enough period of time that I am fairly certain it "works", but I have also been the only user so I am sure there are issues.  Please report them by adding an issue on Github.
+The Little Extensible Accounting System (Leas) is a small program I wrote to manage my finances.  I have used it for over a year and a half daily, and I like it.  I hope it will be useful for others as well.  I have used it for a long enough period of time that I am fairly certain it "works", but I am sure there are issues to fix because only I have been using it.  Please report issues on Github!
+
