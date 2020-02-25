@@ -62,7 +62,18 @@ digits (int num)
 {
   /* count number of digits in a number */
 
-  return floor(log10(num))+1;
+  if (num > 0)
+    {
+      return floor(log10(num))+1;
+    }
+  else if (num == 0)
+    {
+      return 1;
+    }
+  else
+    {
+      return floor(log10(-1*num)) + 2;
+    }
 }
 
 int
@@ -1186,6 +1197,8 @@ leas_call (SCM func, SCM options)
                     {
                       tmp_str = malloc(sizeof(char)*(strlen("(cons  )") +
                                                      digits(k)+digits(j)+1));
+                      printf("Digits: %d %d\n", k, j);
+                      printf("Digits: %d %d\n", digits(k), digits(j));
                       sprintf(tmp_str, "(cons %d %d)", k, j);
                       append_to_string(&command, tmp_str, "");
                       free(tmp_str);
