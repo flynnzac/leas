@@ -31,6 +31,8 @@ main (int argc, char** argv)
   assert(digits(1)==1);
   assert(digits(19)==2);
   assert(digits(12435) == 5);
+  assert(digits(0)==1);
+  assert(digits(-12)==3);
 
   /* anyalpha */
   assert(anyalpha("34286396")==0);
