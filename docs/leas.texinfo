@@ -49,7 +49,7 @@ This is the Leas reference manual.
 
 @b{Leas} is a command-line program, but it is possible to write a GUI on top of the program if you are looking for a project.  It is possible because @b{Leas} can be extended using the Guile Scheme programming language.  The program's prompt can execute arbitrary Scheme code. If you make a neat extension like this, let me know and I will reference it in this manual.
 
-No knowledge of Scheme or programming in general is needed to use @b{Leas}.  I have included almost all the functions I use personally in the distribution itself. In other words, I use it without any programming in Scheme on a day-to-day basis.  The only commands I have written that are not included in the main @b{Leas} distribution are some commands to fetch the price of various stocks I own and update their value automatically, but I will show how to write such a command later in this document as an example.
+No knowledge of Scheme or programming in general is needed to use @b{Leas}.  I have included almost all the functions I use personally in the distribution itself. In other words, I use it without any programming in Scheme on a day-to-day basis.  The only commands I have written that are not included in the main @b{Leas} distribution are some commands to fetch the price of various stocks I own.
 
 When searching for existing Free Software solutions, I found at the opposite extreme of GUI's, programs that operated by users editing text files to add transactions.  I found this difficult to use and wanted something more interactive.  Of course, you may have your own preference.
 

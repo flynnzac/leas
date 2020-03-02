@@ -64,9 +64,7 @@ Leas.  I have included almost all the functions I use personally in the
 distribution itself.  In other words, I use it without any programming
 in Scheme on a day-to-day basis.  The only commands I have written that
 are not included in the main Leas distribution are some commands to
-fetch the price of various stocks I own and update their value
-automatically, but I will show how to write such a command later in this
-document as an example.
+fetch the price of various stocks I own.
 
    When searching for existing Free Software solutions, I found at the
 opposite extreme of GUI's, programs that operated by users editing text
@@ -1614,29 +1612,29 @@ their use in free software.
 Tag Table:
 Node: Top577
 Node: Introduction1250
-Node: Tutorial4848
-Node: Adding a cash asset account5168
-Node: Paying for expenses6170
-Node: Earning income9353
-Node: Managing debt10441
-Node: Non-cash assets13054
-Node: Saving loading and quitting15204
-Node: Scheme code16461
-Node: Common customizations17261
-Node: Set default file17588
-Node: Customize prompt17907
-Node: All Interactive Commands18837
-Node: Leas file format21649
-Node: Programming Leas23000
-Node: Make Scheme functions interactive23780
-Node: Functions to add/edit/delete/get transactions26343
-Node: Functions to add/edit/delete/get accounts29472
-Node: Functions to get/modify current day/account/file30728
-Node: Total accounts31554
-Node: Repeat commands on different days32727
-Node: Set Leas parameters34993
-Node: Saving and loading functions35755
-Node: Utility and interpreter functions36157
-Node: GNU Free Documentation License36680
+Node: Tutorial4729
+Node: Adding a cash asset account5049
+Node: Paying for expenses6051
+Node: Earning income9234
+Node: Managing debt10322
+Node: Non-cash assets12935
+Node: Saving loading and quitting15085
+Node: Scheme code16342
+Node: Common customizations17142
+Node: Set default file17469
+Node: Customize prompt17788
+Node: All Interactive Commands18718
+Node: Leas file format21530
+Node: Programming Leas22881
+Node: Make Scheme functions interactive23661
+Node: Functions to add/edit/delete/get transactions26224
+Node: Functions to add/edit/delete/get accounts29353
+Node: Functions to get/modify current day/account/file30609
+Node: Total accounts31435
+Node: Repeat commands on different days32608
+Node: Set Leas parameters34874
+Node: Saving and loading functions35636
+Node: Utility and interpreter functions36038
+Node: GNU Free Documentation License36561
 
 End Tag Table
