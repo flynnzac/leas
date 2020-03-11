@@ -12,3 +12,8 @@
 - See current and future spending to help make plans.  Can change what the
   "current day" of the system is interactively so that you can see both present
   and future account balances at different times.
+
+- You can use Scheme expressions when entering a transaction's value, so, for
+  example, the amount of money transferred might be entered as: (* 0.9 (- 932
+  329)).
+  
