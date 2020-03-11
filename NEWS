@@ -1,6 +1,14 @@
 * Initial public version (2020-03-01)
 
-[Going to freeze initial public version on Mar 1]
+- Manage accounts and keep track of spending using an interactive program to
+  enter transactions
 
-The Little Extensible Accounting System (Leas) is a small program I wrote to manage my finances.  I have used it for over a year and a half daily, and I like it.  I hope it will be useful for others as well.  I have used it for a long enough period of time that I am fairly certain it "works", but I am sure there are issues to fix because only I have been using it.  Please report issues on Github!
+- Extensible with Guile Scheme, the program's prompt is a full Scheme
+  interpreter (except that you do not have to type parenthesis around the whole
+  statement).  The basic commands of the program are Scheme functions themselves
+  made interactive so that you can enter their arguments interactively by the
+  (leas/call) function.
 
+- See current and future spending to help make plans.  Can change what the
+  "current day" of the system is interactively so that you can see both present
+  and future account balances at different times.
