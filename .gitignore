@@ -1,12 +1,7 @@
-bal
-bal.exe
-*.btar
 *~
-1.scm
 *.log
 *.aux
 *.toc
-announce.org
 .deps
 Makefile.in
 aclocal.m4
