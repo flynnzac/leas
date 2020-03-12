@@ -4,7 +4,7 @@ leasdir = $(datadir)
 leas_DATA = src/leas.scm
 leas_CFLAGS = $(GUILE_CFLAGS) -DLEAS_SCM_INSTALL='"$(datadir)/leas.scm"'
 leas_LDFLAGS = $(GUILE_LDFLAGS)
-man1_MANS = docs/leas.1
+man1_MANS = info/leas.1
 
 check_PROGRAMS=test_util test_convert test_transaction_times
 check_PROGRAMS += test_check_account_trans
