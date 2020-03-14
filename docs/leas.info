@@ -1,4 +1,4 @@
-This is leas.info, produced by makeinfo version 6.5 from leas.texinfo.
+This is leas.info, produced by makeinfo version 6.7 from leas.texinfo.
 
 This is the manual for Leas, the Little Extensible Accounting System, a
 personal account manager.
@@ -1638,3 +1638,8 @@ Node: Utility and interpreter functions36038
 Node: GNU Free Documentation License36561
 
 End Tag Table
+
+
+Local Variables:
+coding: utf-8
+End:
