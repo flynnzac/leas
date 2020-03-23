@@ -109,7 +109,7 @@ main (int argc, char** argv)
   signal(SIGINT,interrupt_handler);
   
   while ((k = getopt_long(argc, argv, "f:l:snvh", leas_options,
-			  &option_index)) != -1)
+                          &option_index)) != -1)
     {
       switch (k)
         {
@@ -153,10 +153,10 @@ main (int argc, char** argv)
           printf("--load,-l FILE  Load Scheme code at start up.\n");
           printf("--no-prompt-on-quit,-s  Do not prompt to save file on exit.\n");
           printf("--no-rc, -n  Do not load ~/.leasrc.scm.\n");
-	  printf("--help,-h Print this help message.\n");
-	  printf("--version,-v Print the version of Leas and exit.\n");
+          printf("--help,-h Print this help message.\n");
+          printf("--version,-v Print the version of Leas and exit.\n");
           printf("COMMAND Execute Leas command on startup and exit.\n");
-	  exit(0);
+          exit(0);
           break;
         case '?':
           if (optopt=='l')
