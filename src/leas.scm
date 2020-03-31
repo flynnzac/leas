@@ -18,7 +18,6 @@
 
 ;;; Utility Functions
 
-
 ;;;; Pretty print transactions
 (define leas/print-tscts
   (lambda (tsct-list)
@@ -87,15 +86,15 @@
   (lambda (from-account location)
     (let ((transaction
            (leas/get-transaction-by-location (car location)
-                                            (cdr location)))
+                                             (cdr location)))
           (all-from (leas/get-all-transactions from-account))
           (num-from (leas/get-account-location from-account)))
       (leas/dt (cons num-from
-                    (list-index
-                     (lambda (u)
-                       (and (string=? (car u) (car transaction))
-                            (lset= (lambda (v w) (= (abs v) (abs w)))
-                                   (cdr u) (cdr transaction)))) all-from)))
+                     (list-index
+                      (lambda (u)
+                        (and (string=? (car u) (car transaction))
+                             (lset= (lambda (v w) (= (abs v) (abs w)))
+                                    (cdr u) (cdr transaction)))) all-from)))
       (leas/dt location))))
 
 ;;;; Pay a loan by deducting the pricipal from the loan account,
@@ -118,7 +117,7 @@
            (newval (* number stock-price))
            (trval (- newval value)))
       (leas/t account from-account trval
-             "Stock Price Change" day))))
+              "Stock Price Change" day))))
 
 ;;; Modification functions
 
@@ -130,13 +129,13 @@
                  (car tsct-loc) (cdr tsct-loc))))
       (leas/dt tsct-loc)
       (leas/at (car (leas/get-account-by-location (car tsct-loc)))
-              (if (string-null? amount)
-                  (list-ref tsct 1)
-                  (string->number amount))
-              (if (string-null? desc)
-                  (list-ref tsct 0)
-                  desc)
-              day))))
+               (if (string-null? amount)
+                   (list-ref tsct 1)
+                   (string->number amount))
+               (if (string-null? desc)
+                   (list-ref tsct 0)
+                   desc)
+               day))))
 
 ;;; Summary functions
 
@@ -183,23 +182,23 @@
     (syntax-case x ()
       ((_ days current-day val exp)
        (with-syntax ((i (datum->syntax x (quote i))))
-         (syntax (let loop-day ((i 0))
-                   (if (< i val)
-                       (begin
-                         (leas/set-current-day (list-ref days i))
-                         (cons (cons (list-ref days i)
-                                     exp)
-                               (loop-day (+ i 1))))
-                       (begin
-                         (leas/set-current-day current-day)
-                         (list))))))))))
+                    (syntax (let loop-day ((i 0))
+                              (if (< i val)
+                                  (begin
+                                    (leas/set-current-day (list-ref days i))
+                                    (cons (cons (list-ref days i)
+                                                exp)
+                                          (loop-day (+ i 1))))
+                                  (begin
+                                    (leas/set-current-day current-day)
+                                    (list))))))))))
 
 (define leas/balance-account-on-days
   (lambda (first-day last-day by account)
     (let ((days (leas/seq-days first-day last-day by))
           (current-day (leas/get-current-day)))
       (leas/loop-days days current-day (length days)
-                     (list-ref (leas/total-account account) 1)))))
+                      (list-ref (leas/total-account account) 1)))))
 
 (define leas/total-transact-in-account-between-days
   (lambda (first-day last-day by account)
@@ -208,17 +207,17 @@
            (current-day (leas/get-current-day))
            (days (map car balance)))
       (leas/loop-days days current-day (- (length balance) 1)
-                     (- (cdr (list-ref balance (+ i 1)))
-                        (cdr (list-ref balance i)))))))
+                      (- (cdr (list-ref balance (+ i 1)))
+                         (cdr (list-ref balance i)))))))
 
 (define leas/total-transact-in-account-re
   (lambda (first-day last-day by account regex)
     (let ((current-day (leas/get-current-day))
           (days (leas/seq-days first-day last-day by)))
       (leas/loop-days days current-day (length days)
-                     (apply +
-                            (map (lambda (u) (list-ref u 1))
-                                 (leas/get-transactions-by-regex account regex)))))))
+                      (apply +
+                             (map (lambda (u) (list-ref u 1))
+                                  (leas/get-transactions-by-regex account regex)))))))
 
 (define leas/output-by-day
   (lambda (day amount)
@@ -238,9 +237,9 @@
     (let ((days (leas/seq-days first-day last-day by))
           (current-day (leas/get-current-day)))
       (leas/loop-days days current-day (length days)
-                     (list-ref
-                      (list-ref (leas/total-by-account-type) num)
-                      1)))))
+                      (list-ref
+                       (list-ref (leas/total-by-account-type) num)
+                       1)))))
 
 (define leas/get-by-type-over-days-for-type
   (lambda (n)
@@ -273,40 +272,40 @@
 (define aa
   (lambda ()
     (leas/call "leas/aa"
-              (list
-               (cons "Account" "string")
-               (cons "Type" "type")
-               (cons "Opening Balance" "real")))))
+               (list
+                (cons "Account" "string")
+                (cons "Type" "type")
+                (cons "Opening Balance" "real")))))
 
 (define at
   (lambda ()
     (leas/call "leas/at"
-              (list
-               (cons "Account" "current_account")
-               (cons "Amount" "real")
-               (cons "Description" "string")
-               (cons "Day" "day")))))
+               (list
+                (cons "Account" "current_account")
+                (cons "Amount" "real")
+                (cons "Description" "string")
+                (cons "Day" "day")))))
 
 
 
 (define ltn
   (lambda ()
     (let ((tscts (leas/call "leas/get-transactions"
-                           (list
-                            (cons "Account" "current_account")
-                            (cons "How many?" "integer")))))
+                            (list
+                             (cons "Account" "current_account")
+                             (cons "How many?" "integer")))))
       (leas/print-tscts tscts))))
 
 
 (define et
   (lambda* (#:optional n)
-    (if n (leas/set-select-transact-num n))
-    (leas/call "leas/edit-transact"
-              (list
-               (cons "Transaction" "transaction")
-               (cons "Day (default is current day)" "day")
-               (cons "Amount" "string")
-               (cons "Description" "string")))))
+           (if n (leas/set-select-transact-num n))
+           (leas/call "leas/edit-transact"
+                      (list
+                       (cons "Transaction" "transaction")
+                       (cons "Day (default is current day)" "day")
+                       (cons "Amount" "string")
+                       (cons "Description" "string")))))
 
 (define lt
   (lambda ()
@@ -324,22 +323,22 @@
 (define ea
   (lambda ()
     (leas/call "leas/ea"
-              (list
-               (cons "Account" "account")
-               (cons "New account name" "string")
-               (cons "Opening balance" "string")))))
+               (list
+                (cons "Account" "account")
+                (cons "New account name" "string")
+                (cons "Opening balance" "string")))))
 
 (define da
   (lambda ()
     (leas/call "leas/da"
-              (list
-               (cons "Account" "account")))))
+               (list
+                (cons "Account" "account")))))
 
 (define dt
   (lambda ()
     (leas/call "leas/dt"
-              (list
-               (cons "Transaction" "transaction")))))
+               (list
+                (cons "Transaction" "transaction")))))
 
 (define la
   (lambda ()
@@ -408,15 +407,15 @@
   (lambda ()
     (leas/print-tscts
      (leas/call "leas/get-transactions-by-regex"
-               (list
-                (cons "Account" "current_account")
-                (cons "Regular Expression" "string"))))))
+                (list
+                 (cons "Account" "current_account")
+                 (cons "Regular Expression" "string"))))))
 
 (define sa
   (lambda ()
     (leas/call "leas/set-account"
-              (list
-               (cons "Account" "account")))))
+               (list
+                (cons "Account" "account")))))
 
 (define ca
   (lambda ()
@@ -426,41 +425,41 @@
 (define w
   (lambda ()
     (leas/call "leas/write"
-              (list
-               (cons "File" "string")))))
+               (list
+                (cons "File" "string")))))
 
 (define r
   (lambda ()
     (leas/call "leas/read"
-              (list
-               (cons "File" "string")))))
+               (list
+                (cons "File" "string")))))
 
 (define t
   (lambda ()
     (leas/call "leas/t"
-              (list
-               (cons "To Account" "account")
-               (cons "From Account" "account")
-               (cons "Amount" "real")
-               (cons "Description" "string")
-               (cons "Day" "day")))))
+               (list
+                (cons "To Account" "account")
+                (cons "From Account" "account")
+                (cons "Amount" "real")
+                (cons "Description" "string")
+                (cons "Day" "day")))))
 
 (define dtr
   (lambda ()
     (leas/call "leas/dtr"
-              (list
-               (cons "From Account" "account")
-               (cons "Transaction" "transaction")))))
+               (list
+                (cons "From Account" "account")
+                (cons "Transaction" "transaction")))))
 
 
 (define ltbd
   (lambda ()
     (leas/print-tscts
      (leas/call "leas/get-transactions-by-day"
-               (list
-                (cons "Account" "current_account")
-                (cons "From Day" "day")
-                (cons "To Day" "day"))))))
+                (list
+                 (cons "Account" "current_account")
+                 (cons "From Day" "day")
+                 (cons "To Day" "day"))))))
 
 (define v
   (lambda ()
@@ -473,8 +472,8 @@
 (define sd
   (lambda ()
     (leas/call "leas/set-current-day"
-              (list
-               (cons "Current Day" "day")))))
+               (list
+                (cons "Current Day" "day")))))
 
 (define cd
   (lambda ()
@@ -490,11 +489,11 @@
 (define baod
   (lambda ()
     (let ((result (leas/call "leas/balance-account-on-days"
-                            (list
-                             (cons "First Day" "day")
-                             (cons "Last Day" "day")
-                             (cons "By" "number")
-                             (cons "Account" "current_account")))))
+                             (list
+                              (cons "First Day" "day")
+                              (cons "Last Day" "day")
+                              (cons "By" "number")
+                              (cons "Account" "current_account")))))
       (map-in-order
        (lambda (x)
          (leas/output-by-day (car x) (cdr x)))
@@ -553,14 +552,14 @@
 (define pl
   (lambda ()
     (leas/call "leas/pay-loan"
-              (list
-               (cons "Loan Account" "liability_account")
-               (cons "Interest Account" "expense_account")
-               (cons "Pay from Account" "pay_from_account")
-               (cons "Principal" "real")
-               (cons "Interest" "real")
-               (cons "Description" "string")
-               (cons "Day" "day")))))
+               (list
+                (cons "Loan Account" "liability_account")
+                (cons "Interest Account" "expense_account")
+                (cons "Pay from Account" "pay_from_account")
+                (cons "Principal" "real")
+                (cons "Interest" "real")
+                (cons "Description" "string")
+                (cons "Day" "day")))))
 
 (define fn
   (lambda ()
@@ -571,57 +570,57 @@
 (define csp
   (lambda ()
     (leas/call "leas/change-stock-price"
-              (list
-               (cons "To Account" "current_account")
-               (cons "From Account" "account")
-               (cons "Stock Price" "real")
-               (cons "Number of Shares" "real")
-               (cons "Day" "day")))))
+               (list
+                (cons "To Account" "current_account")
+                (cons "From Account" "account")
+                (cons "Stock Price" "real")
+                (cons "Number of Shares" "real")
+                (cons "Day" "day")))))
 
 (define cal
   (lambda* (#:optional args)
-    (let ((cmd (string-append "cal "
-                              (if args args ""))))
-      (system cmd))))
+           (let ((cmd (string-append "cal "
+                                     (if args args ""))))
+             (system cmd))))
 
 
 (define spend
   (lambda ()
     (leas/call "leas/t"
-	      (list
-	       (cons "To Account" "expense_account")
-	       (cons "From Account" "asset_account")
-	       (cons "Amount" "real")
-	       (cons "Description" "string")
-	       (cons "Day" "day")))))
+	             (list
+	              (cons "To Account" "expense_account")
+	              (cons "From Account" "asset_account")
+	              (cons "Amount" "real")
+	              (cons "Description" "string")
+	              (cons "Day" "day")))))
 
 (define charge
   (lambda ()
     (leas/call "leas/t"
-	      (list
-	       (cons "To Account" "expense_account")
-	       (cons "From Account" "liability_account")
-	       (cons "Amount" "real")
-	       (cons "Description" "string")
-	       (cons "Day" "day")))))
+	             (list
+	              (cons "To Account" "expense_account")
+	              (cons "From Account" "liability_account")
+	              (cons "Amount" "real")
+	              (cons "Description" "string")
+	              (cons "Day" "day")))))
 
 
 (define earn
   (lambda ()
     (leas/call "leas/t"
-	      (list
-	       (cons "To Account" "asset_account")
-	       (cons "From Account" "income_account")
-	       (cons "Amount" "real")
-	       (cons "Description" "string")
-	       (cons "Day" "day")))))
+	             (list
+	              (cons "To Account" "asset_account")
+	              (cons "From Account" "income_account")
+	              (cons "Amount" "real")
+	              (cons "Description" "string")
+	              (cons "Day" "day")))))
 
 (define borrow
   (lambda ()
     (leas/call "leas/t"
-	      (list
-	       (cons "To Account" "asset_account")
-	       (cons "From Account" "liability_account")
-	       (cons "Amount" "real")
-	       (cons "Description" "string")
-	       (cons "Day" "day")))))
+	             (list
+	              (cons "To Account" "asset_account")
+	              (cons "From Account" "liability_account")
+	              (cons "Amount" "real")
+	              (cons "Description" "string")
+	              (cons "Day" "day")))))
