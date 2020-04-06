@@ -38,39 +38,44 @@ File: leas.info,  Node: Introduction,  Next: Tutorial,  Prev: Top,  Up: Top
 Leas is an interactive, command-line program for managing personal
 finances.  Its goal is to be an extensible tool for helping you keep
 track of your spending and to aid in making plans.  I started Leas to
-keep track of my finances leading up to my wedding.  I found most Free
-Software personal finance packages were large GUI programs that had a
-long Time-to-Enter-Transaction: it took time to boot up an application
-that was not usually running and enter a transaction.  This small
-friction made it harder for me to build the habit of keeping track of
-things.  I also found the programs difficult to extend.  So I wrote Leas
-to solve this problem.  I have been using it personally since October
-2018 so it works, but I'm sure it has lots of room for improvement: make
-suggestions!  It has a low Time-to-Enter-Transaction because you can
-just enter the transaction interactively at a command prompt.  It is
-also easy to extend and script to automate different transactions or
-update the price of stocks, mutual funds, and ETF's you own.  Hopefully,
-you will find it useful.
+keep track of my own finances.  I found most Free Software personal
+finance packages had a long Time-to-Transact: it took time to boot up a
+GUI application that was not usually running and was outside my normal
+workflow.  This small friction made it harder for me to build the habit
+of keeping track of things.  I also found the programs difficult to
+extend.  So I wrote Leas to solve this problem.  I have been using it
+personally since October 2018 so it works for at least one user, but I'm
+sure it has lots of room for improvement: make suggestions!
 
-   Leas is a command-line program, but it is possible to write a GUI on
-top of the program if you are looking for a project.  It is possible
-because Leas can be extended using the Guile Scheme programming
-language.  The program's prompt can execute arbitrary Scheme code.  If
-you make a neat extension like this, let me know and I will reference it
-in this manual.
+   Leas is a command-line program, but it is interactive unlike other
+command-line solutions.  When you add a new transaction, Leas prompts
+you for the information it needs.  You don't have to remember any
+switches, what your accounts are named, etc.  This design decision was
+made because of my experience trying other command-line solutions I
+tried.  I found it difficult to use solutions that required editing text
+files or repeatedly entering commands at the shell.  I wanted something
+more interactive for this kind of task.  Of course, you may have your
+own preference.
+
+   You can also extend and script Leas to automate different
+transactions or update the price of stocks, mutual funds, and ETF's you
+own.  You can do so because Leas' command prompt is a (Guile) Scheme
+interpreter.  The program's prompt can execute arbitrary Scheme code
+(although it is mostly used to execute the pre-written commands included
+with the system).  The one change Leas makes to Scheme's syntax is that
+the outer-most expression does not need to be enclosed in parenthesis.
+This makes it more convenient to enter Leas' commands which are, under
+the hood, Scheme functions that take no arguments and prompt for the
+data they need.  Leas exposes the system it uses to prompt for arguments
+so you can write your own functions that obtain their arguments in this
+way.
 
    No knowledge of Scheme or programming in general is needed to use
-Leas.  I have included almost all the functions I use personally in the
-distribution itself.  In other words, I use it without any programming
-in Scheme on a day-to-day basis.  The only commands I have written that
-are not included in the main Leas distribution are some commands to
-fetch the price of various stocks I own.
-
-   When searching for existing Free Software solutions, I found at the
-opposite extreme of GUI's, programs that operated by users editing text
-files to add transactions.  I found this difficult to use and wanted
-something more interactive.  Of course, you may have your own
-preference.
+Leas.  The package includes all the functions I use personally.  In
+other words, I use it without any programming in Scheme on a day-to-day
+basis.  The only commands I have written that are not included in the
+main Leas distribution are some commands to fetch the price of various
+stocks I own.
 
    Leas stores data in human-readable text files.  Leas' save files are
 particularly easy to analyze with statistical or spreadsheet software.
@@ -1612,30 +1617,30 @@ their use in free software.
 Tag Table:
 Node: Top577
 Node: Introduction1250
-Node: Tutorial4729
-Node: Adding a cash asset account5049
-Node: Paying for expenses6051
-Node: Earning income9234
-Node: Managing debt10322
-Node: Non-cash assets12935
-Node: Saving loading and quitting15085
-Node: Scheme code16342
-Node: Common customizations17142
-Node: Set default file17469
-Node: Customize prompt17788
-Node: All Interactive Commands18718
-Node: Leas file format21530
-Node: Programming Leas22881
-Node: Make Scheme functions interactive23661
-Node: Functions to add/edit/delete/get transactions26224
-Node: Functions to add/edit/delete/get accounts29353
-Node: Functions to get/modify current day/account/file30609
-Node: Total accounts31435
-Node: Repeat commands on different days32608
-Node: Set Leas parameters34874
-Node: Saving and loading functions35636
-Node: Utility and interpreter functions36038
-Node: GNU Free Documentation License36561
+Node: Tutorial5087
+Node: Adding a cash asset account5407
+Node: Paying for expenses6409
+Node: Earning income9592
+Node: Managing debt10680
+Node: Non-cash assets13293
+Node: Saving loading and quitting15443
+Node: Scheme code16700
+Node: Common customizations17500
+Node: Set default file17827
+Node: Customize prompt18146
+Node: All Interactive Commands19076
+Node: Leas file format21888
+Node: Programming Leas23239
+Node: Make Scheme functions interactive24019
+Node: Functions to add/edit/delete/get transactions26582
+Node: Functions to add/edit/delete/get accounts29711
+Node: Functions to get/modify current day/account/file30967
+Node: Total accounts31793
+Node: Repeat commands on different days32966
+Node: Set Leas parameters35232
+Node: Saving and loading functions35994
+Node: Utility and interpreter functions36396
+Node: GNU Free Documentation License36919
 
 End Tag Table
 

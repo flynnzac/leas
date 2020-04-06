@@ -55,6 +55,7 @@ dummy_event ()
 void
 interrupt_handler (int status)
 {
+  signal(SIGINT, interrupt_handler); 
   rl_replace_line("",0);
   if (leas_prompton==PROMPT_SELECT) leas_prompton = PROMPT_COMMAND;
   rl_done = 1;
