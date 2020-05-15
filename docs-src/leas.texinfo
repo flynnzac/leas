@@ -45,28 +45,27 @@ This is the Leas reference manual.
 @node Introduction
 @chapter Introduction
 
-@b{Leas} is an interactive, command-line program for managing personal finances.  Its goal is to be an extensible tool for helping you keep track of your spending and to aid in making plans.  I started @b{Leas} to keep track of my own finances. I found most Free Software personal finance packages had a long Time-to-Transact: it took time to boot up a GUI application that was not usually running and was outside my normal workflow.  This small friction made it harder for me to build the habit of keeping track of things.  I also found the programs difficult to extend. So I wrote Leas to solve this problem. I have been using it personally since October 2018 so it works for at least one user, but I'm sure it has lots of room for improvement: make suggestions!
+Leas is an interactive, command-line program for managing personal finances.  Its goal is to be an extensible tool for helping you keep track of your spending and to aid in making plans.  I started Leas to keep track of my own finances. I found most personal finance packages had a long Time-to-Transact: it took time to boot up a GUI application that was not usually running and was outside my normal workflow.  This small friction made it harder for me to build the habit of keeping track of my finances.  I also found the programs difficult to extend. So I wrote Leas to solve this problem. I have been using it personally since October 2018 so it works for at least one user, but I'm sure it has lots of room for improvement: make suggestions!
 
-Leas is a command-line program, but it is interactive unlike other command-line solutions. When you add a new transaction, Leas prompts you for the information it needs.  You don't have to remember any switches, what your accounts are named, etc. This design decision was made because of my experience trying other command-line solutions I tried.  I found it difficult to use solutions that required editing text files or repeatedly entering commands at the shell. I wanted something more interactive for this kind of task.  Of course, you may have your own preference.
+Leas is a command-line program, but it is interactive unlike other command-line solutions. When you add a new transaction, Leas prompts you for the information it needs.  You don't have to remember any switches, what your accounts are named, etc. This design decision was made because of my experience trying other command-line solutions.  I found it difficult to use solutions that required editing text files or repeatedly entering commands at the shell. I wanted something more interactive.  Of course, you may have your own preference.
 
-You can also extend and script Leas to automate different transactions or update the price of stocks, mutual funds, and ETF's you own. You can do so because Leas' command prompt is a (Guile) Scheme interpreter.  The program's prompt can execute arbitrary Scheme code (although it is mostly used to execute the pre-written commands included with the system).  The one change Leas makes to Scheme's syntax is that the outer-most expression does not need to be enclosed in parenthesis.  This makes it more convenient to enter Leas' commands which are, under the hood, Scheme functions that take no arguments and prompt for the data they need.  Leas exposes the system it uses to prompt for arguments so you can write your own functions that obtain their arguments in this way.
+You can also extend and script Leas to automate different transactions or update the price of stocks, mutual funds, and ETF's you own. You can do so because Leas' command prompt is a (Guile) Scheme interpreter.  The program's prompt can execute arbitrary Scheme code (although it is mostly used to execute the pre-written commands included with the system).  The one change Leas makes to Scheme's syntax is that the outer-most expression does not need to be enclosed in parenthesis.  This makes it more convenient to enter Leas' commands which are, under the hood, Scheme functions that take no arguments but instead prompt the user for the data they need.  Leas exposes the system it uses to prompt for arguments so you can write your own functions that obtain their arguments in this way.
 
 No knowledge of Scheme or programming in general is needed to use Leas.  The package includes all the functions I use personally. In other words, I use it without any programming in Scheme on a day-to-day basis.  The only commands I have written that are not included in the main Leas distribution are some commands to fetch the price of various stocks I own.
 
+Leas stores data in human-readable text files. The save files are particularly easy to analyze with statistical or spreadsheet software.  The save file is a tar archive of comma-separated data files with data about your various transactions.  You can open these files in R or Libreoffice and create charts of your past spending.
 
-@b{Leas} stores data in human-readable text files. @b{Leas}' save files are particularly easy to analyze with statistical or spreadsheet software.  The save file is simply a @b{tar} archive of comma-separated data files with data about your various transactions.  You can open these files in @b{R} or @b{Libreoffice} and analyze your past spending that way.
+The standard Leas commands use a built-in function @t{leas/call}.  This function lets the user enter the arguments to a given function interactively (it fills the role of @t{interactive} in Emacs, if you are familiar with it).  These functions are documented in the reference manual to help you construct your own commands.  
 
-All standard @b{Leas} commands are small Scheme functions.  They use a built-in function @t{leas/call} which lets the user enter the function arguments interactively (it fills the role of @t{interactive} in Emacs, if you are familiar with it).  These functions are documented in the reference manual to help you construct your own commands.  The @b{Leas} prompt, in fact, is a Scheme interpreter.  Any Scheme expression can be written there.
-
-This document has two parts.  In the first, I describe the basic workflow for using @b{Leas}.  This part is more in-depth than the manpage and gives some examples of how to add accounts and make transactions.  It includes a tutorial that will help get you up-and-running using @b{Leas} as well as a reference of all interactive commands.  In the second part, I describe all the Scheme functions exported by @b{Leas} which is more useful if you are trying to write your own commands.
+This manual has two parts.  In the first, I describe the basic workflow for using Leas without any programming.  This part is more in-depth than the manpage and gives some examples of how to add accounts and make transactions.  It includes a tutorial that will help get you up-and-running and a reference of all interactive commands.  In the second part, I describe all the Scheme functions exported by Leas.  These functions are useful if you write your own Leas extensions.
 
 @node Tutorial
 @chapter Tutorial
 
-@node Adding a cash asset account
-@section Adding a cash asset account
+@node Adding a checking asset account
+@section Adding a checking asset account
 
-A file is made up of several "accounts".  To start, you will want to add some asset accounts.  Assets can be wherever you store your money or your property.  Asset accounts can be Checking accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you own.  To see how this works in @b{Leas}, let's look at an example of adding a checking account to a fresh file.
+When you start Leas, you are inside a fresh "book".  A book is a collection of "accounts". To start, you will want to add @i{asset} accounts.  Assets can be wherever you store your money or your property.  Asset accounts can be Checking accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you own.  To see how this works, let's look at an example of adding a checking account to a fresh book.
 
 @example
 :> aa
@@ -101,7 +100,7 @@ Opening Balance: @i{0}
 (Rent) :>
 @end example
 
-Now, to pay the Rent.  The general "payment" command in @b{Leas} is the "transfer" command, @t{t}.  @t{t} transfers money from one account to another account.  Making a payment is transferring money from your asset accounts to your expense accounts.
+Now, to pay the Rent.  @t{t} is the command to transfer money from one account to another.  Making a payment is transferring money from your asset accounts to your expense accounts.
 
 @example
 (Rent) :> @i{t}
@@ -136,6 +135,9 @@ Month [1]:
 Day [22]:
 (Checking) :>
 @end example
+
+@node Current account and day
+@section Current account and day
 
 By default, the prompt tells you what the @i{current account} is and, when you add an account, the current account is set to the account you just created.  Several commands act on the current account.  You can change the current account with the @t{sa} ("switch account") command,
 
@@ -219,7 +221,7 @@ Opening Balance: 0
 (Salary) :>
 @end example
 
-To receive a salary, do the opposite of paying for expenses: transfer money from the salary account to an asset account.
+When you are paid, transfer money from the salary account to an asset account.
 @example
 (Salary) :> t
  0: Checking
@@ -343,12 +345,12 @@ Worth            13970.00   13970.00
 Balances         10000.00
 @end example
 
-Note that income is measured as a @i{negative} number as are @i{liabilities}.  @i{Worth} is @i{Assets} + @i{Liabilities} (because Liabilities are written as negative in @b{Leas}).  Balances gives the total of the opening balances.
+Note that income is measured as a @i{negative} number as are @i{liabilities}.  @i{Worth} is @i{Assets} + @i{Liabilities} (because Liabilities are negative in Leas).  Balances gives the total of the opening balances.
 
 @node Non-cash assets
 @section Non-cash assets
 
-You may own some non-cash assets, like stocks, mutual funds, or bonds.  The value of these assets in terms of currency changes over time.  @b{Leas} provides a command for updating the currency value of these assets.
+You may own some non-cash assets, like stocks, mutual funds, or bonds.  The value of these assets in terms of currency changes over time.  Leas provides a command for updating the currency value of these assets.
 
 First, let's add our mutual fund,
 @example
@@ -454,11 +456,13 @@ Mutual Fund Income         -500.00    -500.00
 (Checking) :> 
 @end example
 
-To load the file non-interactively, you can use the command @t{leas/read "example.leas"}.  This command is particularly useful to include in @b{Leas}'s init file @t{~/.leasrc.scm}.  Usually, this file will include the line,
+To load the file non-interactively, you can use the command @t{leas/read "example.leas"}.  This command is particularly useful to include in Leas's init file @t{~/.leasrc.scm}.  Usually, this file will include the line,
 
 @example
 (leas/read "/path/to/my-account.leas")
 @end example
+
+Note that in @t{~/.leasrc.scm} you need to write standard Guile Scheme and enclose things in parenthesis.  The parenthesis are only omitted in the interactive prompt.
 
 @node Scheme code
 @section Scheme code
@@ -470,7 +474,7 @@ The prompt is a Scheme interpreter and can execute arbitrary code.  The only dif
 (Checking) :>
 @end example
 
-@b{Leas} provides a useful function @t{p} for displaying expressions and then adding a newline like the above,
+Leas provides a useful function @t{p} for displaying expressions and then adding a newline like the above,
 @example
 (Checking) :> p (+ 1 2)
 3
@@ -487,7 +491,7 @@ You can add customizations that are loaded automatically in @t{~/.leasrc.scm}.  
 @node Set default file
 @subsection Set default file
 
-You will probably want to load the same file almost everytime you load @b{leas}.  To do so, add the following to @t{~/.leasrc.scm}:
+You will probably want to load the same file almost everytime you use Leas.  To do so, add the following to @t{~/.leasrc.scm}:
 
 @example
 (leas/read "/path/to/file/my-account.leas")
@@ -496,7 +500,7 @@ You will probably want to load the same file almost everytime you load @b{leas}.
 @node Customize prompt
 @subsection Customize prompt
 
-The prompt is generated by calling the Scheme function @t{(leas/prompt)}.  If you change this function, you can customize the prompt.  For example, try adding the following to see the current date,
+The prompt is generated by calling the Scheme function @t{(leas/prompt)}.  If you change this function, you customize the prompt.  For example, try adding the following to see the current date,
 
 @example
 (define leas/prompt
@@ -522,7 +526,7 @@ The prompt is generated by calling the Scheme function @t{(leas/prompt)}.  If yo
 @node All Interactive Commands
 @chapter All Interactive Commands
 
-This chapter documents all the interactive commands available in @b{Leas}.  Its contents are similar to the manpage.
+This chapter documents all the interactive commands available in Leas.
 
 @itemize
 
@@ -608,7 +612,7 @@ delete transfer originating from a given account
 print transactions between two dates
 
 @item @t{v}
-display version of @b{Leas}
+display version of Leas
 
 @item @t{sd}
 set current day
@@ -675,12 +679,10 @@ print X, followed by a newline, for example: @t{p (+ 1 2)} will print @t{3}.
 
 @end itemize
 
-
-
 @node Leas file format
 @chapter Leas file format
 
-The save file is a @b{tar} archive containing the following files in a directory named after the save file's filename (e.g. a save file named @i{book.leas} would, when un-tarred, be a directory called @i{book}):
+The save file is a tar archive containing the following files in a directory named after the save file's filename (e.g. a save file named @i{book.leas} would, when un-tarred, be a directory called @i{book}):
 
 @itemize @bullet
 @item accounts - a CSV file containing the metadata for each account, one line for each account.  There is no header line giving column names. The fields are (in this order):
@@ -702,9 +704,9 @@ The save file is a @b{tar} archive containing the following files in a directory
 @node Programming Leas
 @chapter Programming Leas
 
-This chapter is a reference manual for the various Scheme functions available in @b{Leas}.  It is now complete.
+This chapter is a reference manual for the various Scheme functions available in Leas.
 
-Only non-interactive functions are documented here because the interactive functions are mostly just wrappers of these that call @t{leas/call} to get the arguments.
+Only non-interactive functions are documented here because the interactive functions are mostly just wrappers of these functions that use @t{leas/call} to get the arguments.
 
 @node Make Scheme functions interactive
 @section Make Scheme functions interactive
@@ -712,7 +714,7 @@ Only non-interactive functions are documented here because the interactive funct
 @itemize
 @item @t{(leas/call function-name options)}
 
-Calls the Scheme function with name @t{function-name} (a string) with arguments described by the list @t{options} entered interactively by the user. @t{options} is a list of pairs.  Each element of the list has the following structure: the first element gives the ``name'' of the option (what @b{Leas} will prompt for) and the second element gives the ``type'' of the option: the kind of value it should contain.  Both elements should be strings.  The following are the current types allowed for @t{options}.  If you use a type not in this list, whatever the user enters will be passed as-is to the function.
+Calls the Scheme function with name @t{function-name} (a string) with arguments described by the list @t{options} entered interactively by the user. @t{options} is a list of pairs.  Each element of the list has the following structure: the first element gives the ``name'' of the option (what Leas will prompt for) and the second element gives the ``type'' of the option: the kind of value it should contain.  Both elements should be strings.  The following are the current types allowed for @t{options}.  If you use a type not in this list, whatever the user enters will be passed as-is to the function.
 
 @itemize
 @item string
@@ -955,7 +957,7 @@ A function that gets called (without arguments) to produce the prompt.  You can 
 
 @item @t{(leas/write file-name)}
 
-Write the current @b{Leas} accounts to a file called @t{file-name}.
+Write the whole book to a file called @t{file-name}.
 
 @item @t{(leas/read file-name)}
 
@@ -980,7 +982,7 @@ Print out the object @t{x}.  This is essentially just Guile's @t{display} functi
 
 @item @t{(leas/v)}
 
-Return the version string for @b{Leas}.
+Return the Leas version as a string.
 
 @item @t{(leas/day-from-time time)}
 

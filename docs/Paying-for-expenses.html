@@ -23,8 +23,8 @@ Documentation License". -->
 <link href="index.html" rel="start" title="Top">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Tutorial.html" rel="up" title="Tutorial">
-<link href="Earning-income.html" rel="next" title="Earning income">
-<link href="Adding-a-cash-asset-account.html" rel="prev" title="Adding a cash asset account">
+<link href="Current-account-and-day.html" rel="next" title="Current account and day">
+<link href="Adding-a-checking-asset-account.html" rel="prev" title="Adding a checking asset account">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
@@ -50,7 +50,7 @@ ul.no-bullet {list-style: none}
 <body lang="en">
 <span id="Paying-for-expenses"></span><div class="header">
 <p>
-Next: <a href="Earning-income.html" accesskey="n" rel="next">Earning income</a>, Previous: <a href="Adding-a-cash-asset-account.html" accesskey="p" rel="prev">Adding a cash asset account</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Current-account-and-day.html" accesskey="n" rel="next">Current account and day</a>, Previous: <a href="Adding-a-checking-asset-account.html" accesskey="p" rel="prev">Adding a checking asset account</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
 <span id="Paying-for-expenses-1"></span><h3 class="section">2.2 Paying for expenses</h3>
@@ -71,7 +71,7 @@ Opening Balance: <i>0</i>
 (Rent) :&gt;
 </pre></div>
 
-<p>Now, to pay the Rent.  The general &quot;payment&quot; command in <b>Leas</b> is the &quot;transfer&quot; command, <tt>t</tt>.  <tt>t</tt> transfers money from one account to another account.  Making a payment is transferring money from your asset accounts to your expense accounts.
+<p>Now, to pay the Rent.  <tt>t</tt> is the command to transfer money from one account to another.  Making a payment is transferring money from your asset accounts to your expense accounts.
 </p>
 <div class="example">
 <pre class="example">(Rent) :&gt; <i>t</i>
@@ -107,76 +107,6 @@ Day [22]:
 (Checking) :&gt;
 </pre></div>
 
-<p>By default, the prompt tells you what the <i>current account</i> is and, when you add an account, the current account is set to the account you just created.  Several commands act on the current account.  You can change the current account with the <tt>sa</tt> (&quot;switch account&quot;) command,
-</p>
-<div class="example">
-<pre class="example">(Checking) :&gt; sa
- 0: Checking
- 1: Rent
-Account: 1
-(Rent) :&gt; 
-</pre></div>
-
-<p>The &quot;list transactions&quot; command is <tt>lt</tt>.  It lists the transactions in the current account,
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; lt
-2019-04-30 The rent        2000.00
-</pre></div>
-
-<p>To see how much money is in your accounts, type <tt>la</tt> (for &quot;list account&quot;) (<tt>laa</tt> lists only Asset accounts, <tt>lal</tt> lists only Liability accounts, and so on).
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; la
-Checking         8000.00    8000.00
-Rent             2000.00    2000.00
-</pre></div>
-
-<p>The output has two columns.  The first gives the balance in your account on the <i>current day</i>, and the second gives the balance in your account in the future.
-</p>
-<p>To see the current day, use the command <tt>cd</tt>.  To set the current day, use <tt>sd</tt>.
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; sd
-Current Day: 
-Year [2019]: 2018
-Month [4]: 12
-Day [30]: 31
-(Rent) :&gt; cd
-2018-12-31
-</pre></div>
-
-<p>Now, if we type <tt>la</tt>, we can see what the account balance would have looked like on 2018-12-31 and what it would be in the future.
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; la
-Checking        10000.00    8000.00
-Rent                0.00    2000.00
-</pre></div>
-
-<p>To change the day back to the current day, type <tt>sd</tt> and take all the default options,
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; sd
-Current Day: 
-Year [2019]: 
-Month [4]: 
-Day [30]:
-(Rent) :&gt;
-</pre></div>
-
-<p>To list only expense accounts (useful for getting an understanding of where you are spending your money),
-</p>
-<div class="example">
-<pre class="example">(Rent) :&gt; lae
-Rent         2000.00    2000.00
-</pre></div>
-
-<hr>
-<div class="header">
-<p>
-Next: <a href="Earning-income.html" accesskey="n" rel="next">Earning income</a>, Previous: <a href="Adding-a-cash-asset-account.html" accesskey="p" rel="prev">Adding a cash asset account</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
-</div>
 
 
 

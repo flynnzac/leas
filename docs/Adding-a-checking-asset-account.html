@@ -13,18 +13,18 @@ Documentation License". -->
 <!-- Created by GNU Texinfo 6.7, http://www.gnu.org/software/texinfo/ -->
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>Earning income (Leas manual)</title>
+<title>Adding a checking asset account (Leas manual)</title>
 
-<meta name="description" content="Earning income (Leas manual)">
-<meta name="keywords" content="Earning income (Leas manual)">
+<meta name="description" content="Adding a checking asset account (Leas manual)">
+<meta name="keywords" content="Adding a checking asset account (Leas manual)">
 <meta name="resource-type" content="document">
 <meta name="distribution" content="global">
 <meta name="Generator" content="makeinfo">
 <link href="index.html" rel="start" title="Top">
 <link href="index.html#SEC_Contents" rel="contents" title="Table of Contents">
 <link href="Tutorial.html" rel="up" title="Tutorial">
-<link href="Managing-debt.html" rel="next" title="Managing debt">
-<link href="Current-account-and-day.html" rel="prev" title="Current account and day">
+<link href="Paying-for-expenses.html" rel="next" title="Paying for expenses">
+<link href="Tutorial.html" rel="prev" title="Tutorial">
 <style type="text/css">
 <!--
 a.summary-letter {text-decoration: none}
@@ -48,52 +48,29 @@ ul.no-bullet {list-style: none}
 </head>
 
 <body lang="en">
-<span id="Earning-income"></span><div class="header">
+<span id="Adding-a-checking-asset-account"></span><div class="header">
 <p>
-Next: <a href="Managing-debt.html" accesskey="n" rel="next">Managing debt</a>, Previous: <a href="Current-account-and-day.html" accesskey="p" rel="prev">Current account and day</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
+Next: <a href="Paying-for-expenses.html" accesskey="n" rel="next">Paying for expenses</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<span id="Earning-income-1"></span><h3 class="section">2.4 Earning income</h3>
+<span id="Adding-a-checking-asset-account-1"></span><h3 class="section">2.1 Adding a checking asset account</h3>
 
-<p>It is a good idea to earn income to pay for your expenses.  Highly recommended.  Like with paying expenses, to add income start by adding an income account. Let&rsquo;s start with adding a salary account,
+<p>When you start Leas, you are inside a fresh &quot;book&quot;.  A book is a collection of &quot;accounts&quot;. To start, you will want to add <i>asset</i> accounts.  Assets can be wherever you store your money or your property.  Asset accounts can be Checking accounts, Savings accounts, Stocks, Bonds, Cash, and anything else you own.  To see how this works, let&rsquo;s look at an example of adding a checking account to a fresh book.
 </p>
 <div class="example">
-<pre class="example">(Rent) :&gt; aa
-Account: Salary
+<pre class="example">:&gt; aa
+Account: <i>Checking</i>
 0: Expense
 1: Income
 2: Asset
 3: Liability
-Type: 1
-Opening Balance: 0
-(Salary) :&gt;
+Type: <i>2</i>
+Opening Balance: <i>10000</i>
+(Checking) :&gt; 
 </pre></div>
 
-<p>When you are paid, transfer money from the salary account to an asset account.
-</p><div class="example">
-<pre class="example">(Salary) :&gt; t
- 0: Checking
- 1: Rent
- 2: Salary
-To Account: 0
- 0: Checking
- 1: Rent
- 2: Salary
-From Account: 2
-Amount: 6000
-Description: Salary
-Day: 
-Year [2019]: 
-Month [4]: 
-Day [30]:
-(Salary) :&gt; lt
-2019-04-30 Salary        -6000.00
-(Salary) :&gt; la
-Checking        14000.00   14000.00
-Rent             2000.00    2000.00
-Salary          -6000.00   -6000.00
-</pre></div>
-
+<p>This opens up an asset account called &quot;Checking&quot; with 10000 units of currency in it as an opening balance.  We can use asset accounts to pay for our expenses, to pay back our loans, and as a place to store the income we earn from working.  I discuss how to do each of those things in the following sections.
+</p>
 
 
 

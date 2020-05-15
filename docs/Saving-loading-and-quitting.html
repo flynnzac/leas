@@ -53,7 +53,7 @@ ul.no-bullet {list-style: none}
 Next: <a href="Scheme-code.html" accesskey="n" rel="next">Scheme code</a>, Previous: <a href="Non_002dcash-assets.html" accesskey="p" rel="prev">Non-cash assets</a>, Up: <a href="Tutorial.html" accesskey="u" rel="up">Tutorial</a> &nbsp; [<a href="index.html#SEC_Contents" title="Table of contents" rel="contents">Contents</a>]</p>
 </div>
 <hr>
-<span id="Saving_002c-loading_002c-and-quitting"></span><h3 class="section">2.6 Saving, loading, and quitting</h3>
+<span id="Saving_002c-loading_002c-and-quitting"></span><h3 class="section">2.7 Saving, loading, and quitting</h3>
 
 <p>To save your accounts to disk, use the <tt>w</tt> command.
 </p>
@@ -89,12 +89,14 @@ Mutual Fund Income         -500.00    -500.00
 (Checking) :&gt; 
 </pre></div>
 
-<p>To load the file non-interactively, you can use the command <tt>leas/read &quot;example.leas&quot;</tt>.  This command is particularly useful to include in <b>Leas</b>&rsquo;s init file <tt>~/.leasrc.scm</tt>.  Usually, this file will include the line,
+<p>To load the file non-interactively, you can use the command <tt>leas/read &quot;example.leas&quot;</tt>.  This command is particularly useful to include in Leas&rsquo;s init file <tt>~/.leasrc.scm</tt>.  Usually, this file will include the line,
 </p>
 <div class="example">
 <pre class="example">(leas/read &quot;/path/to/my-account.leas&quot;)
 </pre></div>
 
+<p>Note that in <tt>~/.leasrc.scm</tt> you need to write standard Guile Scheme and enclose things in parenthesis.  The parenthesis are only omitted in the interactive prompt.
+</p>
 
 
 
