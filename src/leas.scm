@@ -81,6 +81,13 @@
     (leas/at to-account amount desc day)
     (leas/at from-account (* -1 amount) desc day)))
 
+;;;; Transfer enough to set balance
+(define leas/sb
+  (lambda (to-account from-account to-balance desc day)
+    (let* ((cur-balance (cadr (leas/total-account to-account)))
+           (amount (- to-balance cur-balance)))
+      (leas/t to-account from-account amount desc day))))
+
 ;;;; Delete transfer from one account to another 
 (define leas/dtr
   (lambda (from-account location)
@@ -441,6 +448,17 @@
                 (cons "To Account" "account")
                 (cons "From Account" "account")
                 (cons "Amount" "real")
+                (cons "Description" "string")
+                (cons "Day" "day")))))
+
+
+(define sb
+  (lambda ()
+    (leas/call "leas/sb"
+               (list
+                (cons "To Account" "account")
+                (cons "From Account" "account")
+                (cons "To Balance" "real")
                 (cons "Description" "string")
                 (cons "Day" "day")))))
 
