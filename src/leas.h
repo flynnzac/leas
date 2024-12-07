@@ -1,6 +1,6 @@
 #ifndef LEAS_H
 #define LEAS_H
-#define _XOPEN_SOURCE
+#define _XOPEN_SOURCE 700
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -897,12 +897,12 @@ read_in (char* base)
 
   /* untar archive */
   
-  untar_cmd = malloc(sizeof(char)*(strlen("tar xaf ")+
+  untar_cmd = malloc(sizeof(char)*(strlen("tar xaf \"")+
                                    strlen(base)+
-                                   strlen(" -C ")+
+                                   strlen("\" -C ")+
                                    strlen(tmp_dir)+1));
 
-  sprintf(untar_cmd, "tar xaf %s -C %s", base, tmp_dir);
+  sprintf(untar_cmd, "tar xaf \"%s\" -C %s", base, tmp_dir);
   system(untar_cmd);
   free(untar_cmd);
 
@@ -1042,12 +1042,12 @@ write_out (char* base)
       free(tsct_fn);
     }
 
-  cmd = malloc(sizeof(char)*(strlen("tar caf ")+
+  cmd = malloc(sizeof(char)*(strlen("tar caf \"")+
                              strlen(base)+
-                             strlen(" -C ")+
+                             strlen("\" -C \"\" ")+
                              strlen(tmp_dir)+
                              strlen(fn)+2));
-  sprintf(cmd, "tar caf %s -C %s %s", base, tmp_dir, fn);
+  sprintf(cmd, "tar caf \"%s\" -C \"%s\" %s", base, tmp_dir, fn);
   system(cmd);
   free(cmd);
 
