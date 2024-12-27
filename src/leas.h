@@ -1,6 +1,7 @@
 #ifndef LEAS_H
 #define LEAS_H
 #define _XOPEN_SOURCE 700
+#define _GNU_SOURCE
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +20,24 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <getopt.h>
+
+
+typedef char* (*input_func)(const char*);
+typedef int (*output_func)(const char*, ...);
+typedef void (*refresh_func)();
+
+/* Globals */
+
+input_func leas_input = readline;
+output_func leas_output = printf;
+
+/* readline refresh function */
+
+void
+dummy_readline_refresh ()
+{
+  return;
+}
 
 /* Convenience, Manipulation Functions */
 
@@ -534,7 +553,7 @@ leas_select_account (const char* prompt, int kind)
 
   if (leas_book.n_account==0)
     {
-      printf("No account.\n");
+      leas_output("No account.\n");
       return NULL;
     }
   else
@@ -545,9 +564,9 @@ leas_select_account (const char* prompt, int kind)
           for (j=0; j < leas_book.n_account; j++)
             {
               if (kind < 0 || (leas_book.accounts[j].type & kind))
-                printf("%*d: %s\n", ndigit+1, j, leas_book.accounts[j].name);
+                leas_output("%*d: %s\n", ndigit+1, j, leas_book.accounts[j].name);
             }
-          c = readline(prompt);
+          c = leas_input(prompt);
         } while (strcmp(c,"") && (anyalpha(c) || atoi(c) < 0 ||
                                   atoi(c) >= leas_book.n_account));
 
@@ -579,7 +598,7 @@ leas_select_transaction (account* acct)
   do
     {
       for (i=n; i < end; i++)
-        printf("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
+        leas_output("%*d: %4u-%02u-%02u %-*s % 12.2f\n",
                ndigit,
                i,
                acct->tscts[i].year,
@@ -589,7 +608,7 @@ leas_select_transaction (account* acct)
                acct->tscts[i].desc,
                acct->tscts[i].amount);
 
-      option = readline ("Transaction #: ");
+      option = leas_input ("Transaction #: ");
     } while (strcmp(option,"") && (anyalpha(option) || atoi(option) < 0 ||
                                    atoi(option) >= acct->n_tsct));
   if (strcmp(option,"")!=0)
@@ -613,7 +632,7 @@ leas_select_day (struct tm* curtime_info)
     {
       prompt = copy_string_insert_int("Year [%d]: ",
                                       curtime_info->tm_year+1900);
-      year = readline(prompt);
+      year = leas_input(prompt);
       free(prompt);
     }
   else
@@ -623,7 +642,7 @@ leas_select_day (struct tm* curtime_info)
     {
       prompt = copy_string_insert_int("Month [%d]: ",
                                       curtime_info->tm_mon+1);
-      month = readline(prompt);
+      month = leas_input(prompt);
       free(prompt);
     }
   else
@@ -633,7 +652,7 @@ leas_select_day (struct tm* curtime_info)
     {
       prompt = copy_string_insert_int("Day [%d]: ",
                                       curtime_info->tm_mday);
-      day = readline(prompt);
+      day = leas_input(prompt);
       free(prompt);
     }
   else
@@ -654,11 +673,11 @@ leas_select_account_type (char* prompt)
   int k;
   char* opt;
   
-  printf("0: Expense\n");
-  printf("1: Income\n");
-  printf("2: Asset\n");
-  printf("3: Liability\n");
-  opt = readline (prompt);
+  leas_output("0: Expense\n");
+  leas_output("1: Income\n");
+  leas_output("2: Asset\n");
+  leas_output("3: Liability\n");
+  opt = leas_input (prompt);
 
   k = anyalpha(opt) > 0 ? -1 : pow_int(2,atoi(opt));
 
@@ -1107,7 +1126,7 @@ leas_call (SCM func, SCM options)
       switch (type)
         {
         case STRING:
-          opt = readline(name_c);
+          opt = leas_input(name_c);
           append_to_string(&command, opt, "\"");
           break;
         case ACCOUNT:
@@ -1184,7 +1203,7 @@ leas_call (SCM func, SCM options)
             } else leas_prompton = PROMPT_COMMAND;
           break;
         case TRANSACTION:
-          printf("%s\n", name_c);
+          leas_output("%s\n", name_c);
           opt = leas_select_account("Account: ", -1);
           if (opt!=NULL && strcmp(opt,"")!=0)
             {
@@ -1210,13 +1229,13 @@ leas_call (SCM func, SCM options)
           time(&curtime);
           curtime_info = localtime(&curtime);
 
-          printf("%s\n", name_c);
+          leas_output("%s\n", name_c);
           opt = leas_select_day (curtime_info);
           if (opt != NULL)
             append_to_string(&command, opt, "");
           break;
         default:
-          opt = readline(name_c);
+          opt = leas_input(name_c);
           append_to_string(&command, opt, "");
           break;
         }
@@ -1385,8 +1404,8 @@ leas_da (SCM account)
   char* account_c = scm_to_locale_string (account);
   if (leas_book.n_account == 1)
     {
-      printf("Cannot delete account: %s.", account_c);
-      printf(" There must always be at least one account.\n");
+      leas_output("Cannot delete account: %s.", account_c);
+      leas_output(" There must always be at least one account.\n");
       free(account_c);
       return SCM_UNDEFINED;
     }
@@ -1788,7 +1807,7 @@ SCM
 leas_p (SCM x)
 {
   scm_display(x, scm_current_output_port());
-  printf("\n");
+  leas_output("\n");
 
   return SCM_UNDEFINED;
 }
@@ -1972,6 +1991,41 @@ register_guile_functions (void* data)
 
   return NULL;
 }
+
+/* Load standard Leas functions */
+void
+leas_standard_func (char* file)
+{
+  char* command = copy_string("load ");
+  append_to_string(&command, file, "\"");
+  (void) exec_string_safe(command);
+  free(command);
+}
+
+/* Exit Leas */
+void
+leas_exit ()
+{
+  char* quit;
+
+  if (leas_prompt_exit)
+    {
+      quit = leas_input("Save file? (yes/no) ");
+      while ((strcmp(quit,"yes") != 0) &&
+             (strcmp(quit, "no") != 0))
+        {
+          free(quit);
+          quit = leas_input("Save file? (yes/no) ");
+        }
+	  
+      if (strcmp(quit, "yes")==0)
+        {
+          (void) leas_write(leas_cur_file);
+        }
+    }
+  delete_book(&leas_book);
+}
+
 
 
 #endif

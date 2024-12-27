@@ -19,29 +19,8 @@
 
 #include "leas.h"
 
-/* Exit Leas */
-void
-leas_exit ()
-{
-  char* quit;
-
-  if (leas_prompt_exit)
-    {
-      quit = readline("Save file? (yes/no) ");
-      while ((strcmp(quit,"yes") != 0) &&
-             (strcmp(quit, "no") != 0))
-        {
-          free(quit);
-          quit = readline("Save file? (yes/no) ");
-        }
-	  
-      if (strcmp(quit, "yes")==0)
-        {
-          (void) leas_write(leas_cur_file);
-        }
-    }
-  delete_book(&leas_book);
-}
+FILE* leas_process;
+char* leas_output_dir;
 
 /* Dummy event for signals */
 int
@@ -60,14 +39,38 @@ interrupt_handler (int status)
   rl_done = 1;
 }
 
-/* Load standard Leas functions */
+/* main read loop */
+
 void
-leas_standard_func (char* file)
+main_loop()
 {
-  char* command = copy_string("load ");
-  append_to_string(&command, file, "\"");
-  (void) exec_string_safe(command);
-  free(command);
+  SCM ret;
+  char* prompt;
+  char* command;
+  
+  while (leas_prompton != PROMPT_OFF)
+    {
+      ret = scm_c_catch(SCM_BOOL_T,
+                        exec_string_safe,
+                        "leas/prompt",
+                        handle_error,
+                        "leas/prompt",
+                        NULL,
+                        NULL);
+
+      prompt = scm_to_locale_string(ret);
+      command = readline(prompt);
+      
+      ret = scm_c_catch(SCM_BOOL_T,
+                        exec_string_safe_history,
+                        command,
+                        handle_error,
+                        command,
+                        NULL,
+                        NULL);
+      
+      free(prompt); free(command);
+    }
 }
 
 
@@ -90,7 +93,8 @@ main (int argc, char** argv)
      {"load", required_argument, 0, 'l'},
      {"file", required_argument, 0, 'f'},
      {"no-prompt-on-quit", no_argument, 0, 's'},
-     {"help", no_argument, 0, 'h'}
+     {"help", no_argument, 0, 'h'},
+     {0,0,0,0}
     };
 
   int option_index = 0;
@@ -108,7 +112,7 @@ main (int argc, char** argv)
   rl_event_hook = dummy_event;
   signal(SIGINT,interrupt_handler);
   
-  while ((k = getopt_long(argc, argv, "f:l:snvh", leas_options,
+  while ((k = getopt_long(argc, argv, "snvhf:l:", leas_options,
                           &option_index)) != -1)
     {
       switch (k)
@@ -139,11 +143,12 @@ main (int argc, char** argv)
           break;
         case 'v':
           printf("%s\n", PACKAGE_STRING);
-          printf("Copyright (C) 2020 Zach Flynn.\n");
+          printf("Copyright (C) 2024 Zach Flynn.\n");
           printf("License GPLv3: GNU GPL version 3 <https://gnu.org/licenses/gpl.html>\n");
           printf("This is free software: you are free to change and redistribute it.\n");
           printf("There is NO WARRANTY, to the extent permitted by law.\n");
           exit(0);
+          break;
         case 'h':
           printf("Usage: leas [-f FILE] [-l FILE] [-s] [-n] [-v] [-h] [COMMAND]\n");
           printf("Leas %s - the Little Extensible Accounting System\n",
@@ -167,7 +172,6 @@ main (int argc, char** argv)
             fprintf(stderr, "Unknown option, -%c.\n", optopt);
 	  
           exit(1);
-          break;
           break;
         default:
           abort();
@@ -214,29 +218,7 @@ main (int argc, char** argv)
   
   leas_prompton = PROMPT_COMMAND;
 
-  while (leas_prompton != PROMPT_OFF)
-    {
-      ret = scm_c_catch(SCM_BOOL_T,
-                        exec_string_safe,
-                        "leas/prompt",
-                        handle_error,
-                        "leas/prompt",
-                        NULL,
-                        NULL);
-
-      prompt = scm_to_locale_string(ret);
-      command = readline(prompt);
-      
-      ret = scm_c_catch(SCM_BOOL_T,
-                        exec_string_safe_history,
-                        command,
-                        handle_error,
-                        command,
-                        NULL,
-                        NULL);
-      
-      free(prompt); free(command);
-    }
+  main_loop();
   scm_gc();
   leas_exit();
   return 0;

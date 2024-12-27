@@ -14,10 +14,10 @@ AC_CHECK_LIB([m], [floor], [], [AC_MSG_ERROR([Can't find -lm.])])
 AC_CHECK_LIB([readline], [readline], [], [AC_MSG_ERROR([Can't find Readline library.])])
 AC_CHECK_LIB([guile-2.2], [scm_with_guile], [], [AC_MSG_ERROR([Can't find Guile.])])
 
-# Load Guile Flags
-PKG_CHECK_MODULES([GUILE], [guile-2.2])
-AC_SUBST(GUILE_CFLAGS)
-AC_SUBST(GUILE_LDFLAGS)
+# Load Guile and GTK Flags
+PKG_CHECK_MODULES([DEPENDENCIES], [guile-2.2])
+AC_SUBST(DEPENDENCIES_CFLAGS)
+AC_SUBST(DEPENDENCIES_LIBS)
 
 # Checks for header files.
 AC_CHECK_HEADERS([stdlib.h string.h unistd.h])
